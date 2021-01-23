@@ -1,0 +1,582 @@
+
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+
+
+    <script src="simpleTones.js"></script></head>
+
+
+<style>
+body{margin:0;user-select:none}
+     #pnt1,#pnt2,#pnt3{     position: absolute;     background:transparent; font-size:40px;
+
+       transform: translate(-50%,-50%);     animation: animate 2.2s linear 1; }
+
+
+
+        @keyframes animate
+
+         {
+
+         0%     {         transform: translate(-50%,-50%);
+             opacity: 1;
+
+              }
+
+              100%     {
+          transform:translate(-50%,-1000%);         opacity: 0;
+
+
+       }
+
+   }
+
+   /*
+   #pnt{
+        background:red;
+		width:40px;
+		height:40px;
+		text-align:center;
+		font-size:30px;
+		position:absolute;
+     animation: animate 1.2s linear infinite;
+   }
+
+   @keyframes animate{
+     to{transform:translateY(-300px);}
+
+   }*/
+	    body{margin:0;}
+
+        #in1,#in2{
+
+		       width:200px;
+
+			   position:absolute;
+			   //left:0%;
+			 bottom:7%;
+			   background:red;
+           }
+
+		#in2{
+		  bottom:26%;
+		 // left:35%;
+		 transform:rotate(90deg);
+		 width:200px;
+		}
+
+		#box{
+		  width:40px;
+		  height:60px;
+		  background:blue;
+		  position:absolute;
+		  bottom:15%;
+		  left:20%;
+		  border-top-left-radius:500px;
+		  border-top-right-radius:500px;
+		  //transform:rotate(34deg);
+          //transform-origin:100% 50%;
+		 // transition-duration:.05s;
+		}
+
+	    canvas{
+		    background:skyblue;
+		}
+
+		#meter{
+		      width:300px;
+		     // height:30px;
+			  position:absolute;
+			// left:30%;top:1%;
+		}
+
+		#replay{
+
+		  position:absolute;
+		  top:30%;
+		  left:40%;
+		  height:60px;
+		  width:100px;
+		  z-index:-1;
+		  border-radius:10px;
+		  font-size:20px;
+		}
+
+	#start{
+	height:60px;
+		  width:100px;
+		  z-index:-1;
+		  border-radius:10px;
+		  font-size:20px;
+
+	}
+     #home{
+	  position:absolute;
+	   top:40%;
+	    left:40%;
+		  height:60px;
+		  width:100px;
+		  z-index:-1;
+		  border-radius:10px;
+		  font-size:20px;
+	 }
+
+	 #first{
+	  position:absolute;
+	  background:linear-gradient(0deg,violet 19%,#061639 109%);
+	  z-index:3;
+	 }
+
+		#hs,#hsvalue{
+
+		// position:absolute;
+		  //top:60%;
+		  //left:30%;
+		  font-size:30px;
+		  color:yellow;
+		}
+
+		#sq{
+		    background:blue;
+			width:34px;
+			height:34px;
+			transform:rotate(45deg);
+			position:relative;
+			left:3px;
+			top:-3px;
+
+		}
+		#f1{
+		    background:blue;
+			width:14px;
+			height:34px;
+			transform:rotate(32deg);
+			position:relative;
+			left:-3px;
+			top:3px;
+			border-bottom-left-radius:10px;
+			animation:anix .7s alternate infinite;
+
+		}
+
+		#f2{
+		    background:blue;
+			width:14px;
+			height:34px;
+			transform:rotate(-32deg);
+			position:relative;
+			left:29px;
+			top:-31px;
+			border-bottom-right-radius:10px;
+			animation:ani .7s alternate infinite;
+		}
+
+		@keyframes ani{
+
+		   to{transform:rotate(-58deg);}
+		}
+
+		@keyframes anix{
+
+		   to{transform:rotate(58deg);}
+		}
+
+		#fire1{
+		    background:red;
+			width:11px;
+			height:64px;
+			//transform:rotate(-32deg);
+			position:relative;
+			left:22px;
+			top:-71px;
+			border-radius:10px;
+			//z-index:-1;
+		}
+
+
+</style>
+
+<body>
+
+<!-- text  <span id="text"></span> -->
+
+<meter id="meter" min="0" max="100" value="100"></meter>
+<canvas id="can" height="innerHeight" width="innerWidth">
+
+</canvas>
+<div id="first">
+    <br><br><br><br><center><h1 style="font-size:40px;color:white;">SPACE SHOOTER</h1><br><span style="color:yellow;">by rudra</span></center><br><br><br><br><br>
+    <center><button id="start" onclick="start()">START</button><br>
+        <br><br><br>
+
+        <span id="hs">Highest Score is </span><span id="hsvalue">44</span>
+
+    </center>
+
+</div>
+<button id="replay" onclick="replay()">REPLAY</button>
+<button id="home" onclick="location.reload()">HOME</button>
+<div id="box">
+    <div id="sq"></div>
+    <div id="f1"></div>
+    <div id="f2"></div>
+    <!-- <div id="fire1"></div> -->
+
+</div>
+
+
+
+<input id="in1" type="range" min="0" max="700"></input>
+<!-- <input id="in2" type="range" min="0" max="700"></input> -->
+
+
+
+</body>
+
+<script>
+
+//alert(window.outerWidth+"   "+window.outerHeight);
+
+if(localStorage.getItem("flags")!=0){
+
+localStorage.clear();
+localStorage.setItem("score",0);
+}
+
+
+var inter;
+///////////////////////audio///////////////////
+		 var smash=new Audio();
+		 //smash.src="magnum.mp3";
+		smash.src="smash.wav";
+
+
+		document.getElementById("hsvalue").textContent=localStorage.getItem("score");
+
+            var first=document.getElementById("first");
+			first.style.left="0";
+			first.style.top="0";
+			first.style.width=outerWidth;
+			first.style.height=outerHeight;
+
+
+            var slide=document.getElementById("in1");
+			slide.max=outerWidth-40;
+			slide.style.left=((outerWidth/2)-100)+"px";
+            slide.addEventListener("input",changeX);
+
+
+			var meter=document.getElementById("meter");
+			meter.style.left=((outerWidth/2)-150)+"px";
+
+
+			 var reply=document.getElementById("replay");
+			var home=document.getElementById("home");
+
+			//var slide2=document.getElementById("in2");
+			//slide2.max=outerHeight-60;
+			//slide2.style.left=((outerWidth/2)-200)+"px";
+           // slide2.addEventListener("input",changeX);
+
+			 var box=document.getElementById("box");
+             var bx=box.getBoundingClientRect();
+
+
+		    var can=document.getElementById("can");
+			var ctx=can.getContext("2d");
+			can.height=outerHeight;
+			can.width=outerWidth;
+
+			function changeX()
+
+			    {
+
+			       box.style.left=slide.value+"px";
+
+			    //    console.log(bx.x);
+			    }
+
+            var y_pos=0;
+		  var x_pos=Math.random()*(outerWidth-40);
+		  var speed=4;
+		  var bullet_y=bx.y;
+		  var bullet_x=bx.x;
+		  var bullet_speed=22;
+
+		  let colorsARR=["green","red","pink","magenta","black"];
+		  var temp_color=colorsARR[4];
+		  var score=0;
+		  var bonus_x=Math.random()*(outerWidth-90),bonus_y=0;
+		  var time=0,bullet_radius=8,timeB=300,brick_coll=30;
+		  var removepnt=100;
+
+		   ctx.font="22px bold serif";
+					 ctx.fillText(score,can.width/2.4,60);
+
+		   function animate()
+		   {
+		                 first.style.zIndex=-3;
+		                 reply.style.zIndex=-1;
+		                 ctx.beginPath();
+		            // requestAnimationFrame(animate);
+			             ctx.clearRect(0,0,3000,3000);
+
+						 ctx.fillStyle="black";
+						 ctx.font="bold 41px serif";
+					 ctx.fillText(score,can.width/2.4,60);
+
+		                 ctx.rect(x_pos,y_pos,20,30);
+		                 ctx.fillStyle=temp_color;
+
+		                 ctx.fill();
+		                 ctx.stroke();
+		                 y_pos+=speed;
+
+		                    if(y_pos>outerHeight)
+							{
+
+							     var pnt3=document.createElement("span");
+							   document.body.appendChild(pnt3);
+							   pnt3.setAttribute("id","pnt3");
+							   var animpnt3= document.getElementById("pnt3");
+							   animpnt3.textContent="-2";
+							   animpnt3.style.left=(x_pos)+"px";
+							   animpnt3.style.top=(y_pos-110)+"px";
+
+
+							    setTimeout(function(){ pnt3.remove();},500);
+
+
+
+		                       x_pos=Math.random()*(outerWidth-90);
+			                    y_pos=0;
+								temp_color=colorsARR[Math.round((Math.random()*4)+1)];
+								//speed=(Math.random()*6)+3
+								speed+=.02;
+								 score-=2;
+								 meter.value-=5;
+								//playTone(223,20);
+		                    }
+
+		      //  console.log(x_pos+"  "+y_pos);
+
+		   /////////////box///////////////////
+		   bx=box.getBoundingClientRect();
+		 //  document.getElementById("text").textContent=bx.left;
+
+		   ////////////////bullets/////////////
+
+
+		    bx=box.getBoundingClientRect();
+		   ctx.beginPath();
+		   ctx.fillStyle="yellow";
+		  // playTone("A#");
+		   ctx.arc(bullet_x+22,bullet_y,bullet_radius,0,2*Math.PI);
+		   ctx.fill();
+		   ctx.stroke();
+
+
+
+
+		               if(bullet_y<0)
+					     {
+
+							bullet_y=bx.y;
+							  bullet_x=bx.x;
+
+						 }
+		             // bullet_y=bx.y;
+		       bullet_y-=bullet_speed;
+			   bullet_speed+=.008;
+		   // bullet_y=bx.y;
+
+
+               ////////////////////coliision/////////////////
+
+
+
+
+		               //  console.log(bullet_x+30+"   "+bullet_y);
+		               //  console.log(x_pos+"  "+y_pos);
+		                 var a=Math.abs((bullet_x+10)-x_pos);
+		                 var b=Math.abs(bullet_y-y_pos);
+
+					 if(a<brick_coll&&b<55)
+			            {
+						   // console.log(a+" "+b);
+
+							   var pnt=document.createElement("span");
+							   document.body.appendChild(pnt);
+							   pnt.setAttribute("id","pnt1");
+							   var animpnt= document.getElementById("pnt1");
+							   animpnt.textContent="+3";
+							   animpnt.style.left=(x_pos+50)+"px";
+							   animpnt.style.top=y_pos+"px";
+
+
+							    setTimeout(function(){ pnt.remove();},300);
+
+				           // smash.play();
+							playTone(722);
+
+							score+=3;
+
+
+			                ctx.clearRect(0,0,3000,3000);
+				            x_pos=Math.random()*(outerWidth-90);
+			                y_pos=0;
+				            temp_color=colorsARR[Math.round((Math.random()*4)+1)];
+								//speed=(Math.random()*6)+3
+							speed+=.08;
+
+
+
+			             }
+
+
+			             //else smash.pause();
+
+
+			   /////////////////collision with hero//////////////////////
+                         var c=Math.abs((bx.x+30)-x_pos);
+		                 var d=Math.abs(bx.y-y_pos);
+			                      if(c<60&&d<20)
+								  {
+
+								     smash.play();
+									
+								      box.style.backgroundColor="yellow";
+								      score-=1;
+									   meter.value-=1;
+									   can.style.backgroundColor="red";
+								  }
+
+		                       else{
+								      box.style.backgroundColor="blue";
+								      can.style.backgroundColor="skyblue";
+								}
+
+
+			/////////////////bonus///////////////////////
+                   --timeB;
+
+
+					  if(timeB>0){
+					    bonus_y+=5;
+						ctx.beginPath();
+						ctx.fillStyle="rgb("+Math.random()*255+","+Math.random()*255+","+Math.random()*255+")";
+
+                        ctx.arc(bonus_x,++bonus_y,14,0,2*Math.PI);
+						ctx.fill();
+                        ctx.stroke();
+
+							if(bonus_y>outerHeight)
+                            {
+							   bonus_y=0;
+							   bonus_x=Math.random()*(outerWidth-90)
+							   // score-=15;
+							}
+                           // timeB=100;
+
+
+
+						//	console.log(timeB);
+
+		   /////////////////collision with bonus//////////////////////
+                         var e=Math.abs((bonus_x)-bullet_x);
+		                 var f=Math.abs(bonus_y-bullet_y);
+                      if(e<50&&f<50)
+					  {
+
+								 var pnt2=document.createElement("span");
+							   document.body.appendChild(pnt2);
+							   pnt2.setAttribute("id","pnt2");
+							   var animpnt2= document.getElementById("pnt2");
+							   animpnt2.textContent="+15";
+							   animpnt2.style.left=(bullet_x+50)+"px";
+							   animpnt2.style.top=bullet_y+"px";
+
+
+							    setTimeout(function(){ pnt2.remove();},300);
+
+
+
+					            playTone(1000);
+					                    time=220;
+					                     score+=15;
+					                   bonus_y=0;
+							   bonus_x=Math.random()*(outerWidth-90)
+							//   bullet_radius=20;
+							   brick_coll=20;
+							   bullet_speed=55;
+					  }
+
+					  brick_coll=30;
+
+					}
+
+                      if(time<0){bullet_radius=11;	bullet_speed=22; brick_coll=30;}
+
+						--time;
+
+                     if(timeB<-500)timeB=122;
+
+
+						///////////////////////GAME OVER/////////////////
+
+						   if(meter.value<=0)
+						     {
+							     reply.style.zIndex=1;
+								 home.style.zIndex=1;
+								    can.style.backgroundColor="red";
+								 // first.style.zIndex=3;
+							    clearInterval(inter);
+							    ctx.beginPath();
+							     ctx.fillStyle="black";
+						          ctx.font="bold 41px serif";
+				             	 ctx.fillText("GAME OVER",can.width/6,140);
+								 var temps=localStorage.getItem("score");
+								 if(Math.abs(score)>temps){temps=score;
+                                 localStorage.setItem("score",temps);}
+								score=0;
+							}
+					//console.log(meter.value);
+
+		   }
+
+
+		function start(){
+	  inter=setInterval(animate,20);
+	 //animate();
+	 localStorage.setItem("flags",0);
+
+		 }
+		 function replay(){
+
+            bonus_x=Math.random()*(outerWidth-90),bonus_y=0;
+		  time=0,bullet_radius=8,timeB=300,brick_coll=30;
+           speed=4;bullet_speed=22;
+		     meter.value=100;
+			 reply.style.zIndex=-1;
+			 home.style.zIndex=-1;
+			 score=0;
+			 clearInterval(inter);
+			 //var inter=setInterval(animate,20);
+			 y_pos=0;
+			// location.reload();
+			start();
+
+		 }
+
+
+
+
+</script>
+
+
+</html>
+
+
+
