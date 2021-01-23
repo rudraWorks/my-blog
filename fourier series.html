@@ -1,0 +1,89 @@
+<html>
+
+<body>
+    <a href="contents.html">back</a>
+
+
+
+    <br><br>
+    <fieldset>
+        <legend>FOURIER SERIES VISUALISATION</legend>
+    <center><h1> Fourier Series Visualisation</h1></center>
+<canvas id="can" width=3000 height=788></canvas>
+
+<script>
+var arr=[],flag=0;
+var angle=.01,angle2=.01,angle3=.01,angle4=.01,radius=100;
+var can=document.getElementById("can");
+var ctx=can.getContext('2d');
+can.height=innerHeight;
+can.width=innerWidth;
+function fun(){
+ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+requestAnimationFrame(fun);
+ctx.beginPath();
+ctx.lineWidth=2;
+ctx.strokeStyle="blue";
+ctx.arc(200,300,radius,0,2*Math.PI);
+ctx.stroke();
+var x=radius*Math.cos(angle);
+var y=radius*Math.sin(angle);
+var c=66*Math.cos(angle2);
+var d=66*Math.sin(angle2);
+var e=36*Math.cos(angle3);
+var f=36*Math.sin(angle3);
+var g=26*Math.cos(angle4);
+var h=26*Math.sin(angle4);
+ctx.beginPath();
+ctx.moveTo(200,300);
+ctx.strokeStyle="green";
+ctx.lineTo(1100,300);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(370+flag,d+y+300+f+h,7,0,2*Math.PI);
+arr.unshift(d+y+300+f+h);
+ctx.strokeStyle="black";
+ctx.stroke();
+ctx.beginPath();
+ctx.lineWidth=3;
+ctx.arc(x+200,y+300,4,0,2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(x+200,y+300,66,0,2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(c+x+200,d+y+300,36,0,2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(c+x+200+e,d+y+300+f,26,0,2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.moveTo(c+x+200+e+g,d+y+300+f+h);
+ctx.lineTo(370+flag,d+y+300+f+h);
+ctx.arc(c+x+200+e+g,d+y+300+f+h,13,0,2*Math.PI);
+ctx.fillStyle="red";
+ctx.fill();
+ctx.stroke();
+angle2-=.09/2;
+angle-=.065/2;
+angle3-=.2/2;
+angle4-=.1/2;
+   for(var i=0;i<arr.length;++i)
+       {  ctx.beginPath();
+
+	     ctx.arc(i+370,arr[i],2,0,2*Math.PI);
+         ctx.stroke();
+		   ctx.fillStyle="blue";
+   ctx.fill(); 
+	   }	   
+	   if(arr.length>500)arr.pop();
+}
+fun();
+</script>
+</fieldset>
+
+
+</body>
+</html>
+
+

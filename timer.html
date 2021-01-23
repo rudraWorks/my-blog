@@ -1,0 +1,155 @@
+
+<!--
+designed and developed by rudra pratap
+date of submission: april 2020
+author:rudra pratap
+clients:sololearners
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    <title>JavaScript Timer</title>
+</head>
+<body >
+    <a style="color:white;" href="contents.html">back</a><center>
+    <h1 style="color:white;">JavaScript Timer</h1>
+
+    <div id="up">
+        <br><br>
+        <input onchange="view()" type="range" id="ran" min="10" max="3000"><div id="text"></div>
+        <br>
+        <div id="cnt"></div>
+        <center>
+            <br><br>
+            <button id="btn" onclick="main()">Start</button><br>
+            <button id="btn2" onclick="restart()">Restart</button>
+
+
+        </center></div>
+    <h6 style="color:white;"> ©rudra pratap softwares 2020</h6>
+</center>
+</body>
+<script>
+        var num=11,flg=0;
+  function restart(){location.reload();}
+  document.getElementById("text").innerHTML=(document.getElementById("ran").value*10)/1000+" s";
+
+     function view(){ document.getElementById("text").innerHTML=(document.getElementById("ran").value*10)/1000+" s";}
+        function main(){
+
+
+        document.getElementById("up").classList.remove("anim");
+
+        var mybtn=document.getElementById("btn");
+        mybtn.disabled=true;
+        var ran=document.getElementById("ran").value;
+        var b=setInterval(fun,ran);
+        function fun()
+        {
+            --num;
+            document.getElementById("cnt").innerHTML=num;
+            if(num==0)
+            {
+             mybtn.disabled=false;
+            clearInterval(b);
+             flg=1;
+
+document.getElementById("up").classList.add("anim");
+        var inter=setInterval(loop,500);
+            function loop(){
+               navigator.vibrate(200);
+
+
+   document.getElementById("btn"). addEventListener("click",function(){ clearInterval(inter)})    ;
+
+
+
+
+
+
+
+
+
+
+            }
+            num=11;
+
+
+            }
+
+         }
+
+        }
+
+
+    </script>
+<Style>
+body {
+    background:#061639;
+}
+#cnt{
+    font-weight:bold;
+    text-align:center;
+    font-size:50px;
+    border:2px solid black;
+    height:60px;
+    width:200px;
+    background:lightgreen;
+    border-radius:8px;
+}
+
+#ran{
+    width:290px;
+    height:20px;
+}
+.anim{
+    animation:anima .21s alternate infinite  ;
+}
+
+@keyframes anima{
+    0%{
+        background:red;
+    }
+   50%{
+       background:blue;
+   }
+
+
+
+}
+
+#up{
+    height:370px;
+    width:300px;
+    border:2px double red;
+    border-radius:12px;
+    background:#f05e23;
+}
+
+
+#text{
+    border:2px solid black;
+    height:20px;
+    text-align:center;
+    background:skyblue;
+    width:200px;
+    border-radius:8px;
+}
+#btn,#btn2{
+    width:140px;
+    height:40px;
+    font-weight:bold;
+    font-size:20px;
+    border-radius:8px;
+}
+
+
+
+
+
+</Style>
+</html>

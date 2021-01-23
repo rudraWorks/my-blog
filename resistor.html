@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+
+    <title>Resistor Calculator</title>
+</head>
+<body>
+    <a href='contents.html'>back</a>  <br/>  <br/>
+<div id="top">
+    <h1 id="head">Resistor Calculator</h1>
+    <br/>
+
+    <center><select id="clr3">
+
+
+        <option>brown</option>
+        <option>black</option>
+        <option>red</option>
+        <option>orange</option>
+        <option>yellow</option>
+        <option>green</option>
+        <option>blue</option>
+        <option>violet</option>
+        <option>grey</option>
+        <option>white</option>
+
+    </select>
+
+        <select id="clr2">
+            <option>yellow</option>
+            <option>black</option>
+            <option>brown</option>
+            <option>red</option>
+            <option>orange</option>
+
+            <option>green</option>
+            <option>blue</option>
+            <option>violet</option>
+            <option>grey</option>
+            <option>white</option>
+
+        </select>
+
+        <select id="clr1">
+            <option>blue</option>
+            <option>black</option>
+            <option>brown</option>
+            <option>red</option>
+            <option>orange</option>
+            <option>yellow</option>
+            <option>green</option>
+
+            <option>violet</option>
+            <option>grey</option>
+            <option>white</option>
+
+        </select>
+
+        <select id="clr4">
+
+            <option>gold</option>
+            <option>silver</option>
+
+
+        </select>
+
+        <br><br>
+        <button id="btn" onclick="fun()">Calculate</button>
+
+
+        <br><br><br><br>
+        &nbsp;&nbsp;&nbsp;
+
+        <div id="one">
+            <div id="two"> </div>
+            <div id="three"> </div>
+            <div id="four"> </div>
+            <div id="five"> </div>
+        </div><br><br>
+        <input id="input" disabled="true">
+        <br><br><br>©rudra 2020
+
+
+    </center>
+
+
+</div>
+
+</body>
+<script>
+document.getElementById("top").style.height=innerHeight-60+"px";
+document.getElementById("top").style.top=5;
+
+    function fun(){
+        var clr1=document.getElementById("clr1").value;    document.getElementById("two").style.backgroundColor=clr1;
+
+    clr2=document.getElementById("clr2").value;    document.getElementById("three").style.backgroundColor=clr2;
+
+    clr3=document.getElementById("clr3").value;    document.getElementById("four").style.backgroundColor=clr3;
+
+    clr4=document.getElementById("clr4").value;    document.getElementById("five").style.backgroundColor=clr4;
+
+  var n1,n2,n3,n4,flag=0;
+  if(clr3=="black")n1=0;
+  if(clr3=="brown")n1=1;
+  if(clr3=="red")n1=2;
+  if(clr3=="orange")n1=3;
+  if(clr3=="yellow")n1=4;
+  if(clr3=="green")n1=5;
+  if(clr3=="blue")n1=6;
+  if(clr3=="violet")n1=7;
+  if(clr3=="grey")n1=8;
+  if(clr3=="white")n1=9;
+
+  if(clr2=="black")n2=0;
+  if(clr2=="brown")n2=1;
+  if(clr2=="red")n2=2;
+  if(clr2=="orange")n2=3;
+  if(clr2=="yellow")n2=4;
+  if(clr2=="green")n2=5;
+  if(clr2=="blue")n2=6;
+  if(clr2=="violet")n2=7;
+  if(clr2=="grey")n2=8;
+  if(clr2=="white")n2=9;
+
+  if(clr1=="black")n3=0;
+  if(clr1=="brown")n3=1;
+  if(clr1=="red")n3=2;
+  if(clr1=="orange")n3=3;
+  if(clr1=="yellow")n3=4;
+  if(clr1=="green")n3=5;
+  if(clr1=="blue")n3=6;
+  if(clr1=="violet")n3=7;
+  if(clr1=="grey")n3=8;
+  if(clr1=="white")n3=9;
+
+  if(clr4=="gold")n4=-1;
+  if(clr4=="silver")n4=-2;
+
+  var res=((n1*10)+n2)*Math.pow(10,n3);
+
+
+  if(res>1000){
+      res=(res/1000);
+       flag=1;
+      }
+
+      if(res>1000000){
+      res=(res/100000);
+       flag=2;
+      }
+
+
+  if(flag==0){ document.getElementById("input").value=res+" ohms";}
+
+
+ if(flag==1){ document.getElementById("input").value=res+" K ohms";}
+
+ if(flag==2){ document.getElementById("input").value=res+" M ohms";}
+
+
+
+
+
+
+
+         }
+    </script>
+<Style>
+body {
+margin:0;
+
+user-select:none;
+
+}
+button{outline:none;}
+#head{
+    text-align:center;
+    color:#061639;
+}
+/*#zero{
+
+    width:265px;
+    height:4px;
+    background:black;
+    position:absolute;
+    top:50%;
+    left:5%;
+    border-radius:20px;
+
+}
+*/
+#top{
+    background:pink;
+    height:100%;
+    padding:2px;
+    position:absolute;
+    border:10px pink groove ;
+}
+#one{
+
+    width:150px;
+    height:50px;
+   background:#ff9966;
+
+    /*position:absolute  ;
+    top:30%;
+    left:30%;*/
+    border-radius:20px;
+    border:1px solid black;
+    padding-top:2px;
+}
+
+#two{
+
+    width:9px;
+    height:50px;
+    background:red;
+   position:relative ;
+    top:-3%;
+    left:-10%;
+    border:1px solid black;
+}
+
+#three{
+
+    width:9px;
+    height:50px;
+    background:red;
+   position:relative ;
+    top:-110%;
+    left:-20%;
+    border:1px solid black;
+
+}
+#four{
+
+    width:9px;
+    height:50px;
+    background:red;
+    position:relative ;
+    top:-210%;
+    left:-30%;
+    border:1px solid black;
+
+}
+
+#five{
+
+    width:9px;
+    height:50px;
+    background:red;
+    position:relative  ;
+    top:-314%;
+    left:30%;
+    border:1px solid black;
+
+}
+#input{
+    width:125px;
+    height:40px;
+    background:skyblue;
+    border-radius:9px;
+    font-weight:bold;
+    text-align:center;
+}
+#btn{
+    width:105px;
+    height:40px;
+    background:orange;
+    border-radius:9px;
+
+}
+#clr1{width:65px;
+    height:30px;
+    background:lightgreen;
+    outline:none;
+    border-radius:9px;
+    text-align:center ;
+}
+#clr2{width:65px;
+    height:30px;
+    background:lightgreen;
+    border-radius:9px;
+    text-align:center ;
+    outline:none;
+}
+#clr3{width:65px;
+    height:30px;
+    background:lightgreen;
+    border-radius:9px;
+    outline:none;
+    text-align:center ;
+}
+#clr4{width:65px;
+    height:30px;
+    background:lightgreen;
+    border-radius:9px;
+    outline:none;
+    text-align:center ;
+}
+
+
+
+
+</style>
+</html>

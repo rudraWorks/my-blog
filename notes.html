@@ -1,0 +1,145 @@
+<html>
+<title>notes app</title>
+<head>
+    <style>
+	body{
+    background:rgb(196, 196, 67);
+  
+    margin:0
+}
+#save{
+    /* position:relative;
+    left:40%; */
+    padding:5px;
+    font-size:14px;
+    background-color: lightgreen;
+    border-radius: 20px;
+    outline: none;
+}
+#night{
+    padding:5px;
+    font-size:14px;
+    background-color: rgb(2, 3, 2);
+    border-radius: 20px;
+    outline: none;
+    color:white;
+}
+textarea{
+    margin:0;
+    resize: none;
+    height:300px;
+    width:400px;
+   overflow: scroll;
+   /* background:black;
+   color:white; */
+}
+h1{
+    color:black
+}
+	</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+</head>
+<body>
+    <a href='contents.html'>back</a><br>
+<center>
+    <h1>Notes Keeper</h1>
+    <h3><a href="https://www.instagram.com/rp_singh_1008/">by rudra</a></h3>
+
+    <textarea id="text">
+
+    </textarea>
+    <br>
+<input type="range" id='range' step='.1' min=10 max=30></input>
+<button id="save" onclick="save()">save</button>
+<button id="night" onclick="night()">dark</button>
+</center>
+
+</body>
+<script>
+var textarea=document.getElementById("text");
+var fontAdjustVar=document.getElementById("range");
+var saveButton=document.getElementById("save");
+var cnt=0;
+    // code in this if-block will be executed for one time //
+        if(localStorage.getItem("first_use")==null)
+        { 
+            localStorage.setItem("cnt",cnt);
+            localStorage.setItem("fontAdjust",20);
+        }   
+    // close                                               //
+       
+    // app usage counter //
+        var cnt2=localStorage.getItem("cnt");
+        cnt=cnt2;
+        ++cnt;
+        localStorage.setItem("cnt",cnt);
+    // close             //
+
+    // app configuration //
+
+    textarea.style.height=innerHeight/1.3+'px';
+    textarea.style.width=innerWidth/1.3+'px';
+    textarea.style.fontSize=localStorage.getItem("fontAdjust")+"px";
+    fontAdjustVar.value=localStorage.getItem("fontAdjust");
+    //alert(localStorage.getItem("fontAdjust"));
+    //close              //
+
+textarea.textContent=localStorage.getItem("notes");
+// save //
+ function save()
+    { 
+        //var a=textarea.textContent;
+        var a=textarea.value;
+        localStorage.setItem("notes",a)
+        var sav=localStorage.getItem("notes");
+        saveButton.style.backgroundColor="lightgreen";
+        //alert(a);
+    }
+
+    // font adjust //   
+    
+    fontAdjustVar.addEventListener("input",fontAdjust);
+      
+    function fontAdjust()
+        {
+
+            textarea.style.fontSize=fontAdjustVar.value+"px";
+            localStorage.setItem("fontAdjust",fontAdjustVar.value);
+        }
+
+
+
+    // save button colorization //
+     
+    textarea.addEventListener("input",saveButtonColor);
+    function saveButtonColor(){
+          saveButton.style.backgroundColor="red";
+    }
+    
+    var nightenable=false;
+
+    function night()
+    {
+      if(nightenable==false){
+        textarea.style.backgroundColor="rgb(36,36,36)";
+        textarea.style.color="white";
+        nightenable=true;
+        document.getElementById("night").style.backgroundColor="white";
+        document.getElementById("night").style.color="black";
+      }
+      else{
+        textarea.style.backgroundColor="white";
+        textarea.style.color="black";
+        nightenable=false;
+       
+        document.getElementById("night").style.backgroundColor="black";
+        document.getElementById("night").style.color="white";
+      }
+
+    }
+localStorage.setItem("first_use",0);
+//localStorage.clear();
+
+</script>
+</html>

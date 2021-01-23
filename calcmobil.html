@@ -1,0 +1,272 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    <style>
+body{
+	background:linear-gradient(45deg,purple 34%,red 88%);
+}
+
+#scr1,#scr2{
+	width:300px;
+	height:80px;
+	background:black;
+	color:white;
+	border:1px solid black;
+	text-align:right;
+	font-size:32px;
+	padding:5px;
+}
+#scr1{
+	color:grey;
+}
+th{
+	width:55px;
+	height:55px;
+	padding:1px;
+
+	border-radius:9px;
+	//border:2px solid black;
+	background:rgb(19,13,66);
+	color:white;
+	font-size:20px;
+	cursor:pointer;
+}
+#calc,#pnt,#rt,#lt{width:83px;border-radius:9px;
+color:black;
+display:inline-block;
+	font-size:22px;
+	cursor:pointer;
+height:30px;
+font-size:27px;
+padding:7px;
+color:white;
+background:rgb(19,78,135);
+}
+#pnt,#rt,#lt{
+	width:34px;
+	background:rgb(19,13,66);
+}
+#c{
+	background:tomato;
+}
+#c:hover{
+	background:grey;
+}
+#calc:hover{
+	background:grey;
+}
+#pnt:hover{
+	background:grey;
+}
+#rt:hover{
+	background:grey;
+}
+#lt:hover{
+	background:grey;
+}
+th:hover{
+	background:grey;
+	color:black;
+
+}
+#cen{
+
+}
+table{
+	//border:2px solid black;
+	background:black;
+	border-spacing:9px;
+}
+#cc{
+	background:black;
+	width:300px;
+	height:370px;
+}
+#oper{
+	background:navy;
+	}
+	#oper:hover{
+		background:grey;
+	}
+#count{
+	color:yellow;
+	//font-size:19px;
+}
+span{
+	font-size:14px;
+}
+
+#stats{
+
+	position:absolute;
+	left:0px;
+	top:87%;
+	background:yellow;
+	width:80px;
+	text-align:center;
+   // z-index:-1;
+	height:40px;
+	font-size:30px;
+	transition-duration:1s;
+   // word-wrap:break-word;
+	cursor:pointer;
+	//border-radius:10px;
+	border-top-right-radius:20px;
+   border-bottom-right-radius:20px;
+   padding:8px;
+}
+span{font-size:33px;
+padding:10px;
+border-radius:20px;
+
+}
+</style>
+</head>
+<body>
+	<a style="color:white;" href="contents.html">back</a>
+<br>
+<center id="cen">
+    <input type="text" disabled id="scr1"></input><br>
+    <input type="text" disabled id="scr2"></input>
+    <div id="cc">
+        <table>
+            <tr>
+                <th onclick="add()" id="oper">+</th>&nbsp;
+                <th onclick="sub()" id="oper">-</th>
+                <th onclick="divi()" id="oper">/</th>
+                <th onclick="mult()" id="oper">X</th>
+            </tr>
+            <tr>
+                <th onclick="one()">1</th>
+                <th onclick="two()">2</th>
+                <th onclick="three()">3</th>
+                <th onclick="four()">4</th>
+            </tr>
+            <tr>
+                <th onclick="five()">5</th>
+                <th onclick="six()">6</th>
+                <th onclick="svn()">7</th>
+                <th onclick="et()">8</th>
+            </tr>
+            <tr>
+                <th onclick="nin()">9</th>
+                <th onclick="zero()">0</th>
+                <th onclick="del()">del</th>
+                <th id="c" onclick="clr()">C</th>
+            </tr>
+
+
+        </table>
+        <div id="calc"  onclick="calc()">=</div>
+        <div id="pnt"  onclick="pnt()">.</div>
+        <div id="rt"  onclick="rt()">(</div>
+        <div id="lt"  onclick="lt()">)</div>
+
+        <div>
+</center>
+
+
+</body>
+<script>
+var inpt=document.getElementById("scr2");
+var inpt2=document.getElementById("scr1");
+function add()
+{
+	inpt.value+="+";
+}
+function sub()
+{
+	inpt.value+="-";
+}
+function divi()
+{
+	inpt.value+="/";
+}
+function mult()
+{
+	inpt.value+="*";
+}
+function one()
+{
+	inpt.value+="1";
+}
+function two()
+{
+	inpt.value+="2";
+}
+function three()
+{
+	inpt.value+="3";
+}
+function four()
+{
+	inpt.value+="4";
+}
+function five()
+{
+	inpt.value+="5";
+}
+function six()
+{
+	inpt.value+="6";
+}
+function svn()
+{
+	inpt.value+="7";
+}
+function et()
+{
+	inpt.value+="8";
+}
+function nin()
+{
+	inpt.value+="9";
+}
+function zero()
+{
+	inpt.value+="0";
+}
+function calc()
+{
+    inpt2.value=((inpt.value));
+	inpt.value=eval((inpt2.value)).toFixed(4);
+
+
+}
+function clr()
+{
+	inpt.value="";
+}
+function del()
+{
+    var i=document.getElementById("scr2").value;
+	document.getElementById("scr2").value=i.substring(0,i.length-1)  ;
+	//inpt.value="";
+}
+
+function pnt()
+{
+	inpt.value+=".";
+}
+function rt()
+{
+	inpt.value+="(";
+}
+function lt()
+{
+	inpt.value+=")";
+}
+var num=0;
+//localStorage.clear();
+var neva=localStorage.getItem("j");
+localStorage.setItem("j",++neva);
+var nevar=localStorage.getItem("j");
+
+
+
+</script>
+
+</html>
+

@@ -1,0 +1,245 @@
+<html>
+    <title>
+        Vibrant Pages
+    </title>
+    <head>
+       <style>
+
+body{
+    background:rgb(182, 186, 224);
+    margin:0;
+    overflow: hidden;
+}
+
+#topHeader
+{
+    background: yellow; 
+    width: 100%;
+    margin: 0px;
+    #border-radius: 10px;
+    padding:10px;
+    font-size: 40px;
+    /* #position: absolute;
+    #right:20%; */
+}
+
+#verticalnav
+{
+   width: 130px;
+   background:grey;
+   height:300%;
+   position: absolute;
+   top:12%;
+   left: -110px;
+   transition-duration: .2s;
+   transition-timing-function: ease-out;
+   border-right:2px solid black;
+   color:yellow ;
+   
+}
+#pull
+{
+    background:rgb(128, 128, 128);
+    position: relative;
+    right:-130px;
+    top:100px;
+    width: 50px;
+    text-align: center;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    color:yellow;
+    cursor:pointer;
+    font-weight:bolder;
+    font-size:x-large;
+    border-right:2px solid black;
+    border-top:2px solid black;
+    border-bottom:2px solid  black;
+
+}
+
+#menu
+{  position: relative;
+    top:10%;
+    margin:20px;
+}
+
+h1 {
+    font-weight: 100;
+    margin: 0.1em 1;
+  }
+  h1 { font-size: 1.4em; }
+
+
+#subs{
+    position: fixed;
+    bottom:0%;
+   
+    font-size: 18px;;
+   background: red;
+   padding:5px;
+   border-radius: 10px;
+   color:white;
+   cursor:pointer;
+}
+
+       </style>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    </head>
+    
+    <body>
+        <center><h1 id="topHeader">Vibrant Pages</h1><br>
+            <h1>Think
+                <span
+                class="txt-rotate"
+                data-period="2000"
+                data-rotate='[ "brilliant.", "simple.", "innovative.", "pretty.", "fun!" ]'></span>
+            </h1></center>
+        <div id="verticalnav">
+            <div id="pull">
+               >>>
+            </div>
+
+             <div id='menu'>
+                 <h1>Home</h1>
+                 <h1>Projects</h1>
+                 
+                 <h1>one</h1>
+                 <h1>one</h1>
+                 
+             </div>
+            
+        </div>
+  
+        <span id='subs'>
+          Subscribe by email
+         
+         </span>
+     
+    </body>
+
+     
+<script>
+    var verticalnav=document.getElementById('verticalnav');
+
+var pull=document.getElementById('pull');
+pull.addEventListener('click',pullnavbar);
+
+var verticalnavFlag=true;
+function pullnavbar()
+{
+    if(verticalnavFlag)
+     {  
+        verticalnav.style.left=0+"px";
+        verticalnavFlag=false;
+        pull.textContent="<<<";
+     } 
+
+     else {
+            verticalnavFlag=true;
+            verticalnav.style.left=-110+"px";
+            pull.textContent=">>>";
+          }  
+
+}
+
+
+var footer=document.getElementById('subs');
+footer.style.left=(window.innerWidth/2)-(footer.getBoundingClientRect().width/2)+"px";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var TxtRotate = function(el, toRotate, period) {
+    this.toRotate = toRotate;
+    this.el = el;
+    this.loopNum = 0;
+    this.period = parseInt(period, 10) || 2000;
+    this.txt = '';
+    this.tick();
+    this.isDeleting = false;
+  };
+  
+  TxtRotate.prototype.tick = function() {
+    var i = this.loopNum % this.toRotate.length;
+    var fullTxt = this.toRotate[i];
+  
+    if (this.isDeleting) {
+      this.txt = fullTxt.substring(0, this.txt.length - 1);
+    } else {
+      this.txt = fullTxt.substring(0, this.txt.length + 1);
+    }
+  
+    this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+  
+    var that = this;
+    var delta = 300 - Math.random() * 100;
+  
+    if (this.isDeleting) { delta /= 2; }
+  
+    if (!this.isDeleting && this.txt === fullTxt) {
+      delta = this.period;
+      this.isDeleting = true;
+    } else if (this.isDeleting && this.txt === '') {
+      this.isDeleting = false;
+      this.loopNum++;
+      delta = 500;
+    }
+  
+    setTimeout(function() {
+      that.tick();
+    }, delta);
+  };
+  
+  window.onload = function() {
+    var elements = document.getElementsByClassName('txt-rotate');
+    for (var i=0; i<elements.length; i++) {
+      var toRotate = elements[i].getAttribute('data-rotate');
+      var period = elements[i].getAttribute('data-period');
+      if (toRotate) {
+        new TxtRotate(elements[i], JSON.parse(toRotate), period);
+      }
+    }
+    // INJECT CSS
+    var css = document.createElement("style");
+    css.type = "text/css";
+    css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
+    document.body.appendChild(css);
+  };
+
+
+</script>
+
+</html>

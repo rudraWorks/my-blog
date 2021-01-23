@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    <title>Page Title</title>
+</head>
+<body>
+    <a style="color:white;" href='contents.html'>back</a>
+    <div id="all">
+    <div id="head">PROJECTILE MOTION</div><img id="img" src="https://www.dropbox.com/s/e93h26o0bdbg1xc/com-3a.gif?raw=1" alt="img">
+    <br><br>
+    <center> <strong>About Projectile Motion
+    </strong> </center>
+    <div id="first">
+        Projectile motion is a form of motion experienced by an object or particle (a projectile) that is projected near the Earth's surface and moves along a curved path under the action of gravity only (in particular, the effects of air resistance are assumed to be negligible). This curved path was shown by Galileo to be a parabola, but may also be a line in the special case when it is thrown directly upwards. The study of such motions is called ballistics, and such a trajectory is a ballistic trajectory. The only force of significance that acts on the object is gravity, which acts downward, thus imparting to the object a downward acceleration. Because of the object's inertia, no external horizontal force is needed to maintain the horizontal velocity component of the object. Taking other forces into account, such as frictionfrom aerodynamic drag or internal propulsion such as in a rocket, requires additional analysis. A ballistic missile is a missile only guided during the relatively brief initial powered phase of flight, and whose subsequent course is governed by the laws of classical mechanics.
+
+        Ballistics (gr. βάλλειν ('ba'llein'), "to throw") is the science of mechanics that deals with the flight, behavior, and effects of projectiles, especially bullets, unguided bombs, rockets, or the like; the science or art of designing and accelerating projectiles so as to achieve a desired performance.
+    </div>
+    <center><div id="frml">
+        <ol>
+            <li>Range<br>
+                R=(u^2/g)*sin(2theta)</li>
+            <br>  <li>Height<br>H=(u^2/2g)*(sin(theta))^2
+        </li><br>
+            <li>Time of Flight<br> T=(2u/g)*sin(theta)
+            </li>
+        </ol>
+
+
+    </div>
+        <br><br>
+        Earth:
+        <input value="0"type="radio" name="g"id="rd1" >&nbsp;&nbsp;
+
+
+        Mars:
+        <input type="radio" name="g"value="0"
+               id="rd2" >&nbsp;&nbsp;&nbsp;
+
+        Moon:
+        <input type="radio" id="rd3"value="0" name="g">&nbsp;&nbsp;&nbsp;
+    </center>
+    <br>
+    <div id="calc">
+        Enter initial velocity(m/s):
+        <input type="number" id="inpt2"><br>
+        Enter angle of projection(deg): <input type="number" id="inpt1"><br>
+        <br>
+        <center> <button id="btn" onclick="f()">Calculate</button><br><br>
+        </center>
+        Range:
+        <input type="text" id="inpt3" disabled="true"><br>Time of Flight:
+        <input type="text" id="inpt4" disabled="true"><br>
+        Maximum Height:
+        <input type="text" id="inpt5" disabled="true"><br>
+        Acceleration due to gravity:
+        <input type="text" id="inpt6" disabled="true">
+
+    </div>
+    <br><center id="last">©rudra pratap physics 2020</center>
+
+
+
+
+</Div>
+
+</body>
+<script>
+       function f(){
+      var g,range,height,u,theta,rd1,rd2,rd3;
+      theta=document.getElementById("inpt1").value;
+       if(theta>90&&theta<180)
+       theta-=90;
+
+
+      if(theta>=180){
+       theta=90;
+       alert("Improper angle! Default value 90deg is taken");
+      }
+
+
+
+
+theta*=3.14/180;
+
+
+u=document.getElementById("inpt2").value;
+
+ rd1=document.getElementById("rd1");
+ rd2=document.getElementById("rd2");
+ rd3=document.getElementById("rd3");
+
+  if(rd1.checked||rd2.checked||rd3.checked)
+        {
+       if(rd1.checked==true){g=9.81;}
+       if(rd2.checked==true){g=3.72; }
+       if(rd3.checked==true){g=1.625;}
+        }
+  else {
+alert("Default value of g is used!");   g=9.81;}
+
+     range=((u*u)/g)*Math.sin(2*theta);
+
+     height=((u*u)/(2*g))*Math.sin(theta)*Math.sin(theta);
+     time=((2*u)/g)*Math.sin(theta);
+     inpt3.value=range.toFixed(3)+" m";
+     inpt5.value=height.toFixed(3)+" m";
+     inpt4.value=time.toFixed(2)+" sec";
+      inpt6.value=g+" m/s*s";
+
+       }
+
+    </script>
+<Style>
+body {
+    background:skyblue;
+    padding-top:0px;
+    padding-left:2px;
+    padding-right:2px;
+
+    background: repeating-linear-gradient(0deg, rgba(255,205,255,0.16) 0px, rgba(255,255,255,0.16) 1px,transparent 1px, transparent 26px),repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px,transparent 1px, transparent 26px),linear-gradient(90deg, hsl(219,97%,17%),hsl(219,97%,17%));
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+
+
+
+}
+#head{
+    text-align:center ;
+    font-size:26.0px;
+    font-family:"courier new";
+    border:1px solid black;
+    color:black;
+    font-weight:bold;
+    background:orange;
+}
+scrollbar{
+    width:10px;
+}
+#first{
+
+    height:230px;
+    background:silver;
+    border:1px solid black;
+   overflow:scroll;
+    padding:4px;
+    color:black;
+   text-align:center ;
+    font-size:12.0px;
+    //font-weight:bold;
+     border:3px solid red;
+      padding:5px;
+
+  font-family:"decco";
+font-size:13px;
+
+
+
+
+}
+#img{height:70px;
+width:100%;
+ background:pink;
+    border:1px solid black;
+}
+
+#frml{
+    color:yellow;
+    width:300px;
+    font-weight:bold;
+    font-family:"fantasy";
+    font-size:13px;
+}
+
+#inpt1,#inpt2,#inpt3,#inpt4,#inpt5,#inpt6{
+    width:80px;
+    position:absolute ;
+    left:230px;
+    text-align:center;
+    border-radius:4px;
+    background:#061639;
+    border:1px solid white;
+    color:yellow;
+}
+
+#calc{
+    font-size:15px;
+}
+#btn{
+    border-radius:4px;
+    background:#061639;
+    border:1px solid white;
+    width:140px;
+    height:40px;
+    color:yellow;
+}
+
+#btn:active{
+background:blue;
+
+}
+#last{
+    font-size:12px;
+
+}
+#all{
+    background: repeating-linear-gradient(0deg, rgba(255,205,255,0.16) 0px, rgba(255,255,255,0.16) 1px,transparent 1px, transparent 26px),repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px,transparent 1px, transparent 26px),linear-gradient(90deg, hsl(219,97%,17%),hsl(219,97%,17%));
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+
+
+    }
+
+
+</Style>
+</html>

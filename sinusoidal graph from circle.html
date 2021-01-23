@@ -1,0 +1,71 @@
+<html><body>
+  <a href="contents.html">back</a>
+  <br><br>
+  <fieldset>
+    <legend>DOUBLE SIN GRAPH SIMULATION</legend>
+    <canvas id="can"></canvas>
+  </fieldset>
+
+</body>
+</html>
+<style>
+#can{background:grey;}
+body{margin:0;}
+</style>
+<script>
+var can=document.getElementById("can");
+var ctx=can.getContext('2d');
+can.height=innerHeight/1;
+can.width=innerWidth;
+var angle=1,radius=100;
+var arr=[],arr2=[];
+ 
+function animate()
+{
+  requestAnimationFrame(animate);
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  var x=radius*Math.cos(angle);
+  var y=radius*Math.sin(angle);
+  ctx.beginPath();
+  ctx.arc(200,200,radius,0,2*Math.PI);
+  ctx.stroke();
+  ctx.beginPath();
+  angle-=.06;
+  ctx.arc(x+200,y+200,5,0,2*Math.PI);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.arc(400,y+200,4,0,2*Math.PI);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(x+200,y+200);
+  ctx.lineTo(400,y+200);
+  ctx.stroke();
+  
+  ctx.beginPath();
+  ctx.moveTo(x+200,y+200);
+  ctx.lineTo(x+200,400);
+  ctx.stroke();
+  
+  arr.unshift(y+200);
+  arr2.unshift(x+200);
+  for(var i=0;i<arr.length;++i)
+  {
+    ctx.beginPath();
+	ctx.arc(400+i,arr[i],.9,0,2*Math.PI);
+	ctx.stroke();
+	
+	ctx.beginPath();
+	ctx.arc(arr2[i],400+i,.9,0,2*Math.PI);
+	ctx.stroke();
+  }
+  
+  if(arr.length>700)
+  {arr.pop();arr2.pop();}
+  //console.log("j");
+
+}
+
+animate();
+</script>
