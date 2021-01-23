@@ -1,0 +1,223 @@
+
+<!--  rudra pratap singh creation -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    <title>Page Title</title>
+</head>
+<body >
+
+<div id="text"> </div>
+<div id="text2"></div>
+<div id="text3"></div>
+<div id="text4"></div>
+<button id="btn" onclick="alert('Click on the red circles.You will be awarded 1 point for correct click.You have to score 15 points.')">How to play</button><button id="v" onclick="reload()">replay</button>
+<!-- <div id="text4">
+Easy  <input type="radio" onchange="radio()" name="rad" id="rd1" > &nbsp;Medium
+     <input type="radio"onchange="radio()" name="rad" id="rd2" checked="true" >
+     &nbsp;Hard
+    <input type="radio"onchange="radio()" name="rad" id="rd3" >
+
+ </div><button id="btn" onclick="main()">play</button>-->
+<div id="back" onclick="cnt()">  <div id="g" onclick="game()" ></div>
+    <br><br>   <br><br><br><br><br><br><br> <br><br><br> <br><br> <br><br><br><br> all rights reserved<br>
+    ©rudra pratap games 2020
+</div>
+
+</body>
+<script>
+var m=new Audio();
+m.src="file:///android_asset/musicc.mp3";
+
+m.loop=true;
+
+    var num=0,cou=0,spd,check=0;
+ /* function radio(){
+   var rad1=document.getElementById("rd1");
+   var rad2=document.getElementById("rd2");
+  var rad3=document.getElementById("rd3");
+
+   if(rad1.checked==true)spd=1000;
+   if(rad2.checked==true)spd=800;
+   if(rad3.checked==true)spd=600;
+   alert(spd);
+   return spd;
+
+  // var b=setInterval(fun,spd);
+  }
+      */
+
+       var b=setInterval(fun,600);
+      /* if(check!=0)clearInterval(b);
+       ++check;
+       /*document.getElementById("btn").disabled=true;*/
+
+        function cnt()
+        {
+            ++cou;
+        }
+
+
+        function fun()
+        {
+        m.play();
+        // alert(spd);
+      //  var sl=screen.width;
+     //   var hi=screen.height;
+        var ran1=Math.random()*300;
+        var ran2=(Math.random()*380);
+            var wi=document.getElementById("g");
+                        var lvl=document.getElementById("text3");
+
+                 var gm=document.getElementById("text");
+            gm.innerHTML="Score: "+num;
+
+  var back=document.getElementById("back");
+
+            var error=(cou-num);
+      var gmm=document.getElementById("text2");
+            gmm.innerHTML="Incorrect: "+error;
+
+     lvl.innerHTML="Level 1";
+           if(num>4){
+              lvl.innerHTML="Level 2";  back.style.backgroundColor ="lightgreen";
+               wi.style.width="37px";
+               wi.style.height="37px";
+               if(num>8)
+            {
+               wi.style.height="30px";
+               wi.style.width="30px";
+             lvl.innerHTML="Level 3";  back.style.backgroundColor="pink";
+              if(num>12)
+            {   lvl.innerHTML="Level 4";
+               wi.style.height="26px";
+               wi.style.width="26px";
+                      back.style.backgroundColor="grey" ;
+            }
+          }
+       }
+
+
+
+
+
+
+
+            wi.style.left=ran1+"px";
+            wi.style.top=ran2+"px";
+           wi.style.borderRadius="50%"; wi.style.backgroundColor="red";
+     wi.style.transform="scale(1)";
+     if(num==15){
+     clearInterval(b);
+    // wi.disabled=true;
+     document.getElementById("text4").innerHTML="GAME OVER";
+
+     document.getElementById("text4").classList.add("ani"); wi.style.backgroundColor="transparent";
+        }
+      }
+        function game(){
+            ++num;
+            const AudioContext = window.AudioContext || window.webkitAudioContext; const audio = new AudioContext();
+(new SoundPlayer(audio)).play(440, 0.5, "square").setFrequency(880, 0.1).stop(0.2);
+
+          // var  gm.classList.toggle("anim");
+wii=document.getElementById("g");
+wii.style.backgroundColor="blue";
+wii.style.borderRadius="0px";
+navigator.vibrate(74);
+ wii.style.transform="scale(3)";
+
+        }
+       function reload(){
+location.reload();
+}
+function SoundPlayer(audioContext, filterNode) { this.audioCtx = audioContext; this.gainNode = this.audioCtx.createGain(); if(filterNode) {  this.gainNode.connect(filterNode); }
+         else { this.gainNode.connect(this.audioCtx.destination); }
+         this.oscillator = null; } SoundPlayer.prototype.setFrequency = function(val, when) { if(when) { this.oscillator.frequency.setValueAtTime(val,
+         this.audioCtx.currentTime + when); }
+         else { this.oscillator.frequency.setValueAtTime(val, this.audioCtx.currentTime); }
+          return this; }; SoundPlayer.prototype.setVolume = function(val, when) { if(when) { this.gainNode.gain.exponentialRampToValueAtTime(val, this.audioCtx.currentTime + when); } else { this.gainNode.gain.setValueAtTime(val, this.audioCtx.currentTime); } return this; }; SoundPlayer.prototype.setWaveType =
+          function(waveType) { this.oscillator.type = waveType; return this; }; SoundPlayer.prototype.play = function(freq, vol, wave, when) { this.oscillator = this.audioCtx.createOscillator(); this.oscillator.connect(this.gainNode); this.setFrequency(freq);
+          if(wave) { this.setWaveType(wave); } this.setVolume(1/1000);
+           if(when) { this.setVolume(1/1000, when - 0.02); this.oscillator.start(when - 0.02); this.setVolume(vol, when); }
+            else { this.oscillator.start(); this.setVolume(vol, 0.02); }
+            return this; }; SoundPlayer.prototype.stop = function(when) { if(when) { this.gainNode.gain.setTargetAtTime(1/1000, this.audioCtx.currentTime + when - 0.05, 0.02); this.oscillator.stop(this.audioCtx.currentTime + when); }
+            else { this.gainNode.gain.setTargetAtTime(1/1000, this.audioCtx.currentTime, 0.02); this.oscillator.stop(this.audioCtx.currentTime + 0.05); }
+            return this; };
+
+    </script>
+<style>
+body {
+    overflow:hidden;
+  background:#061639;
+}
+#g{
+    width:47px;
+    height:47px;
+    position:relative;
+    background:red;
+    /*background-image:url("https://www.dropbox.com/s/xhu14kbww986ujf/bugs-bunny-face-clip-art-png-clip-art.png?raw=1");*/
+    background-size:cover;
+}
+.anim{
+    background:blue;
+}
+.anim:hover{
+    background:blue;
+}
+#text,#text2{
+    text-align:center ;
+    height:40px;
+    font-size:30px;
+    background:orange;
+    font-weight:bold;
+}
+#back{
+   position:;
+    background:skyblue;
+   // width:300px;
+    height:400px;
+  font-size:13px;
+   overflow:hidden ;
+    text-align:center;
+}
+
+#text3{
+    text-align:center;
+    height:30px;
+    font-size:15.0px;
+    background:crimson;
+    font-weight:bold;
+    color:navy;
+}
+#text3,#text4{
+    display:inline;
+
+}
+#text4{
+    text-align:center;
+   //background:purple;
+    color:navy;
+    height:30px;
+    width:200px;
+    font-weight:bold;
+
+}
+.ani{
+    animation:anima .41s infinite linear ;
+}
+
+@keyframes anima{
+    to{
+        background:red;
+        color:white;
+    }
+}
+</style>
+
+</html>
