@@ -1,0 +1,256 @@
+<html>
+   <title>
+       Matrix Multiplication
+   </title>
+   <head>
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+       <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+       <style>
+           body{background: rgb(16, 202, 202);
+           margin:0;
+            user-select: none;
+           }
+           .input_of_script,.input_of_script2{width: 30px;
+            font-size:12px;
+            font-weight: 700;
+           }
+           input[type='number']{
+               -moz-appearance:textfield;
+           }
+           input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+               -webkit-appearance: none;
+           }
+           #innertable{border:2px solid red;
+            border-collapse: collapse;
+            padding:5px;
+            background: white;
+            }
+           #innerrow{
+               border:2px solid blue;
+               border-collapse: collapse;
+           }
+           #innercell{
+               border:2px solid blue;
+               border-collapse: collapse;
+               padding:5px;
+           }
+           fieldset{
+               background: rgb(71, 223, 51);
+               border:4px double black;
+           }
+           legend{
+               background: rgb(10, 45, 143);
+               color:white;
+               padding:5px;
+               border-radius:5px;
+           }
+           #resultantMatrix{
+               background: orange;
+           }
+           button{
+               border-radius:5px;
+           }
+           #r1,#r2,#c1,#c2{
+               width: 90px;
+           }
+       </style>
+   </head>
+  <center><body>
+
+    
+        <h1>Matrix Multiplication</h1>
+        <!-- <div>Enter rows and columns of the first matrix: <input type="number"><input type="number"></div> -->
+    <fieldset>
+     <table> 
+         <tr>
+           
+             <legend>First Matrix</legend>
+             <th>Rows</th>
+             <th>Columns</th>
+        
+            
+         </tr>
+         <tr>
+             <td><input id="r1" type="number"></td>
+             <td><input id="c1" type="number"></td>
+         </tr>
+     </table>
+     <button id="matclick1"> Matrix Layout</button>
+    <div id="showMat1"></div>
+    
+    </fieldset>
+<br>
+     <fieldset>
+        <table> 
+            <tr>
+              
+                <legend> Second Matrix</legend>
+                <th>Rows</th>
+                <th>Columns</th>
+           
+               
+            </tr>
+            <tr>
+                <td><input id="r2" disabled></td>
+                <td><input id="c2" type="number" ></td>
+            </tr>
+        </table>
+    
+        <button id="matclick2">Matrix Layout</button>
+        <div id="showMat2"></div>
+        
+    </fieldset>
+
+     <br>
+    <button id='calc'>Calculate</button><br><br>
+    <fieldset id="resultantMatrix">
+        <legend>Resultant Matrix</legend>
+        <div id="res"></div>
+    </fieldset>
+    
+
+  </body>
+  <br><br>
+  <a href="https:/rudraworks.github.io/my-blog/blog.html">copyleft rudra</a>
+</center>
+  <script>
+     
+   var r1=document.getElementById("r1");
+   var r2=document.getElementById("r2");
+   var c1=document.getElementById("c1");
+   var c2=document.getElementById("c2");
+   var showMat1=document.getElementById("showMat1");
+   var click1=document.getElementById("matclick1");
+   var showMat2=document.getElementById("showMat2");
+   var click2=document.getElementById("matclick2");
+
+   click1.addEventListener("click",show1);
+   click2.addEventListener("click",show2);
+   function show1()
+   {   
+       if(r1.value>15)
+        alert("Number of rows is very large! Consider entering lower number of rows.");
+
+       else if(c1.value>15)
+        alert("Number of columns is very large! Consider entering lower number of columns.") 
+
+      else{
+       showMat1.innerHTML="<br>";
+       r2.value=c1.value;
+       for(var i=0;i<parseInt(r1.value);++i)
+       {
+           for(var j=0;j<parseInt(c1.value);++j)
+           {
+               showMat1.innerHTML+="<input class='input_of_script' type='number' >"+" ";
+               
+           }
+           showMat1.innerHTML+="<br>";
+       }
+       show2();
+      }
+   }
+   function show2()
+   {
+    if(r2.value>15)
+        alert("Number of rows is very large! Consider entering lower number of rows.");
+
+       else if(c2.value>15)
+        alert("Number of columns is very large! Consider entering lower number of columns.") 
+
+      else{
+       showMat2.innerHTML="<br>";
+       r2.value=c1.value;
+       for(var i=0;i<parseInt(r2.value);++i)
+       {
+           for(var j=0;j<parseInt(c2.value);++j)
+           {
+               showMat2.innerHTML+="<input class='input_of_script2' type='number' >"+" ";
+               
+           }
+           showMat2.innerHTML+="<br>";
+       }
+      }
+   }
+
+     var resButton=document.getElementById('calc');
+     var res=document.getElementById('res');
+     resButton.addEventListener('click',calculate);
+
+   
+     function calculate()
+     {  res.textContent="";
+        var values_of_mat1=document.getElementsByClassName('input_of_script');
+        var mat1= new Array(r1.value);
+        
+        var values_of_mat2=document.getElementsByClassName('input_of_script2');
+        var mat2= new Array(r2.value);
+        
+        // var mat=[3,[2,3,4]];
+        // document.write(mat[1][1]);
+        for(var i=0;i<parseInt(r1.value);++i)
+           mat1[i]=[];
+
+           for(var i=0;i<parseInt(r2.value);++i)
+           mat2[i]=[];
+
+         var h=0;
+        for(var i=0;i<parseInt(mat1.length);++i)
+        {
+            for( var j=0;j<parseInt(c1.value);++j)
+             mat1[i][j]=values_of_mat1[h++].value;
+       
+        }
+
+        var h=0;
+        for(var i=0;i<parseInt(mat2.length);++i)
+        {
+            for(  var j=0;j<parseInt(c2.value);++j)
+             mat2[i][j]=values_of_mat2[h++].value;
+       
+        }
+       
+     
+     var resultant_matrix=new Array(r1.length);
+     for(var i=0;i<r1.value;++i)
+       resultant_matrix[i]=[];
+
+       for(var i=0;i<r1.value;++i)
+         {
+             var sum=0;
+
+                for(var k=0;k<c2.value;++k)
+                {
+                    for(var m=0;m<c1.value;++m)
+                    {
+                        sum=sum+mat1[i][m]*mat2[m][k];
+                    }
+
+                    resultant_matrix[i][k]=sum;
+                    sum=0;
+                }
+
+         }
+  res.innerHTML="";
+  res.innerHTML="<table  id='innertable'>";
+    //  for(var i=0;i<c2.value;++i)
+    //  res.innerHTML+="<th></th>";
+    var innertable=document.getElementById('innertable');
+         for(var i=0;i<parseInt(r1.value);++i)
+        {
+            var tr=document.createElement('tr');
+            innertable.appendChild(tr);
+            tr.setAttribute('id','innerrow');
+
+            for(var j=0;j<parseInt(c2.value);++j)
+            {              
+              tr.innerHTML+="<th id='innercell'>"+resultant_matrix[i][j]+"</th>";
+            }
+          
+        }
+        res.innerHTML+="</table>";
+     }
+
+  </script>
+
+
+</html>
