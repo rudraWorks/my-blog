@@ -1,0 +1,67 @@
+<html>
+     <title>Fisher-Yates Shuffling Algorithm</title>
+     <head>
+        <style>
+            body{margin:0;
+             padding:10px;
+            }
+            input{
+                width: 60%;
+                height: 40px;
+                font-size: 30px;
+                text-align: center;
+                background: yellow;
+                color: black;
+            } 
+            button{border-radius: 20px;outline: none;}
+        </style>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+     </head>
+  <body>
+      <center>
+          <h1>Fisher-Yates Shuffling Algorithm</h1>
+          <br>
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">wikipedia</a>
+          <br><br>
+          <input type='text' disabled value="1 2 3 4 5 6 73">
+          <br><br>
+          <button>Shuffle</button>
+          <br><br>
+          <input disabled>
+          <br><br><br><br><br><br><br><br>
+          <a target="_blank" href="https://rudraworks.github.io/my-blog/blog.html">copyleft rudra</a>
+      </center>
+  </body>
+  <script>
+  var box=document.getElementsByTagName('input')[0];
+  box.value=Math.floor(Math.random().toFixed(3)*100)+" "+Math.floor(Math.random().toFixed(3)*100)+" "+Math.floor(Math.random().toFixed(3)*100)+" "+Math.floor(Math.random().toFixed(3)*100)+" "+Math.floor(Math.random().toFixed(3)*100);
+
+  var resBox=document.getElementsByTagName('input')[1];
+  stringList=box.value.toString();
+  var numlist=stringList.split(' ');
+
+
+
+
+  var button=document.getElementsByTagName('button')[0];
+  button.addEventListener('click',randomize);
+  function randomize(){
+    
+ for(var i=(numlist.length-1);i>0;i--)
+ {  
+     //var j=Math.floor((i+1)*Math.random());
+     var j=Math.floor(1000*Math.random())%(i+1);
+     var temp=numlist[i];
+     numlist[i]=numlist[j];
+     numlist[j]=temp;
+     
+
+ }
+  resBox.value=numlist;
+ //resBox.value=numlist;
+  }
+
+
+  </script>
+</html>
