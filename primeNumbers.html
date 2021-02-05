@@ -1,0 +1,95 @@
+<html>
+     <title>Prime Numbers Finder</title>
+     <head>
+        <style>
+            body{margin:0;
+             padding:10px;
+             
+             background-repeat: no-repeat;}
+            input{
+                width: 60%;
+                height: 40px;
+                font-size: 24px;
+                text-align: center;
+            } 
+           #result{
+               border:2px solid red;
+               width:90%;
+               height: 35%;
+              overflow: scroll;
+              padding:10px;
+              font-size: 15px;
+           } 
+           button{
+               width: 7em;
+               height: 2em;
+               user-select: none;
+               border-radius: 20px;
+               outline:none;
+           }
+        </style>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+     </head>
+  <body>
+      <center>
+          <h1>Prime Numbers Finder</h1>
+          <br>
+          <div><h3>Enter the range (seperated by comma)</h3><input id="numRange"  ></div>
+          <br>
+          <button onclick="calculate()">Find</button>
+          <br>
+          <br>Total<div id="total"></div>
+          <br>
+          <div id='result'>
+
+          </div>
+          
+          <br><a href="https:/rudraworks.github.io/my-blog/blog.html">copyleft rudra</a>
+        </center>
+  </body>
+  <script>
+     
+      function calculate(){
+        var numrange=document.getElementById('numRange').value.split(',');
+      var result=document.getElementById('result');
+      var lower=parseInt(numrange[0]);
+      var upper=parseInt(numrange[1]);
+      result.textContent="";
+
+      var cnt=0;
+      if(lower<0 || upper<0)
+      alert('Invalid Input!!');
+      else if(numrange.length>2)
+      alert("Invalid Input!!");
+      else{
+        for(var i=lower;i<upper;++i)
+        {  
+            var flag=0;
+          
+            for(var j=2;j<=i/2;++j)
+            {
+                if( i%j==0)
+                {
+                    flag=1;
+                    break;
+                }
+            }
+            if(!flag)
+            {
+                
+                if(parseInt(i) != 0 && parseInt(i) != 1)
+                {
+                    ++cnt;
+                    result.textContent+=" "+i;
+                }
+                
+            }
+
+        }
+      }
+      document.getElementById('total').textContent=cnt;
+    }
+
+  </script>
+</html>
