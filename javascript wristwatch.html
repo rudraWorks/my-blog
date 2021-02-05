@@ -1,0 +1,366 @@
+<!-- ©rudra pratap created this project-->
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+        <title>Page Title</title>
+    </head>
+    <body>
+    
+      <div id="out"> <div id="titan">TITAN</div>
+              <center><div id="one">S</div></center>
+                  
+              <center><div id="two">M</div></center>
+              
+             <center><div id="three">H</div></center>    
+             <center><div id="dot">.</div></center><div id="gol"></div>
+                 
+             <div id="cont">
+             <center><div id="line"></div></center>
+             
+             <center><div id="line2"></div>
+             <br><br><br><br><br><br>
+             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+             <a href="https://rudraworks.github.io/my-blog/blog.html">copyleft rudra</a>
+            <div id="digi">
+            <p id="i"></p>:
+              <p id="h"></p>:
+              <p id="g"></p></div>
+              <center><div id="line3"></div></center>
+              <div id="fita"></div>
+              <div id="sui"></div>
+             <center><div id="line4"></div></center>
+             <center><div id="line5"></div></center>
+             <center><div id="line6"></div></center></div></div>
+             
+            
+             
+              
+              
+              
+              
+    </body>
+    <script>
+    
+    var i=0;
+    var date=new Date();
+   
+   var sec=date.getSeconds();
+   var min=date.getMinutes();
+   var hrs=date.getHours();
+   
+   
+        if(hrs>12)
+        hrs=hrs-12;
+        //hrs=hrs+(min/12);
+        //alert(hrs);
+        
+        var b=document.getElementById("one");
+c=document.getElementById("two");
+d=document.getElementById("three");
+       i=sec*6;
+       j=min*6;
+       k=(hrs*30)+(min/2);
+       
+   //  alert(k);
+       d.style.transform="rotate"+"("+(k)+"deg)"; c.style.transform="rotate"+"("+j+"deg)";
+      b.style.transform="rotate"+"("+i+"deg)";
+     var n=setInterval(fun,1000);
+      
+      function fun() { 
+      i+=6;
+      
+      var dat=new Date();
+    var se=dat.getSeconds();
+    var mi=dat.getMinutes();
+   var hr=dat.getHours();
+    document.getElementById("g").innerHTML=se;
+   document.getElementById("h").innerHTML=mi;
+   
+  if(hr>12)hr-=12; document.getElementById("i").innerHTML=(hr);
+    
+     b.style.transform="rotate"+"("+i+"deg)";
+
+{
+   j+=0.1; c.style.transform="rotate"+"("+j+"deg)";
+} 
+
+k+=(0.1/12);
+//alert(k);
+      d.style.transform="rotate"+"("+(k)+"deg)";
+}
+   
+    </script>
+<style>
+body {
+    background:skyblue;
+   // margin-top:0px;
+   user-select: none;
+}
+
+#titan{
+    
+    color:white;
+    font-size:14px;
+    position:absolute;
+    left:37%;
+    top:14%;
+    width:20px;
+    z-index:+1;
+    font-weight:bold;
+    
+    
+}
+
+#one,#two{
+    width:4px;
+    height:85px;
+    background:yellow;
+  //position:relative;
+   // left:40%;
+    //top:80%;
+    color:black;
+    transform-origin:100% 100%;
+   // border-radius:50%;
+}
+#out{
+   
+    position:absolute ;
+    left:24%;
+    top:23%;
+    font-size:7px;
+    width:180px;
+    height:180px;
+    color:yellow;
+    background:#061639;
+    border-radius:50%;
+    border:12px double green;
+}
+#two{
+    width:7px;
+    height:79px;
+    background:yellow;
+  position:absolute ;
+    left:47%;
+    top:3%;
+    
+    transform-origin:100% 100%;
+   // border-radius:50%;
+}
+
+#three{
+    
+    width:7px;
+    height:79px;
+    background:red;
+  position:absolute ;
+    left:47%;
+    top:4%;
+    
+    transform-origin:100% 100%;
+    
+}
+
+#dot{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:yellow;
+    position:absolute ;
+    left:45%;
+    top:41%;
+    border:2px double blue;
+}
+
+
+
+
+#line{
+    width:9px;
+    height:215px;
+    position:absolute ;
+    left:49%;
+    top:-10%;
+    background:yellow;
+    z-index:-1;
+    transform:rotate(90deg);
+}
+
+
+#line2{
+    width:9px;
+    height:220px;
+    position:absolute ;
+    left:49%;
+    top:-9%;
+    background:yellow;
+    z-index:-1;
+    transform:rotate(0deg);
+}
+
+#line3{
+    width:9px;
+    height:220px;
+    position:absolute ;
+    left:49%;
+    top:-9%;
+    background:yellow;
+    z-index:-1;
+    transform:rotate(30deg);
+}
+
+#line4{
+    width:9px;
+    height:217px;
+    position:absolute ;
+    left:49%;
+    top:-9%;
+    background:yellow;
+    z-index:-1;
+    transform:rotate(60deg);
+}
+
+#line5{
+    width:9px;
+    height:215px;
+    position:absolute ;
+    left:49%;
+    top:-9%;
+    background:yellow;
+    z-index:-1;
+    transform:rotate(120deg);
+}
+#line6{
+    width:9px;
+    height:215px;
+    position:absolute ;
+    left:49%;
+    top:-9%;
+    background:yellow;
+   
+    z-index:-1;
+    transform:rotate(150deg);
+}
+
+
+#cont{
+    width:200px;
+    height:200px;
+   // background:pink;
+    z-index:-1;
+}
+
+
+
+#dodt:after{
+    width:2px;
+    height:8px;
+    border-radius:50%;
+    background:black;
+    content:"";
+    position:absolute ;
+    left:30%;
+    top:80%;
+    
+}
+
+
+#fita{
+    
+    width:130px;
+    height:530px;
+    background:black;
+    position:absolute ;
+    top:-100%;
+    left:14%;
+    z-index:-3;
+  // border:14px solid white;
+}
+
+#gol{
+   
+    position:absolute ;
+    left:-13%;
+    top:-13%;
+    font-size:7px;
+    width:226px;
+    height:226px;
+    color:yellow;
+    background:#061639;
+    border-radius:50%;
+    z-index:-1;
+}
+
+#sui{
+    
+    color:white;
+    font-size:14px;
+    position:absolute;
+    left:102%;
+    top:44%;
+    z-index:-3;
+    font-weight:bold;
+    background:#061639;
+    width:40px;
+    height:20px;
+    border-radius:5px;
+}
+
+
+#foot{
+    
+    
+    position:absolute;
+    left:30%;
+    top:140%;
+    z-index:3;
+    font-weight:bold;
+    
+    
+    height:20px;
+    
+}
+
+#foot2{
+    
+    position:absolute ;
+    left:25%;
+    top:200%;
+    color:black;
+    z-index:3;
+    font-weight:bold;
+    text-align:center ;
+    font-size:10px;
+    height:2px;
+    width:100px;
+    
+}
+#g,#i,#h{
+    display:inline ;
+  
+}
+
+
+#digi{
+     position:absolute ;
+    left:18%;
+    top:-50%;
+    width:115px;
+    font-size:20px;
+    background:orange;
+    color:#061639;
+    font-weight:bold;
+    text-align:center ;
+}
+
+a{
+    font-size: 15px;
+}
+
+</style>
+</html>
