@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+        <title>RGB Color Generator</title>
+    </head>
+    <body>
+        <center>
+    <h2 id="title">RGB Color Generator</h2>
+        <div id="colors"></div><br>
+        Red:
+        <input id="red" type="range" min="0" max="255"><br>
+            
+      Green:  <input id="green" type="range" min="0" max="255"><br>
+            
+       Blue: <input id="blue" type="range" min="0" max="255"><br><br>
+       <div id="last"></div><br>
+        <div id="foot"><a href='https:/rudraworks.github.io/my-blog/blog.html'>copyleft rudra</a></div>
+        </center>
+    </body>
+    <script>
+    
+        var clr=document.getElementById("colors");
+ var red=   document.getElementById("red");
+ 
+ var green=   document.getElementById("green");
+ 
+ 
+ var blue=   document.getElementById("blue");
+ 
+    var re=red.value;
+       var gr=green.value;
+       var bl=blue.value;
+ red.addEventListener('input',change);
+ green.addEventListener('input',change);
+ blue.addEventListener('input',change);
+ change();
+    function change(){
+    
+ var re=red.value;
+       var gr=green.value;
+       var bl=blue.value;
+        clr.style.backgroundColor="rgb("+re+","+gr+","+bl+")";
+        
+                var last=document.getElementById("last");
+                last.innerHTML="RGB("+re+","+gr+","+bl+")";
+        
+       } 
+      </script>
+<style>
+    body{
+        user-select: none;
+    }
+#colors{
+    width:340px;
+    height:140px;
+    background:blue;
+    border-radius:10px;
+}
+#red,#green,#blue{
+    width:340px;
+}
+#last{
+    text-align:center;
+    font-weight:bold;
+    font-size:20px;
+    height:30px;
+   font-family:"courier new";
+    border:1px solid black;
+    width: 60%;
+    padding: 5px;
+    background: yellow;
+    user-select:text;
+}
+#title{
+    font-size:31px;
+    text-align:center;
+}
+#foot{
+    font-size:12px;
+    text-align:center;
+}
+</style>
+</html>
