@@ -1,0 +1,219 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+        
+        <style>
+            body{margin: 0;
+            overflow: hidden;
+            user-select: none;
+            font-size: 12px;
+            }
+            canvas{
+                background: grey;
+                border:2px solid black;
+               
+            }
+            #controls{
+         
+              width: 100%;
+              height: 150px;
+              overflow: scroll;
+             
+            }
+            input{
+           
+                text-align: center;
+            }
+            button{
+                position:fixed;
+                bottom:110px;
+                left:10px;
+                outline: none;
+                
+            }
+            select{
+                position: absolute;
+                bottom: 80px;
+                left:10px;
+            }
+
+            a{
+                position:relative;
+                bottom:30px;
+                left:10px;
+            }
+
+            h4{
+                position:absolute;
+                text-align: center;
+                margin: 10px;
+            }
+        </style>
+    </head>
+    <body>
+<center>
+    
+    <h4>Creative Coding</h4>
+ <canvas id="can"></canvas>
+ <br>
+ <div id='controls'>
+    <br>
+Line width: <input id='linewidth'  value=".01" min="0.4" max="2.5" step="0.01" type="range">
+<br>
+Radius: <input id='radius' type="range" value="1.1" min="0.1" max="6" step=".05">
+<br>
+Skewness: <input id='angle' type="number" value="1239">
+<br>
+Canvas: Purple<input name='color' checked=true value="purple" type="radio">Red<input name='color' value="red" type="radio"> pink<input  value="pink" name='color' type="radio"> Black<input  value="black" name='color' type="radio">
+White<input  value="white" name='color'  type="radio">
+<br>
+Pen: Red<input name='pencolor' value="red" type="radio"> Yellow<input checked=true name='pencolor' value="yellow" type="radio"> white<input  value="white" name='pencolor' type="radio"> Black<input  value="black" name='pencolor' type="radio">
+blue<input  value="blue" name='pencolor'  type="radio">
+<br><br>
+<button id='play'>Play</button>
+<br>
+<select id='selectsamples'>
+    <option value='0'>sample</option>
+   <option value='1'>design1</option>
+   <option value='2'>design2</option>
+   <option value='3'>design3</option>
+   <option value='4'>design4</option>
+     
+</select>
+<br>
+<a target="_blank" href='https:/rudraworks.github.io/my-blog/blog.html'>copyleft rudra</a>
+ </div>
+</center>
+</body>
+<script>
+     var color_radios=document.getElementsByName('color');
+     var pen_color_radios=document.getElementsByName('pencolor');
+     var anginc;
+
+    var selectsamples=document.getElementById('selectsamples');
+    selectsamples.addEventListener('input',design_selection);
+    function design_selection()
+    {
+        var des=selectsamples[selectsamples.selectedIndex].value;
+        if(des==1)
+         {
+             color_radios[3].checked=true;
+             pen_color_radios[1].checked=true;
+             document.getElementById('angle').value=111;
+             document.getElementById('radius').value=2.3;
+         }
+
+         else if(des==2)
+         {
+             color_radios[3].checked=true;
+             pen_color_radios[0].checked=true;
+             document.getElementById('angle').value=99918;
+             document.getElementById('radius').value=.8;
+         }
+
+         else if(des==3)
+         {
+             color_radios[1].checked=true;
+             pen_color_radios[4].checked=true;
+             document.getElementById('angle').value=11;
+             document.getElementById('radius').value=1.082;
+         }
+
+         else if(des==4)
+         {
+             color_radios[4].checked=true;
+             pen_color_radios[0].checked=true;
+             document.getElementById('angle').value=1119897;
+             document.getElementById('radius').value=.7;
+         }
+    }
+
+            var can=document.getElementById("can");
+            can.width=innerWidth;
+            can.height=innerHeight/1.3;
+
+            var ctx=can.getContext('2d');
+
+
+            
+            
+    var play=document.getElementById('play');
+
+    play.addEventListener('click',playFunction);
+
+    function playFunction()
+    {
+        
+               play.disabled=true;
+           
+           ctx.clearRect(0,0,innerWidth,innerHeight);
+           ctx.beginPath();
+           
+           
+           var color_value;
+           for(var i=0;i<color_radios.length;++i)
+           {
+               if(color_radios[i].checked==true)
+                color_value=color_radios[i].value;
+           }
+             can.style.background=color_value;
+
+            
+           var pen_color_value;
+           for(var i=0;i<pen_color_radios.length;++i)
+           {
+               if( pen_color_radios[i].checked==true)
+                pen_color_value=pen_color_radios[i].value;
+           }
+
+            ctx.strokeStyle=pen_color_value;
+            var angle=0;
+
+            var radius;
+            if(innerHeight>innerWidth)
+            radius=innerHeight/3.2;
+            else 
+            radius=innerWidth/6;
+
+            loop();
+        
+            
+            function loop()
+            {   
+                var linewidth=document.getElementById('linewidth');
+            ctx.lineWidth=linewidth.value;
+                
+            var radii=document.getElementById('radius');
+             inc=radii.value;
+
+            anginc=parseFloat(document.getElementById('angle').value);
+
+                //Math.random()*innerWidth,Math.random()*innerHeight
+                if (radius>3)
+                {
+                   requestAnimationFrame(loop);
+                   
+                }    
+                else 
+                      play.disabled=false;
+                //ctx.rect(Math.random()*innerWidth,Math.random()*innerHeight,1,1);
+            // ctx.beginPath(); 
+            
+            var x=radius*Math.sin(angle);
+            var y=radius*Math.cos(angle);
+                ctx.arc(x+innerWidth/2,y+innerHeight/2.5,1,2*Math.PI,0);
+            // ctx.fill();
+                ctx.stroke();
+                
+                
+                radius-=inc;
+                angle+=anginc;
+
+            }
+
+} 
+
+</script>
+
+</html>
