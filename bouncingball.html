@@ -1,0 +1,244 @@
+<html>
+            
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+           
+           <style>
+               body{
+                   margin:0px;
+                   overflow: hidden;
+                   user-select: none;
+               }
+               /* canvas{
+                   
+               } */
+               #controls{
+                   overflow-y:hidden;
+                
+               }
+               #xcordinate_and_ycordinate_of_the_bouncing_ball{
+                   position: absolute;
+                   top:10px;
+                   left: 10px;
+               }
+           </style>
+        </head>
+        <body>
+            <center>
+                
+
+            <canvas id="can"></canvas>
+            <div id="xcordinate_and_ycordinate_of_the_bouncing_ball"></div>
+
+            <div id="controls">
+                    
+                   
+                    <br>
+                    <div id="fps"></div>
+                    
+                    Gravity: <input type="range" id="yfriction" value="2.89" step=".5" max="7" min="1">
+                    <br>
+                    Horizontal Friction: <input type="range" id="xfriction" value="0.0005" step="0.0005" max="0.05" min="0.00009">
+                    <br>
+                    Elasicity of vertical walls: <input type="range" id="verticalelasticity" value="7" step="1" max="30" min="1">
+                    <br>
+                    Elasicity of ground: <input type="range" id="groundelasticity" value="7" step="1" max="30" min="1">
+                    <br>
+                    Ball Radius: <input type="range" id="ballRadius" value="10" step="1" max="50" min="3">
+            
+                    <br><br>
+                    <button id="play">Play</button><br>
+                    <a target="_blank" href='https:/rudraworks.github.io/my-blog/blog.html'>copyleft rudra</a>
+            </div>
+        </center>
+        </body>
+
+        <script>
+                        var can=document.getElementById('can');
+                        var ctx=can.getContext('2d');
+                        can.width=innerWidth/1.0;
+                        can.height=innerHeight/1.5;
+                        ctx.rect(0,0,can.width,can.height);
+                        ctx.fillStyle="gray";
+                        ctx.fill();
+
+
+                        var fpsDiv=document.getElementById("fps");
+                        var cordinates_of_the_ball=document.getElementById("xcordinate_and_ycordinate_of_the_bouncing_ball");
+
+                 var xdamp=document.getElementById("xfriction");
+                 var ydamp=document.getElementById("yfriction");
+                 var verticalelasticity=document.getElementById("verticalelasticity");
+                 var groundelasticity=document.getElementById("groundelasticity");
+                 var play=document.getElementById("play");
+                 var ballRadius=document.getElementById("ballRadius");
+
+                 play.addEventListener("click",playAnimation);
+
+                 function playAnimation()
+                 {
+                     
+                            ctx.clearRect(0,0,can.width,can.height);
+                            ctx.rect(0,0,can.width,can.height);
+                            ctx.fillStyle="skyblue";
+                            ctx.fill();
+
+                            fpsDiv.textContent="";
+
+                     entireAnimation();
+                 }
+                    
+                   function entireAnimation()
+                    {
+
+                        
+                      
+
+                        
+                        var framecount=0;
+                        var framecount_for_measuring_fps_and_displaying_it_for_the_user=0;
+                        var fps,fpsInterval,startTime,now,then,elapsed;
+                        // var x=Math.random()*can.width,y=Math.random()*can.height/3,radius=10,incx=7,incy=.3,friction=2.89;     
+                        //  var xfriction=.0005;
+                        var velocityX=1,velocityY=1;
+
+                        var x=Math.random()*can.width,y=Math.random()*can.height/3;
+                        var radius=parseInt(ballRadius.value);
+                        var incx=parseFloat(verticalelasticity.value);
+                        var incy=parseFloat(groundelasticity.value);
+                        var friction=parseFloat(ydamp.value);
+                        var xfriction=parseFloat(xdamp.value);
+                        //console.log(incx,incy,friction,xfriction);
+                        var currentfps=0;
+
+                        startAnimating(80);
+
+                        function startAnimating(fps)
+                        {
+                            fpsInterval=1000/fps;
+                            then=Date.now();
+                            startTime=then;
+                            play.disabled=true;
+                            animate();
+                        }
+
+                        function animate()
+                        {
+
+                            // clearing the canvas///
+                            ctx.clearRect(0,0,can.width,can.height);
+                            ctx.rect(0,0,can.width,can.height);
+                            ctx.fillStyle="skyblue";
+                            ctx.fill();
+
+                            if(velocityX!=0)
+                            requestAnimationFrame(animate);
+                           else {
+                                 
+                                 //alert('rest achieved');
+                                 play.disabled=false;
+                                
+                                } 
+                            now=Date.now();
+                            elapsed=now-then;
+
+                            if(elapsed>fpsInterval)
+                            {
+
+                                //// sketching starts /////
+
+                                ctx.beginPath();
+                                ctx.arc(x,y,radius,0,2*Math.PI,0);
+                                
+                                //ctx.stroke();    
+                            
+
+                                var x1=x;
+                                var y1=y;
+                                var time1=Date.now();
+                                
+                                x+=incx;
+                                y+=incy;
+                                
+                                
+
+                                if((x+radius)>=can.width)
+                                {
+                                    incx=-incx;
+                                    x=can.width-radius;
+                                    //    var colors=["green","red","yellow","black","blue","pink","brown","magenta","orange","purple","gray"];
+                                    //    ctx.fillStyle=colors[Math.floor(Math.random()*colors.length)];
+                                    
+                                    xfriction+=.0006;
+                                }    
+
+                                else if( (x-radius)<0)
+                                    {
+                                        incx=-incx; 
+                                        x=radius;
+                                        xfriction+=.0006;
+                                    }
+                                    
+                                if((y+radius)>=(can.height) )
+                                {
+                                    incy=-incy; 
+                                    y=can.height-radius;
+                                    xfriction+=.0006;
+
+                                }  
+                                else if( (y-radius)<0)
+                                    {
+                                        incy=-incy; 
+                                        y=radius+50;
+                                    
+                                    }
+                            incy+=friction;
+            
+                                var x2=x;
+                                var y2=y;
+                                var time2=Date.now();
+                                
+
+                                velocityX=(x2-x1);
+                                velocityY=(y2-y1);
+                                var deltaTime=(time2-time1)*currentfps;
+                               // console.log(deltaTime,time2,time1);
+
+                                if(velocityX>0)
+                                incx-=xfriction;
+                                else incx+=xfriction; 
+
+                                
+                                ctx.fillStyle='red';
+                                ctx.fill();
+                                ctx.stroke();
+                            
+                                if(Math.abs(velocityX)<0.8 && framecount>40 && velocityY<0.8)
+                                { 
+                                    velocityX=0;
+                                    fpsDiv.textContent="Rest position achieved";
+
+                                }
+                                if(velocityX<0.9 && velocityY<0.9)
+                                ++framecount;
+                                else framecount=0;
+                                
+                                //fpsDiv.textContent=framecount;
+                                //++framecount;
+                                //// sketching ends //////
+                                //console.log(velocityX,velocityY,framecount);
+
+                                then=now-(elapsed%fpsInterval);
+                                var sinceStart=now-startTime;
+                                currentfps=Math.round((1000/(sinceStart/++framecount_for_measuring_fps_and_displaying_it_for_the_user))*100)/100;
+                               // cordinates_of_the_ball+=", FPS: "+currentfps;
+                               cordinates_of_the_ball.innerHTML="X: "+Math.round(x)+" , Y: "+Math.round(can.height-(y))+"<br>FPS: "+currentfps;
+
+                            }
+                        }
+                    
+                    }
+        </script>
+
+</html>
