@@ -1,225 +1,3 @@
-<!--<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-        
-        <style>
-            body{margin: 0;
-            overflow: scroll;
-            user-select: none;
-            font-size: 12px;
-            }
-            canvas{
-                background: grey;
-                border:2px solid black;
-               
-            }
-            #controls{
-         
-              width: 100%;
-              height: 150px;
-              overflow: scroll;
-             
-            }
-            input{
-           
-                text-align: center;
-            }
-             /* button{
-                position:relative;
-                bottom:110px;
-                left:-210px;
-                outline: none;
-                
-            }
-            select{
-                position:relative;
-                bottom: 80px;
-                left:-210px;
-            } */
-
-            a{
-                position:relative;
-                bottom:-10px;
-                left:10px;
-            }
-
-            h4{
-                position:absolute;
-                text-align: center;
-                margin: 10px;
-            }
-        </style>
-    </head>
-    <title>Creative Coding</title>
-    <body>
-<center>
-    
-    <h4>Creative Coding</h4>
- <canvas id="can"></canvas>
- <br>
- <div id='controls'>
-    <br>
-Line width: <input id='linewidth'  value=".01" min="0.4" max="2.5" step="0.01" type="range">
-<br>
-Radius: <input id='radius' type="range" value="1.1" min="0.1" max="6" step=".05">
-<br>
-Skewness: <input id='angle' type="number" value="1239">
-<br>
-Canvas: Purple<input name='color' checked=true value="purple" type="radio">Red<input name='color' value="red" type="radio"> pink<input  value="pink" name='color' type="radio"> Black<input  value="black" name='color' type="radio">
-White<input  value="white" name='color'  type="radio">
-<br>
-Pen: Red<input name='pencolor' value="red" type="radio"> Yellow<input checked=true name='pencolor' value="yellow" type="radio"> white<input  value="white" name='pencolor' type="radio"> Black<input  value="black" name='pencolor' type="radio">
-blue<input  value="blue" name='pencolor'  type="radio">
-<br><br>
-<button id='play'>Play</button>
-<br>
-<select id='selectsamples'>
-    <option value='0'>sample</option>
-   <option value='1'>design1</option>
-   <option value='2'>design2</option>
-   <option value='3'>design3</option>
-   <option value='4'>design4</option>
-     
-</select>
-<br>
-<a target="_blank" href='https:/rudraworks.github.io/my-blog/blog.html'>copyleft rudra</a>
- </div>
-</center>
-</body>
-<script>
-     var color_radios=document.getElementsByName('color');
-     var pen_color_radios=document.getElementsByName('pencolor');
-     var anginc;
-
-    var selectsamples=document.getElementById('selectsamples');
-    selectsamples.addEventListener('input',design_selection);
-    function design_selection()
-    {
-        var des=selectsamples[selectsamples.selectedIndex].value;
-        if(des==1)
-         {
-             color_radios[3].checked=true;
-             pen_color_radios[1].checked=true;
-             document.getElementById('angle').value=111;
-             document.getElementById('radius').value=2.3;
-         }
-
-         else if(des==2)
-         {
-             color_radios[3].checked=true;
-             pen_color_radios[0].checked=true;
-             document.getElementById('angle').value=99918;
-             document.getElementById('radius').value=.8;
-         }
-
-         else if(des==3)
-         {
-             color_radios[1].checked=true;
-             pen_color_radios[4].checked=true;
-             document.getElementById('angle').value=11;
-             document.getElementById('radius').value=1.082;
-         }
-
-         else if(des==4)
-         {
-             color_radios[4].checked=true;
-             pen_color_radios[0].checked=true;
-             document.getElementById('angle').value=1119897;
-             document.getElementById('radius').value=.7;
-         }
-    }
-
-            var can=document.getElementById("can");
-            can.width=innerWidth;
-            can.height=innerHeight/1.3;
-
-            var ctx=can.getContext('2d');
-
-
-            
-            
-    var play=document.getElementById('play');
-
-    play.addEventListener('click',playFunction);
-
-    function playFunction()
-    {
-        
-               play.disabled=true;
-           
-           ctx.clearRect(0,0,innerWidth,innerHeight);
-           ctx.beginPath();
-           
-           
-           var color_value;
-           for(var i=0;i<color_radios.length;++i)
-           {
-               if(color_radios[i].checked==true)
-                color_value=color_radios[i].value;
-           }
-             can.style.background=color_value;
-
-            
-           var pen_color_value;
-           for(var i=0;i<pen_color_radios.length;++i)
-           {
-               if( pen_color_radios[i].checked==true)
-                pen_color_value=pen_color_radios[i].value;
-           }
-
-            ctx.strokeStyle=pen_color_value;
-            var angle=0;
-
-            var radius;
-            if(innerHeight>innerWidth)
-            radius=innerHeight/3.2;
-            else 
-            radius=innerWidth/6;
-
-            loop();
-        
-            
-            function loop()
-            {   
-                var linewidth=document.getElementById('linewidth');
-            ctx.lineWidth=linewidth.value;
-                
-            var radii=document.getElementById('radius');
-             inc=radii.value;
-
-            anginc=parseFloat(document.getElementById('angle').value);
-
-                //Math.random()*innerWidth,Math.random()*innerHeight
-                if (radius>3)
-                {
-                   requestAnimationFrame(loop);
-                   
-                }    
-                else 
-                      play.disabled=false;
-                //ctx.rect(Math.random()*innerWidth,Math.random()*innerHeight,1,1);
-            // ctx.beginPath(); 
-            
-            var x=radius*Math.sin(angle);
-            var y=radius*Math.cos(angle);
-                ctx.arc(x+innerWidth/2,y+innerHeight/2.5,1,2*Math.PI,0);
-            // ctx.fill();
-                ctx.stroke();
-                
-                
-                radius-=inc;
-                angle+=anginc;
-
-            }
-
-} 
-
-</script>
-
-</html>
-
--->
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -227,9 +5,10 @@ blue<input  value="blue" name='pencolor'  type="radio">
         
         <style>
             body{margin: 0;
-            overflow: hidden;
+          
             user-select: none;
             font-size: 12px;
+            background:rgb(5, 189, 196);
             }
             canvas{
                background: grey;
@@ -240,7 +19,7 @@ blue<input  value="blue" name='pencolor'  type="radio">
          
               width: 100%;
               height: 150px;
-              overflow: scroll;
+            //  overflow: scroll;
              
             }
             input{
@@ -277,6 +56,7 @@ blue<input  value="blue" name='pencolor'  type="radio">
 <center>
     
     <!-- <h4>Creative Coding</h4> -->
+
  <canvas id="can"></canvas>
  <br>
  <div id='controls'>
@@ -312,6 +92,8 @@ blue<input  value="blue" name='pencolor'  type="radio">
 </body>
 <script>
 
+    // function for downloading the pattern ///
+
                 function downloadPattern()
                  {
                      var link=document.createElement('a');
@@ -320,16 +102,18 @@ blue<input  value="blue" name='pencolor'  type="radio">
                      link.click();
                  }
 
+    /// radio boxes ////
      var color_radios=document.getElementsByName('color');
      var pen_color_radios=document.getElementsByName('pencolor');
-     var anginc;
+     
+     var anginc; /// angle increament 
 
-    var selectsamples=document.getElementById('selectsamples');
+    var selectsamples=document.getElementById('selectsamples'); // dropdown selection menu
     selectsamples.addEventListener('input',design_selection);
     function design_selection()
     {
-        var des=selectsamples[selectsamples.selectedIndex].value;
-        if(des==1)
+        var des=selectsamples[selectsamples.selectedIndex].value; /// this is the way to check which item has been selected in a dropdown selection
+        if(des==1) 
          {
              color_radios[3].checked=true;
              pen_color_radios[1].checked=true;
@@ -362,16 +146,41 @@ blue<input  value="blue" name='pencolor'  type="radio">
          }
     }
 
+    ////////////////// canvas //////////////////
+    
+
+            devicePixelRatio=1;
+          
+              
             var can=document.getElementById("can");
-            can.width=innerWidth;
-            can.height=innerHeight/1.3;
-
             var ctx=can.getContext('2d');
+            // can.width=innerWidth;            // this technique was fine but it blurred the pattern
+            // can.height=(innerHeight/1.3);   //
+            
 
+            /// this technique is optima as it doesnt blurred the canvas  . just comment this block and uncomment the upper block to retrieve the previous setting in github
+           can.style.transform="scale(1)";
+
+           window.devicePixelRatio=1;
+           var sizeW=innerWidth/1.09;
+           var sizeH=(innerHeight/1.3);
+           var size=sizeW;
+           can.style.width=sizeW+"px";
+           can.style.height=sizeW+"px";
+
+           var scale=window.devicePixelRatio;
+           can.width=Math.floor(size*scale+500);
+           can.height=Math.floor(size*scale+500);
+           ctx.scale(scale,scale);
+           ctx.font="10px Arial";
+           ctx.textBaseLine="middle";
+            
+         /// ending /////
+   
             
             
             
-    var play=document.getElementById('play');
+    var play=document.getElementById('play'); // playbutton 
 
     play.addEventListener('click',playFunction);
   
@@ -381,18 +190,18 @@ blue<input  value="blue" name='pencolor'  type="radio">
                play.disabled=true;
               
            
-           ctx.clearRect(0,0,innerWidth,innerHeight);
-           ctx.beginPath();
+          ctx.clearRect(0,0,innerWidth,innerHeight); //clearing the canvas after each playbutton click
+         ctx.beginPath();
            
            
            var color_value;
-           for(var i=0;i<color_radios.length;++i)
+           for(var i=0;i<color_radios.length;++i) /// finding which background color radio has been selected
            {
                if(color_radios[i].checked==true)
                 color_value=color_radios[i].value;
            }
-            // can.style.background=color_value;
-            ctx.rect(0,0,can.width,can.height);
+           
+            ctx.rect(0,0,can.width,can.height); // filling the canvas with the selected color
             ctx.fillStyle=color_value;
             ctx.fill();
             ctx.beginPath();
@@ -400,13 +209,13 @@ blue<input  value="blue" name='pencolor'  type="radio">
           
             
            var pen_color_value;
-           for(var i=0;i<pen_color_radios.length;++i)
+           for(var i=0;i<pen_color_radios.length;++i)  // selecting the pen color radio button
            {
                if( pen_color_radios[i].checked==true)
                 pen_color_value=pen_color_radios[i].value;
            }
   
-            ctx.strokeStyle=pen_color_value;
+            ctx.strokeStyle=pen_color_value; //setting strokestyle of the pen
             var angle=0;
 
             if(color_value=="white")
@@ -414,13 +223,13 @@ blue<input  value="blue" name='pencolor'  type="radio">
             else 
               ctx.fillStyle="yellow";
             ctx.font='20px serif';
-            ctx.fillText(" by rudra bit.ly/3sQ7BDV",10,20);
+            ctx.fillText(" by rudra bit.ly/3sQ7BDV",10,20);  /// adding watermark
 
             var radius;
-            if(innerHeight>innerWidth)
-            radius=innerHeight/3.2;
+            if(innerHeight>innerWidth) /// very important!! adjusting the radius of the pattern. These values allows the pattern to use the optimal area under the canvas 
+            radius=innerHeight/1.4 //use 3.2 if not activated the anti-blurring canvas setting
             else 
-            radius=innerWidth/6;
+            radius=innerWidth/2; //use 6 if not activated the anti-blurring canvas setting
 
             loop();
         
@@ -431,9 +240,9 @@ blue<input  value="blue" name='pencolor'  type="radio">
             ctx.lineWidth=linewidth.value;
             
             var radii=document.getElementById('radius');
-             inc=radii.value;
+             inc=radii.value;  // initial increment in the radius value;
 
-            anginc=parseFloat(document.getElementById('angle').value);
+            anginc=parseFloat(document.getElementById('angle').value); //getting the angle value from the input text field
 
                 //Math.random()*innerWidth,Math.random()*innerHeight
                 if (radius>3)
@@ -449,8 +258,8 @@ blue<input  value="blue" name='pencolor'  type="radio">
             var x=radius*Math.sin(angle);
             var y=radius*Math.cos(angle);
             
-                ctx.arc(x+innerWidth/2,y+innerHeight/2.5,1,2*Math.PI,0);
-            // ctx.fill();
+                ctx.arc(x+can.width/2,y+can.height/2,1,2*Math.PI,0); //drawing small circles, as we have not triggerd beginPath therfore all the circles will be automatically connected
+           //  ctx.fill();
                 ctx.stroke();
                 
                 
