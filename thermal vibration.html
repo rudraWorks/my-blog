@@ -1,0 +1,152 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+        
+        <style>
+            body{
+                margin:0;
+                background-color: lightcoral;
+            }
+            canvas{
+                border: 2px solid black;
+                background-color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <h1>Thermal Vibration</h1>
+        <canvas id="can"></canvas>
+        <br> <br> <br> <br>
+       Temperature <input id="vibration" max=20 min=0 type="range" step=.1>
+        <br>
+       Radius <input id="radius" max=30 min=2 type="range" step=.1>
+        <br>
+        <button id="newSample" >new sample</button>
+        <br> <br>
+<a target="_blank" href='https://rudraworks.github.io/my-blog/blog.html'>copyleft rudra</a>
+ </div>
+    </center>
+    </body>
+    <script>
+
+        var can=document.getElementById("can");
+        var ctx=can.getContext('2d');
+        can.width=innerWidth/1.1;
+        can.height=innerHeight/1.5;
+        ctx.rect(0,0,can.width,can.height);
+        ctx.fillStyle="red";
+        ctx.fill();
+
+        var vibration=document.getElementById("vibration");
+        var rad_range=document.getElementById("radius");
+        var newSampleButton=document.getElementById("newSample");
+
+        newSampleButton.addEventListener('click',newSample);
+
+      function Circles(x,y,radius)
+      {
+          this.x=x;
+          this.y=y;
+          this.radius=radius;
+      }
+
+      var objArray=[];
+      var obj;
+
+   // 
+       
+
+    // for(var i=0;i<100;++i)
+    // {
+    //     //console.log(objArray[i].y);
+    //     var cx=objArray[i].x;
+    //     var cy=objArray[i].y;
+    //     var rad=objArray[i].radius;
+    //     ctx.beginPath();
+    //     ctx.arc(cx,cy,rad,0,2*Math.PI,0);
+    //     ctx.fillStyle="blue";
+    //     ctx.fill();
+    //     ctx.stroke();
+
+    // }    
+
+
+    function newSample()
+      {
+          objArray=[];
+            for(var i=0; i<100;++i)
+            {
+                var rx=Math.random()*can.width;
+                var ry=Math.random()*can.height;
+                obj=new Circles(rx,ry,15);
+                objArray.push(obj);
+            }
+
+           // alert("f");
+      }   
+
+      newSample();
+
+    var yinc=1,xinc=1;
+
+    function animate()
+    {
+
+
+       
+        ctx.beginPath();
+        ctx.clearRect(0,0,can.width,can.height);
+        
+        requestAnimationFrame(animate);
+
+        
+       
+        for(var i=0;i<100;++i)
+        {
+            var cx=objArray[i].x;
+            var cy=objArray[i].y;
+            var rad=objArray[i].radius;
+            var newY=cy;
+
+            yinc=Math.random()*vibration.value;
+            xinc=Math.random()*vibration.value;
+            cy+=yinc;
+            cx+=xinc;
+
+            var r=rad_range.value;
+            ctx.beginPath();
+            ctx.arc(cx,cy,r,0,2*Math.PI,0);
+            ctx.fillStyle="skyblue";
+            ctx.fill();
+            ctx.stroke();
+
+        }
+  
+
+        
+      
+        yinc+=1;
+        xinc+=1;
+    }
+
+    animate();
+     
+    </script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
