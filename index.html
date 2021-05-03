@@ -1,0 +1,371 @@
+<!--
+-----------------------------------------------
+
+©RUDRA PRATAP MADE THIS PROJECT FOR SOLOLEARNERS
+
+PLEASE UPVOTE AND IF POSSIBLE, PLEASE FOLLOW
+
+------------------------------------------------
+
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    <title>BMI calculator by rudra</title>
+</head>
+<body>
+<div id="wh"><br><br>
+
+    <center>
+        <span id="foot">BMI calculator</span>
+        <div id="rp">©rudra pratap softwares</div>
+        <div id="scr"><br><br></div></center>  <br><center id="sml">
+        Enter your Weight&nbsp;&nbsp;<input type="text" disabled  id="inpt1"><input type="radio" onchange="change()"  id="rd1" name="rd">
+        <select id="se1">
+            <option value="1">Kg</option>
+            <option value="2">Pound</option>
+            <option value="3">Ounce</option>
+        </select>
+
+        <br>
+        Enter your Height&nbsp;&nbsp;<input disabled type="text" id="inpt2"><input type="radio" onchange="change()"id="rd2" name="rd">
+
+        <select id="se2">
+            <option value="1">m</option>
+            <option value="2">feet</option>
+            <option value="3">inch</option>
+            <option value="4">cm</option>
+        </select>
+    </center>
+    <div id="one" onclick="one()"> 1</div>
+    <div id="two" onclick="two()"> 2</div>
+    <div id="three"onclick="three()"> 3</div><br><br>
+    <div id="four"onclick="four()"> 4</div>
+    <div id="five"onclick="five()" > 5</div>
+    <div id="six"onclick="six()" > 6</div><br><br>
+    <div id="svn"onclick="svn()"> 7</div>
+    <div id="et"onclick="et()"> 8</div>
+    <div id="nine"onclick="nine()"> 9</div>
+    <div id="calc" onclick="calc()">Find</div>
+    <div id="pnt"onclick="pt()">.</div><br>
+    <div id="bk"onclick="bk()"><</div><br>
+    <div id="clr"onclick="clr()">C</div>
+    <div id="zr"onclick="zr()">0</div>
+
+
+
+
+</div>
+</body>
+<script>
+
+       var inpt1=document.getElementById("inpt1");
+       var inpt2=document.getElementById("inpt2");
+       var scr=document.getElementById("scr");
+      var rd1=document.getElementById("rd1");
+       var rd2=document.getElementById("rd2");
+       function change(){
+       if(rd1.checked==true){
+       inpt1.style.backgroundColor="yellow";
+       inpt1.style.border="2px solid blue";
+         inpt2.style.backgroundColor="white";
+       inpt2.style.border="2px solid black";
+       }
+      if(rd2.checked==true){
+       inpt2.style.backgroundColor="yellow";
+       inpt2.style.border="2px solid blue";
+        inpt1.style.backgroundColor="white";
+       inpt1.style.border="2px solid black";
+       }
+       }
+
+
+                function one()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="1";
+        if(rd2.checked==true)inpt2.value+="1";
+      }
+       function two()
+      {navigator.vibrate(100);
+        if(rd1.checked==true)inpt1.value+="2";
+        if(rd2.checked==true)inpt2.value+="2";
+      }
+    function three()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="3";
+        if(rd2.checked==true)inpt2.value+="3";
+      }
+      function four()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="4";
+        if(rd2.checked==true)inpt2.value+="4";
+      }
+      function five()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="5";
+        if(rd2.checked==true)inpt2.value+="5";
+      }
+      function six()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="6";
+        if(rd2.checked==true)inpt2.value+="6";
+      }
+       function svn()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="7";
+        if(rd2.checked==true)inpt2.value+="7";
+      }
+      function et()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="8";
+        if(rd2.checked==true)inpt2.value+="8";
+      }
+      function nine()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="9";
+        if(rd2.checked==true)inpt2.value+="9";
+      }
+
+      function zr()
+      {navigator.vibrate(100);
+      if(rd1.checked==true)inpt1.value+="0";
+        if(rd2.checked==true)inpt2.value+="0";
+      }
+
+      function bk()
+      {
+      navigator.vibrate(100); var v=document.getElementById("inpt1").value;
+var c=document.getElementById("inpt2").value;
+           if(rd1.checked==true)
+ { document.getElementById("inpt1").value=v.substring(0,v.length-1);}
+ if(rd2.checked==true)
+ { document.getElementById("inpt2").value=c.substring(0,c.length-1);}
+
+
+      }
+      function clr(){
+          inpt2.value="";
+          inpt1.value="";
+          scr.innerHTML="";
+          navigator.vibrate(100);
+      }
+      function calc(){
+    var ht=inpt2.value,wt=inpt1.value;
+    var se1=parseFloat(document.getElementById("se1").value);
+    navigator.vibrate(200);
+    var se2=parseFloat(document.getElementById("se2").value);
+
+   switch(se1){
+       case 1: wt=wt;
+               break;
+       case 2: wt=wt/2.205;
+               break;
+       case 3: wt=wt/35.274;
+
+   }
+
+  switch(se2){
+       case 1: ht=ht;
+               break;
+       case 2: ht=ht/3.281;
+               break;
+       case 3: ht=ht/39.37;
+               break;
+       case 4:ht=ht/100;
+
+   }
+
+   var res=(wt/(ht*ht)).toFixed(3);
+
+
+    var rprt;
+
+    if(res<=15)
+    {rprt="Very severely underweight!!!";
+
+    }
+
+    if(15<res&&res<=16)rprt="Severely underweight!!";
+
+    if(16<res&&res<=18.5)rprt="Underweight!";
+
+     if(18.5<res&&res<=25)
+    {rprt="Healthy weight";
+
+    }
+
+    if(25<res&&res<=30)rprt="Overweight!";
+
+   if(30<res&&res<=35)rprt="Moderately overweight!!";
+
+   if(35.0<res&&res<=40.0)
+    {rprt="Severely overweight!!!";
+
+    }
+
+    if(40<res)rprt="Very severely overweight!!!!";
+
+    scr.innerHTML=res+"<br>"+rprt;
+    rprt="";
+    if(!inpt1.value||!inpt2.value){
+    scr.innerHTML="I am not a fool bro ;)";
+    rprt="";
+    }
+
+      }
+      function pt(){navigator.vibrate(100);
+          if(rd1.checked==true)inpt1.value+=".";
+        if(rd2.checked==true)inpt2.value+=".";
+      }
+
+    </script>
+<style>
+body {
+    background:orange;
+}
+#wh{
+    background:white;
+    position:absolute ;
+    left:9%;
+    top:4.0%;
+    width:310px;
+    height:510px;
+    border-radius:19px;
+}
+#scr{background:RGB(29,207,98);
+
+    width:260px;
+    height:90px;
+    border-radius:9px;
+    font-size:20px;
+    color:#061639;
+    font-weight:bold;
+}
+#one,#two,#three{
+    display:inline-block ;
+}
+#four,#five,#six{
+    display:inline-block ;
+}
+
+#svn,#et,#nine{
+    display:inline-block ;
+}
+
+
+
+#one,#two,#three,#four,#five,#six,#svn,#et,#nine{
+    width:50px;
+    height:50px;
+    background:red;
+    position:relative ;
+    left:10%;
+    top:50px;
+    border-radius:13px;
+    text-align:center ;
+    //margin: 6px;
+    padding-top:6px;
+
+
+}
+#calc:active{
+    background:blue;
+    color:white;
+}
+#calc{
+    width:50px;
+    height:40px;
+    background:lightgreen;
+    position:relative ;
+    left:70%;
+    top:-160px;
+    border-radius:13px;
+    text-align:center ;
+}
+#pnt{
+    width:50px;
+    height:40px;
+    background:pink;
+    position:relative ;
+    left:70%;
+    top:-150px;
+    border-radius:13px;
+    text-align:center ;
+}
+#bk{
+    width:50px;
+    height:40px;
+    background:pink;
+    position:relative ;
+    left:70%;
+    top:-170px;
+    border-radius:13px;
+    text-align:center ;
+}
+#clr{
+    width:50px;
+    height:40px;
+    background:pink;
+    position:relative ;
+    left:70%;
+    top:-190px;
+    border-radius:13px;
+    text-align:center ;
+}
+#zr{
+    width:50px;
+    height:38px;
+    background:red;
+    position:relative ;
+    left:70%;
+    top:-190px;
+    border-radius:13px;
+    text-align:center ;
+}
+#inpt1,#inpt2{
+    width:60px;
+
+    border:2px solid black;
+    border-radius:4px;
+    color:black;
+    font-size:13px;
+}
+#se1,#se2{
+    width:50px;
+    font-size:10px;
+    border-radius:8px;
+    outline:none;
+}
+#sml{
+    font-size:11px;
+}
+#foot{
+
+   position:relative ;
+   // left:-6px;
+    top:-25px;
+    font-size:24px;
+    font-family:"arial";
+    font-weight:bold;
+}
+#rp{
+position:absolute ;
+    left:21%;
+    top:9%;
+    font-size:14px;
+    font-family:"arial";
+
+}
+
+
+</style>
+
+</html>
+
+
+
+
