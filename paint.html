@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<style>
+    body{
+        overscroll-behavior: none;
+       overflow:hidden;
+        margin: 0;
+        user-select: none;
+    }
+    canvas{
+     
+        position: absolute;
+        top:0;
+        z-index: -1;
+    
+
+    }
+    #commands{
+        background-image: linear-gradient(20deg,rgb(19, 97, 212),rgb(19, 0, 20));
+        height: 360px;
+        padding: 10px;
+        color:white;
+
+
+     transition-duration: .58s;
+     position:relative;
+     z-index: 2;
+     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+
+    }
+    button{
+        border-radius: 10px;
+        padding: 5px;
+        background-color: rgb(55, 13, 172);
+        color:rgb(255, 255, 255);
+        
+    }
+    #pullout{
+        width: 50px;
+        background-color: gray;
+        height: 20px;
+        position: absolute;
+        left: 1;
+     z-index: 3;
+        top:0px;
+        text-align: center;
+        padding: 6px;
+       color:white;
+       background-color:orange;
+       color: rgb(13, 1, 70);
+       border-top-right-radius: 10px;
+       border-bottom-right-radius: 10px;
+       font-family:cursive;
+       font-size: 15px;
+    }
+   #header{
+       font-size: 40px;
+    font-family: cursive;
+   
+
+
+   }
+  
+   .heart:before {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-family: 'icons';
+  font-size: 21px;
+  text-indent: 0;
+  font-variant: normal;
+  line-height: 21px;
+  
+}
+.heart {
+  position: relative;
+  width: 119px;
+  overflow: inherit;
+  margin: 19px auto;
+  display: inline-block;
+  list-style: none;
+  -webkit-animation: animateHeart 2.5s infinite;
+  animation: animateHeart 2.5s infinite;
+}
+.heart:before,
+.heart:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 50%;
+  width: 30px;
+    height: 52px;
+    background: red;
+    border-radius: 100px 100px 0 0;
+  -webkit-transform: rotate(-45deg) translateZ(0);
+  transform: rotate(-45deg) translateZ(0);
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+}
+.heart:after {
+  left: 26%;
+  -webkit-transform: rotate(45deg) translateZ(0);
+  transform: rotate(45deg) translateZ(0);
+  -webkit-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+}
+@-webkit-keyframes animateHeart {
+  0% {
+    -webkit-transform: scale(0.8);
+  }
+  5% {
+    -webkit-transform: scale(0.9);
+  }
+  10% {
+    -webkit-transform: scale(0.8);
+  }
+  15% {
+    -webkit-transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(0.8);
+  }
+  100% {
+    -webkit-transform: scale(0.8);
+  }
+}
+@keyframes animateHeart {
+  0% {
+    transform: scale(0.8);
+  }
+  5% {
+    transform: scale(0.9);
+  }
+  10% {
+    transform: scale(0.8);
+  }
+  15% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+span {
+  font-family: 'Cantora One', sans-serif;
+  font-size: 64px;
+  position: absolute;
+  top: 165px;
+}
+</style>
+</head>
+<body>
+    <center>
+       
+ <div id='commands'>
+     <div id='header'>Paint</div><br>
+  Stoke Width <input type="range" min='0.1' step='0.1' max='35' id="linewidth">
+  <br>
+  Red <input type="radio" value='red' name='color'>
+   Green <input type="radio" value='green' name='color'>
+   Black <input type="radio" value='black' name='color'>
+   Yellow <input type="radio" value='yellow' name='color'>
+   Blue <input type="radio" value='blue' name='color'>
+   More <input oninput="penColorEnabling()"  type="radio" value='more' name='color'>
+   <br>
+   <table>
+       <tr>
+           <td>Pen</td>
+           <td>  <input type="color" disabled id='pencolorinput' value="#000000"><br></td>
+       </tr>
+       <tr>
+        <td> Background</td>
+        <td> <input type="color"  value="#ffffff"  id='canvasColor'></td>
+    </tr>
+    <tr>
+        <td>Eraser</td>
+        <td>  <input type="checkbox" id='erasor'></td>
+    </tr>
+   </table>
+  
+
+   <br>
+   <button id='clear' >Clear</button>  
+   <button id="button">Download</button><br>
+  Made with  <div class="heart"> </div>by rudra
+
+  </div>
+</center>
+  <br>
+  <div id="pullout">EDIT</div>
+
+    <canvas id="can"></canvas>
+
+</body>
+<script>
+
+  
+
+    var can=document.getElementById('can');
+    var ctx=can.getContext('2d');
+    can.height=innerHeight;
+    can.width=innerWidth;
+
+
+    var linewidth=document.getElementById('linewidth');
+    var color=document.getElementsByName('color');
+    var clearBtn=document.getElementById('clear');
+    var canvas_background=document.getElementById('canvasColor');
+   var pullOut=document.getElementById('pullout');
+    var commands=document.getElementById('commands');
+    var erasor=document.getElementById('erasor');
+    var pencolorinput=document.getElementById("pencolorinput");
+   
+    var erasorFlag=false;
+    var pen=false;
+    canvas_background.value="#ffffff";
+    var colorValue;
+
+    var old=[[0,0]],nw=[]; 
+    ctx.lineCap="round";
+    
+    var commandMouseEnter=false;
+    commands.onmouseenter=function(e)
+    {
+        commandMouseEnter=true;
+     
+    }
+    commands.onmouseleave=function(e)
+    {
+        commandMouseEnter=false;
+    }
+    erasor.addEventListener('input',function()
+    {
+        if(erasorFlag)
+        {
+            erasorFlag=false;
+        }
+        else erasorFlag=true;
+    });
+    
+    var pullflag=true;
+    pullOut.addEventListener('click',function()
+    {
+        if(pullflag)
+        {
+          //  commands.style.top="0px";
+          commands.style.display="none";
+           // commands.style.opacity=0;
+          pullOut.textContent="EDIT";
+            pullflag=false;
+     
+    
+        }
+        else{
+            // commands.style.top="-105px";
+            commands.style.display="block";
+       //   commands.style.opacity=1;
+            pullOut.textContent="CLOSE";
+           // commands.style.zIndex=3;
+            pullflag=true;
+          
+        }
+    });
+
+    canvas_background.addEventListener('input',function(){
+        ctx.fillStyle=canvas_background.value;
+        ctx.fillRect(0,0,can.width,can.height);
+        ctx.fill();
+    });
+
+
+
+    clearBtn.addEventListener('click',function()
+    {
+        ctx.clearRect(0,0,can.width,can.height);
+        
+        ctx.fillStyle=canvas_background.value;
+        ctx.fillRect(0,0,can.width,can.height);
+        ctx.fill();
+
+    });
+    
+
+   
+    var screenHeight;
+    var screenWidth;
+
+    
+    function penColorDisabling()
+    {
+        pencolorinput.disabled=true;
+    }
+    function penColorEnabling()
+    {
+        pencolorinput.disabled=false;
+    }
+
+    window.onload=function()
+    {
+       screenHeight=parseInt(innerHeight);
+       screenWidth=parseInt(innerWidth);
+   //    alert(screenHeight+" "+parseInt(screenHeight+6));
+
+    
+   
+    if(screenHeight>screenWidth)
+    {  // alert(screenHeight+" "+parseInt(screenHeight+6));
+      
+                document.ontouchstart=function(e)//onmousedown ontouchstart
+            {  
+        
+                pen=true;
+            
+        old=[[e.touches[0].clientX.toFixed(2),e.touches[0].clientY.toFixed(2)]];
+            
+        ctx.beginPath();
+                ctx.lineWidth=parseFloat(linewidth.value);
+                
+                for(var i=0;i<color.length;++i)
+                {
+                    if(color[i].checked)
+                    colorValue=color[i].value;
+                }
+                if(erasorFlag){
+                    colorValue=canvas_background.value;
+                }
+                ctx.strokeStyle=colorValue;
+            
+              if(colorValue=="more")
+              {
+                  penColorEnabling();
+                  ctx.strokeStyle=pencolorinput.value;
+              }
+              else{
+                  penColorDisabling();
+              }
+            
+            }
+            document.ontouchend=function(e)//onmouseup ontouchend
+            {
+                pen=false;
+                ctx.beginPath();
+            }
+            document.ontouchmove=function(e)//onmousemove ontouchmove
+            {
+                if(pen )
+
+                {
+
+                
+                var x=e.touches[0].clientX.toFixed(2);
+                    var y=e.touches[0].clientY.toFixed(2);
+
+                    ctx.beginPath();
+                nw=[];
+                    nw.push([x,y]);
+                    ctx.moveTo(old[0][0],old[0][1]);
+                    ctx.lineTo(nw[0][0],nw[0][1]);
+                    ctx.stroke();
+                    old=[];
+                    old=[[x,y]];
+                }
+            }
+            
+    }
+
+
+    else 
+    {
+
+                document.onmousedown=function(e)//onmousedown ontouchstart
+            {  
+        
+                pen=true;
+            old=[[e.clientX.toFixed(2),e.clientY.toFixed(2)]];
+                ctx.beginPath();
+                ctx.lineWidth=parseFloat(linewidth.value);
+                
+                for(var i=0;i<color.length;++i)
+                {
+                    if(color[i].checked)
+                    colorValue=color[i].value;
+                }
+                if(erasorFlag){
+                    colorValue=canvas_background.value;
+                }
+                ctx.strokeStyle=colorValue;
+            
+              if(colorValue=="more")
+              {
+                  penColorEnabling();
+                  ctx.strokeStyle=pencolorinput.value;
+              }
+              else{
+                  penColorDisabling();
+              }
+            
+            }
+            document.onmouseup=function(e)//onmouseup ontouchend
+            {
+                pen=false;
+        
+                ctx.beginPath();
+            }
+            document.onmousemove=function(e)//onmousemove ontouchmove
+            {
+                if(pen )
+
+                {
+
+                
+            
+                    var x=e.clientX.toFixed(2);
+                    var y=e.clientY.toFixed(2);
+
+                    ctx.beginPath();
+
+                nw=[];
+                    nw.push([x,y]);
+                    ctx.moveTo(old[0][0],old[0][1]);
+                    ctx.lineTo(nw[0][0],nw[0][1]);
+                    ctx.stroke();
+                    old=[];
+                    old=[[x,y]];
+                }
+            }
+    }
+    
+    var downloadBtn=document.getElementById("button");
+    downloadBtn.addEventListener('click',downloadImg);
+            function downloadImg()
+
+            {
+                var link=document.createElement('a');
+                link.download='Drawing'+(Math.round(Math.random()*1000))+'.png';
+                link.href=can.toDataURL();
+                link.click();
+        
+            }
+        }
+</script>
+</html>
