@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <title>Stack Game</title>
+    <style>
+      body {
+        
+        margin: 0;
+        background: #159957;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #155799, #159957);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #155799, #159957); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+      }
+      
+      h1 {
+        text-align: center;
+        color:white;
+        animation: anim 2s   infinite alternate ;
+      }
+      @keyframes anim {
+        100%{
+          letter-spacing: 10px;
+        }
+      }
+      a {
+        color: black;
+        font-weight: bolder;
+      }
+    </style>
+  </head>
+  <center>
+    <ul class="nav " style="background-color: rgb(234, 238, 5);">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          href="#"
+          >Home</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#download">Download</a>
+      </li>
+    
+    </ul>
+    <br>
+    <h1>Stack Game</h1>
+
+   
+        <div class="container ">
+                    <br>
+                <div class="card" style="width: 18rem">
+                <img src="img (7).png" class="card-img-top" alt="..." />
+                <div class="card-body">
+                    <p class="card-text">
+                   
+                    Stack Game is a lightweight 4 mb game especially designed by us to improve logical skills.
+                    It is super funny yet very much patience is required to set a good score.
+                    </p>
+                </div>
+                </div>
+                <br>
+                <div class="card" style="width: 18rem">
+                  <img src="img (2).png" class="card-img-top" alt="..." />
+                  <div class="card-body">
+                      <p class="card-text">
+                     
+                       Refresh your mind within minutes!!
+                      </p>
+                  </div>
+                  </div>
+               
+                <br>
+                <h3 id="download" style="color:yellow;">Download Stack Game APK</h3>
+                <br>
+                <button id="downloadbtn" type="button"  onclick="download()" class="btn  btn-lg" style="background: yellow; font-weight: bolder;">Download</button>
+                <br>
+                <br><br>
+                <h5 style="color: white;font-weight: 100;">copyright Stack Game 2021</h5>
+                
+                
+        </h5>
+  </center>
+  <script>
+   function download()
+   {
+        location.href='https://github.com/roboticsclub4mmmut/stackgame/raw/master/stackgame.apk';
+        document.getElementById('downloadbtn').textContent="Downloading...";
+   }
+  </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
