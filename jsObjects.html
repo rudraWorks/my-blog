@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+   
+    <title>Document</title>
+</head>
+<body>
+    <canvas style="background-color: rgb(255, 255, 255);" id="can"></canvas>
+</body>
+<script>
+    function Circle(radius,x,y,color,frictionX,frictionY)
+{
+    this.radius=radius;
+    this.x=x;
+    this.y=y;
+    this.frictionX=frictionX;
+    this.frictionY=frictionY;
+    this.color=color;
+    this.draw=function(){
+        console.log(radius);
+    }
+}
+
+var circle= new Array();
+
+
+var can=document.getElementById('can');
+can.width=innerWidth;
+can.height=innerHeight;
+ctx=can.getContext('2d');
+
+var numberOfObjects=300;
+for(var i=0;i<numberOfObjects;++i)
+{
+    var radius=Math.random()*30;
+    var x=Math.abs(Math.random()*innerWidth);
+    var y=Math.random()*innerHeight;
+    var color=['red','green','pink','yellow','blue','cyan','grey','purple'];
+    var randomColor=color[Math.floor(Math.random()*color.length)];
+    circle[i]=new Circle(radius,x,y,randomColor,2,3);
+}
+var x,y;
+var frictionX=.6;
+var frictionY=1;
+var dx=0,dy=0;
+function animate()
+{
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    requestAnimationFrame(animate);
+    
+    for(var i=0;i<numberOfObjects;++i)
+    { 
+        ctx.beginPath();
+         x=circle[i].x+circle[i].frictionX;
+         y=circle[i].y+circle[i].frictionY;//+Math.random()*5;
+
+         ctx.arc(x,y,circle[i].radius,0,Math.PI*2);
+         ctx.fillStyle=circle[i].color;
+       
+         circle[i].frictionY+=dy;
+     
+        
+        if(circle[i].radius>30)
+        circle[i].frictionY+=dy+(dy*0.5);
+         if(circle[i].radius>20)
+        circle[i].frictionY+=dy+(dy/3);
+        if(circle[i].radius>10)
+        circle[i].frictionY+=dy+(dy/4);
+         if(circle[i].radius>10)
+        circle[i].frictionY+=dy+(dy/5);
+
+        dy+=.00009999;
+         ctx.fill();
+        ctx.stroke();
+        
+       // console.log(circle[i].x,circle[i].y,circle[i].radius);
+        // ctx.arc(Math.random()*innerWidth,Math.random()*innerHeight,40,0,Math.PI*2);
+       // ctx.stroke();
+       if(x>innerWidth || x<0)
+       {
+            circle[i].frictionX=-circle[i].frictionX;
+       }
+       if(y>innerHeight || y<0)
+       {
+           circle[i].frictionY=-circle[i].frictionY;
+         
+       }
+       if(circle[i].frictionY>13)
+       {
+           dy=0;
+           circle[i].frictionY=0;
+       }
+       circle[i].x=x;
+       circle[i].y=y;
+       
+
+    }
+
+}
+animate();
+
+
+
+</script>
+</html>
