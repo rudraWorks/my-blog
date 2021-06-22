@@ -48,7 +48,7 @@ for(var i=0;i<numberOfObjects;++i)
     var y=Math.random()*innerHeight;
     var color=['red','green','pink','yellow','blue','cyan','grey','purple'];
     var randomColor=color[Math.floor(Math.random()*color.length)];
-    circle[i]=new Circle(radius,x,y,randomColor,2,3);
+    circle[i]=new Circle(radius,x,y,randomColor,radius/5,radius/10);
 }
 var x,y;
 var frictionX=.6;
