@@ -220,7 +220,7 @@
         yarr.push(yin[i].value);
         
         var val=parseFloat(prompt('Enter the value of x '));
-        document.getElementById('interpolated_value').innerHTML="The predicted value of y at x = "+val+" is "+(interpolate(xarr,yarr,val));
+        document.getElementById('interpolated_value').innerHTML="The predicted value of y at x = "+val+" is "+(interpolate(xarr,yarr,val)).toFixed(5);
 
         interpolationTable.innerHTML="";
         
