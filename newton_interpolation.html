@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    <title>Newton's Forward Interpolation</title>
+</head>
+<style>
+    body{
+        
+        margin: 0;
+        background:rgb(162, 228, 156);
+      
+    }
+    table{
+        border:2px solid black;
+        border-collapse: collapse;
+        background: rgb(217, 219, 235);
+    }
+    tr,td,th{
+        border: 1px solid black;
+        padding: 4px;
+       text-align: center;
+    }
+    #row{
+        width: 40px;
+    }
+    #interpolated_value{
+        background: yellow;
+        width: 290px;
+    }
+    button{
+        width: 140px;
+        height: 30px;
+        font-weight: bolder;
+        border-radius: 10px;
+        user-select: none;
+        background:rgb(4, 118, 153);
+        color: white;
+    }
+</style>
+<body>
+
+      <center>
+          
+        <br><h1>Newton's Forward Interpolation</h1>
+        <br>
+        <table>
+           
+            <tr>
+                <td>Enter first term (x0)</td>
+                <td><input type="number" style="width: 80px;" id="x0"></td>
+            </tr>
+            <tr>
+                <td>Enter class difference (h)</td>
+                <td><input type="number" style="width: 80px;" id="h"></td>
+            </tr>
+            <tr>
+                <td>Enter total number of data points</td>
+                <td><input type="number" style="width: 80px;" id="totaldatapoints"></td>
+            </tr>
+        </table>
+        <br>
+        <button id='find' onclick="tableDraw()">Enter Input</button>
+        <br>
+        <br>
+        <table id="table">
+            <tr>
+                <th>X</th><th>Y</th>
+            </tr>
+           
+        </table>
+        <br>
+        <button  onclick="interpolationTableDraw()" >Find</button>
+        <br><br>
+        <table id="interpolationTable">
+          
+           
+        </table>
+        <br>
+        <div id="interpolated_value"></div>
+        <br><br><br>
+      </center>
+</body>
+<script>
+
+    var table=document.getElementById('table');
+    var interpolationTable=document.getElementById('interpolationTable');
+    var xarr=new Array();
+    var yarr=new Array();
+    var obj=new Array();
+
+    function fact(n)
+    {
+        var ans=1;
+        for(var i=n;i>=1;--i)
+        ans*=i;
+        return ans;
+    }
+
+    function Diff()
+    {
+        this.arr=new Array();
+    }
+
+    function interpolate(xarr,yarr,val)
+    {
+        
+
+        obj=[];
+        for(var i=0;i<xarr.length;++i)
+        xarr[i]=parseFloat(xarr[i]);
+        for(var i=0;i<yarr.length;++i)
+        yarr[i]=parseFloat(yarr[i]);
+
+        xxarr=new Array();
+        for(var i=0;i<xarr.length;++i)
+        xxarr.push(xarr[i]);
+
+        yyarr=new Array();
+        for(var i=0;i<yarr.length;++i)
+        yyarr.push(yarr[i]);
+        
+
+        var n=xxarr.length;
+        for(var i=0;i<n;++i)
+         obj[i]=new Diff();
+
+        var k=0;
+        var y0=yyarr[0];
+       
+
+
+        for(var tot=n-1;tot>0;--tot)
+            {
+                for(var i=0;i<=tot;++i)
+                    {
+                        obj[k].arr.push(yyarr[i+1]-yyarr[i]);
+                        
+                    }
+
+
+                for(var i=0;i<=tot;++i)
+                    yyarr[i]=obj[k].arr[i];
+                k++;
+
+            }
+
+            var h=xxarr[1]-xxarr[0];
+            var ans=y0;
+            for(var i=0;i<n-1;++i)
+            {
+                var product=1;
+                for(var j=0;j<i+1;++j)
+                {
+                    product=product*(val-xxarr[j]);
+                }
+                product=( (obj[i].arr[0]*product) )/(fact(i+1)*Math.pow(h,(i+1)));
+                ans+=product;
+            }
+            return ans;
+    
+    }
+    function tableDraw()
+    {
+        
+        
+        var h=document.getElementById('h');
+        var x0=document.getElementById('x0');
+        var totaldata=parseInt(document.getElementById('totaldatapoints').value);
+
+         h=parseFloat(h.value);
+         x0=parseFloat(x0.value);
+         table.innerHTML="<tr> <th>X</th> <th>Y</th> </tr>";
+         var flag=0;
+         
+
+        loop =async() =>
+        {
+            xarr=[];
+            for(let i=0;i<totaldata;++i)
+            {
+                var dcmls=parseFloat(h).toString().split('.')[1];
+                if(dcmls==undefined)
+                dcmls=0;
+                else dcmls=dcmls.length;
+            // alert(dcmls);
+                var n=parseFloat(x0).toFixed(dcmls);
+                
+                table.innerHTML+="<tr>  <td> "+n+"</td>  <td><input class='yinputValue'  oninput='yinput()' id='row'></td> </tr>";
+                xarr.push(n);
+                x0+=h;
+                flag=1;
+                await new Promise( resolve => setTimeout(resolve,0));
+            } 
+        }
+        loop();
+
+    }
+
+    function yinput()
+    {
+       yarr=[];
+      var yin=document.getElementsByClassName('yinputValue');
+      for(var i=0;i<yin.length;++i)
+      yarr.push(yin[i].value);
+
+    
+    }
+
+    function interpolationTableDraw()
+    {
+        yarr=[];
+        var yin=document.getElementsByClassName('yinputValue');
+        for(var i=0;i<yin.length;++i)
+        yarr.push(yin[i].value);
+        
+        var val=parseFloat(prompt('Enter the value of x '));
+        document.getElementById('interpolated_value').innerHTML="The predicted value of y at x = "+val+" is "+(interpolate(xarr,yarr,val));
+
+        interpolationTable.innerHTML="";
+        
+        
+        var cols=parseInt(document.getElementById('totaldatapoints').value);
+        interpolationTable.innerHTML+="<tr>";
+            var temp="<td>x</td><td>y</td>";
+        
+        for(var i=1;i<cols;++i)
+        {
+            temp+="<td>Δ"+i+"y</>";
+        }
+        interpolationTable.innerHTML+=temp;
+       interpolationTable.innerHTML+="</tr>";
+       var cnt=0;
+       for(var i=0;i<cols;++i)
+       {
+           interpolationTable.innerHTML+="<tr>";
+            temp="";
+            for(var j=0;j<cols+1;++j)
+            {
+                if(j==0)
+                temp+="<td>"+xarr[i]+"</td>";
+
+                else if(j==1)
+                temp+="<td>"+yarr[i]+"</td>";
+
+                else
+                {
+                    if(obj[cnt] != undefined )
+                    {
+                        if(obj[cnt].arr[i].toString() != "NaN" )
+                        temp+="<td>"+obj[cnt++].arr[i]+"</td>"; 
+                        else 
+                        temp+="<td></td>";
+                    }
+                   
+                }
+                
+            }
+            cnt=0;
+            
+            interpolationTable.innerHTML+=temp;
+           interpolationTable.innerHTML+="</tr>";
+       }
+ 
+    }
+
+
+</script>
+</html>
