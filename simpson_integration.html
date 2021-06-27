@@ -66,16 +66,21 @@
         </tr>
         <tr>
             <td>3</td>
+           <td>** The Function must be continuous within the limits.</td>
+        </tr>
+        <tr>
+            <td>4</td>
           <td>Use JavaScript Math Object to use basic math functions.<br>Example: for using sin(x), write Math.sin(x). Learn more <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math">here</a></td>
         </tr>
+        <tr>
         
-            <td>4</td>
+            <td>5</td>
             <td>Separate the precedence of operators using '(' or ')' bracket, not '{' or '}' or '[' or ']'</td>
         </tr>
         <tr>
-            <td>5</td>
+            <td>6</td>
             <td>
-               The function <img src="https://www.dropbox.com/s/xtoib1zjohz9x1z/integr.JPG?raw=1" width="120" alt="demo img"> can be written as Math.exp(-x)*Math.sin(x)
+               Example: the function <img src="https://www.dropbox.com/s/xtoib1zjohz9x1z/integr.JPG?raw=1" width="120" alt="demo img"> can be written as Math.exp(-x)*Math.sin(x)
             </td>
         </tr>
       </table>
@@ -127,9 +132,12 @@
         //     alert(func.value);
         // }
         // else 
-        res = func.value.toString().replace(/X/g, x);
-       
-        return parseFloat(eval(res.toString()).toFixed(8));
+        res = (func.value.toString()).replaceAll(/X/g, x);
+        
+     
+            var evalution=eval(res.toString());
+          
+        return parseFloat(evalution.toFixed(8));
       } catch (e) {
         err = true;
         errType = e;
@@ -173,8 +181,13 @@
       var b = parseFloat(document.getElementById("b").value);
       
       var res=simpson3_8(a, b);
-        document.getElementById("result").value = res;
-     
+      try{
+          document.getElementById("result").value = res.toFixed(8);
+      }
+        
+     catch{
+         document.getElementById('result').value="error";
+     }
         
      
     }
