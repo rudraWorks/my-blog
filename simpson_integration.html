@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+    <title>Numerical Integration</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      background: rgb(7, 211, 211);
+      font-family:'Times New Roman', Times, serif;
+    }
+    textarea {
+      resize: vertical;
+      width: 200px;
+      height: 50px;
+    }
+    input {
+      width: 200px;
+    }
+    td,tr{
+        border:2px solid black;
+        padding: 5px;
+        background: rgb(213, 230, 117);
+    }
+    table{
+        border-collapse: collapse;
+        width: 340px;
+    }
+    .rules{
+        width:95%;
+        
+    }
+    #result{
+        width: 300px;
+    }
+    button{
+        width: 150px;
+        height: 40px;
+        user-select: none;
+        border-radius: 13px;
+        outline: none;
+        font-weight: bolder;
+
+    }
+
+  </style>
+  <body>
+    <center>
+      <h1>Numerical Integration</h1>
+      <table class="rules">
+        <tr>
+            <td>1</td>
+          <td>
+             The result is calculated using <a href="https://en.wikipedia.org/wiki/Simpson%27s_rule#:~:text=Simpson's%203%2F8%20rule%2C%20also,polynomial%20up%20to%20cubic%20degree."> Simpson's 3/8 Algorithm</a>
+          </td>
+        </tr>
+        <tr>
+            <td>2</td>
+          <td>Entered function must be a function of 'X' (CAPITAL X)</td>
+        </tr>
+        <tr>
+            <td>3</td>
+          <td>Use JavaScript Math Object to use basic math functions.<br>Example: for using sin(x), write Math.sin(x). Learn more <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math">here</a></td>
+        </tr>
+        
+            <td>4</td>
+            <td>Separate the precedence of operators using '(' or ')' bracket, not '{' or '}' or '[' or ']'</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>
+               The function <img src="https://www.dropbox.com/s/xtoib1zjohz9x1z/integr.JPG?raw=1" width="120" alt="demo img"> can be written as Math.exp(-x)*Math.sin(x)
+            </td>
+        </tr>
+      </table>
+
+      <br /><br />
+      <table>
+        <tr>
+          <td>Enter the function:</td>
+          <td><textarea id="function"></textarea></td>
+        </tr>
+        <tr>
+          <td>Enter the upper limit </td>
+          <td><input id="b" /></td>
+        </tr>
+        <tr>
+          <td>Enter the lower limit </td>
+          <td><input id="a" /></td>
+        </tr>
+      </table>
+      <br />
+      <button onclick="calculate()">Calculate</button>
+      <br />
+      <br />
+      Result: <input id="result" />
+      <br><br>
+      <br>
+      <span style="font-family: 'Courier New', Courier, monospace;">copyright rudra</span>
+    </center>
+  </body>
+  <script>
+    var func = document.getElementById("function");
+    var x = new Array(),
+      y = new Array();
+    var err = false;
+    var errType;
+
+    function f(x) {
+
+      var res;
+      try {
+        
+        // if(func.value.toString().indexOf('exp')>=0)
+        // {
+        //   //  alert('d')
+        //     alert(func.value);
+        //     func.value.toString().replace('exp','EXP');
+        //     res = func.value.toString().replace("x", x);
+        //     func.value.toString().replace('EXP','exp');
+        //     alert(func.value);
+        // }
+        // else 
+        res = func.value.toString().replace("X", x);
+       
+        return parseFloat(eval(res.toString()).toFixed(8));
+      } catch (e) {
+        err = true;
+        errType = e;
+        return e;
+      }
+      
+    }
+
+    function simpson3_8(a, b) {
+      var n = 3000;
+      var d = (b - a) / n;
+      x = [];
+      y = [];
+      for (var i = 0; i < n + 1; ++i) {
+        x.push(parseFloat(a + i * d));
+        y.push(parseFloat(f(x[i])));
+      }
+      var ans2 = 0,
+        ans3 = 0;
+      for (var i = 1; i < n; ++i) {
+        if (i % 3 == 0) {
+          ans2 += parseFloat(y[i]);
+        } else {
+          ans3 += parseFloat(y[i]);
+        }
+      }
+      ans2 = ans2 * 2;
+      ans3 = ans3 * 3;
+      var res = (ans2 + ans3 + y[0] + y[n]) * d * (3.0 / 8.0);
+      //   alert(y[0]+" "+y[n]+" "+d+" "+ans2+" "+ans3);
+      if (err) {
+        err = false;
+        return errType;
+      }
+
+      return res;
+    }
+
+    function calculate() {
+      var a = parseFloat(document.getElementById("a").value);
+      var b = parseFloat(document.getElementById("b").value);
+      
+      var res=simpson3_8(a, b);
+        document.getElementById("result").value = res;
+     
+        
+     
+    }
+  </script>
+</html>
