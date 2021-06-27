@@ -31,13 +31,16 @@
         margin: 0;
         background: lightgoldenrodyellow;
     }
+    #numberofdatapoints{
+        width: 40px;
+    }
 </style>
 <body>
     <center>
         <br>
         <h1>Lagrange's Interpolation</h1>
         <br>
-        Enter the number of data points: <input type="number" id="numberofdatapoints" >
+        Enter the number of data points: <input  type="number" id="numberofdatapoints" >
         <br>
         <br>
         <button onclick="drawtable()">Draw Table</button>
@@ -94,6 +97,7 @@
    
     function drawtable()
     {
+        document.getElementById('result').style.display="none";
         interpolationtable.innerHTML="<tr><th>X</th><th>Y</th></tr>";
         var n=parseInt(numberofdatapoints.value);
         var temp="";
@@ -122,7 +126,7 @@
     }
     function calculate()
     {
-       
+        document.getElementById('result').style.display="block";
         if(numberofdatapoints.value=="")
         document.getElementById('result').textContent="Table can't be blank!!!";
          
