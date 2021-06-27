@@ -126,7 +126,7 @@
         //     alert(func.value);
         // }
         // else 
-        res = func.value.toString().replace("X", x);
+        res = func.value.toString().replace(/X/g, x);
        
         return parseFloat(eval(res.toString()).toFixed(8));
       } catch (e) {
