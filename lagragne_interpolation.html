@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+    <title>Lagrange's Interpolation</title>
+</head>
+<style>
+    table{
+        border: 2px solid black;
+    border-collapse: collapse;
+    background: greenyellow;
+    }
+    tr,td,th{
+        border:1px solid black;
+        padding: 4px;
+    }
+    input{
+        width: 100px;
+    }
+    button{
+        width: 100px;
+        height: 30px;
+        user-select: none;
+       
+    }
+    body{
+        margin: 0;
+        background: lightgoldenrodyellow;
+    }
+</style>
+<body>
+    <center>
+        <br>
+        <h1>Lagrange's Interpolation</h1>
+        <br>
+        Enter the number of data points: <input type="number" id="numberofdatapoints" >
+        <br>
+        <br>
+        <button onclick="drawtable()">Draw Table</button>
+        <br>
+        <br>
+        <table id="interpolationtable">
+            <tr>
+                <th>X</th><th>Y</th>
+            </tr>
+            
+        </table>
+
+        <br>
+        <br>
+        <button onclick="calculate()">Calculate</button>
+        <br>
+        <br>
+        <br><div id="result"></div>
+        <br>
+        <br>
+        <span style="font-family: 'Courier New', Courier, monospace;" >copyright rudra</span>
+    </center>
+    
+</body>
+
+<script>
+    var numberofdatapoints=document.getElementById('numberofdatapoints');
+    var interpolationtable=document.getElementById('interpolationtable');
+    var xarr=new Array();
+    var yarr=new Array();
+
+    
+    function lagr_interpolate(x,y,val)
+    {
+         var ans=0;
+         var n=x.length;
+
+        for(var i=0;i<n;++i)
+        {
+             var product=1;
+            for(var j=0;j<n;++j)
+            {
+                if(i!=j)
+                product=( product*(val-x[j]) )/(x[i]-x[j]);
+            }
+            product*=y[i];
+            ans+=product;
+
+        }
+        return ans;
+
+    }
+
+   
+    function drawtable()
+    {
+        interpolationtable.innerHTML="<tr><th>X</th><th>Y</th></tr>";
+        var n=parseInt(numberofdatapoints.value);
+        var temp="";
+        for(var i=0;i<n;++i)
+        {
+          temp+="<tr><td><input type='number'  class='xinput' oninput='xinput()'></td><td><input  type='number' class='yinput' oninput='yinput()'></td><tr>"  ;
+        }
+        interpolationtable.innerHTML+=temp;
+    }
+
+    function xinput()
+    {
+        xarr=[];
+        var allx=document.getElementsByClassName('xinput');
+        for(var i=0;i<allx.length;++i)
+        xarr.push( parseFloat(allx[i].value) );
+
+    }
+    function yinput()
+    {
+        yarr=[];
+        var ally=document.getElementsByClassName('yinput');
+        for(var i=0;i<ally.length;++i)
+        yarr.push( parseFloat(ally[i].value) );
+
+    }
+    function calculate()
+    {
+       
+        if(numberofdatapoints.value=="")
+        document.getElementById('result').textContent="Table can't be blank!!!";
+         
+        else
+        {
+            var val=parseFloat(prompt("Enter the value of x: "));
+            var ans=lagr_interpolate(xarr,yarr,val);
+        
+             document.getElementById('result').textContent="The predicted value of y at x= "+val+" is "+ans;
+        }
+       
+    }
+</script>
+</html>
