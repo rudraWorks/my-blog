@@ -113,9 +113,11 @@
        randomBtn.disabled=true;
        speed.disabled=true;
        var spd=parseFloat(speed.value);
+      var flag=0;
        for(var i=0;i<n-1;++i)
        {
         await new Promise (resolve=> setTimeout(resolve,400-spd));
+           flag=0;
            for(var j=0;j<n-1-i;++j)
            {
             await new Promise (resolve=> setTimeout(resolve,400-spd));
@@ -124,12 +126,15 @@
                    var temp=list[j];
                    list[j]=list[j+1];
                    list[j+1]=temp;
+                   flag=1;
                }
               
               
                sortAnimate();
               
            }
+           if(!flag)
+               break;
           
        }
        randomBtn.disabled=false;
