@@ -13,7 +13,7 @@
             background-color: lightgoldenrodyellow;
         }
         canvas{
-            background-color:rgb(252, 246, 251);
+           
             border:1px solid black;
         }
         td,tr{
@@ -100,7 +100,8 @@
     }
 
     var charttile=document.getElementById("charttile");
-    
+    ctx.fillStyle="rgb(252, 246, 251)";    
+            ctx.fillRect(0,0,w,h);
     
     function plot()
     {       
@@ -109,6 +110,11 @@
             
             data=[];
             ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="rgb(252, 246, 251)";    
+            ctx.fillRect(0,0,w,h);
+                   
+           
+         
             
             for(var i=2;i<table.childNodes.length;++i)
             {
@@ -169,7 +175,7 @@
     function download()
 
             {
-                 var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+                var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
                 var data=imgData.data;
                 for(var i=0;i<data.length;i+=4){
                     if(data[i+3]<255){
@@ -179,6 +185,8 @@
                         data[i+3]=255;
                     }
                 }
+                ctx.putImageData(imgData,0,0);
+
                 ctx.lineWidth=4;
                 ctx.moveTo(0,0);
                 ctx.lineTo(w,0);
