@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LU Decomposition</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+           
+            /* display: flex;
+            flex-flow: row wrap;
+            justify-content: center; */
+            margin-top: 1rem;
+            
+        }
+        input{
+           width:60px;
+        }
+        table{
+            border-collapse: collapse;
+        }
+        tr,td{
+            border: 1px solid black;
+        }
+        .outputTable{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        .outputTable>tr,td{
+            padding: 10px;
+        }
+        #result{
+            display: none;
+            margin: 60px;
+            margin-top: 20px;
+          
+        }
+        
+    </style>
+</head>
+<body>
+    <center>
+        <h1>LU Decomposition</h1>
+        <br>
+        Fill the matrix
+        <table>
+            <tr>
+                <td><input type="number"></td> <td><input type="number"></td> <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td> <td><input type="number"></td> <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td> <td><input type="number"></td> <td><input type="number"></td>
+            </tr>
+        </table>
+
+
+        <fieldset id="result">
+            <legend>Computed Result</legend>
+            <div >
+                LOWER
+                <table class="outputTable" id="l"></table>
+                <br>
+                UPPER
+                <table class="outputTable" id="u"></table>
+            </div>
+        </fieldset>
+        
+       
+    </center>
+</body>
+<script>
+     let matrix=[],L=[],U=[];
+     let l=document.getElementById('l');
+     let u=document.getElementById('u');
+
+     let inputElements= document.getElementsByTagName('input');
+     for(let i=0;i<inputElements.length;++i)
+     {
+         inputElements[i].addEventListener('input',compute);
+     }
+    function compute()
+    {
+       document.getElementById('result').style.display="block";
+       matrix=[];
+       L=[];
+       U=[];
+        let values=document.getElementsByTagName('input');
+      
+        for(let i=0;i<9;++i)
+        {
+            matrix.push( parseFloat(values[i].value) );
+        }
+        
+        let l1,l2,l3;
+        l1=matrix[3]/matrix[0];
+        l2=matrix[6]/matrix[0];
+        l3=(  (matrix[7]-(matrix[1]*matrix[6]/matrix[0]) )/( matrix[4]-( matrix[1]*matrix[3]/matrix[0]))  );
+        l1=l1.toFixed(4);
+        l2=l2.toFixed(4);
+        l3=l3.toFixed(4);
+         L=[[1,0,0],[l1,1,0],[l2,l3,1]];
+
+        let u1,u2,u3,u4,u5,u6;
+        u1=matrix[0];
+        u2=matrix[1];
+        u3=matrix[2];
+        u4=matrix[4]-(matrix[1]*matrix[3]/matrix[0]);
+        u5=matrix[5]-(matrix[2]*matrix[3]/matrix[0]);
+        u6=( matrix[8] - (  matrix[6]*matrix[2]/matrix[0] )  ) -     (   ( ( matrix[7]-(matrix[1]*matrix[6]/matrix[0])  ) /  (   ( matrix[4]-(matrix[1]*matrix[3]/matrix[0])    )         ) )* (   ( matrix[5]-(matrix[2]*matrix[3]/matrix[0])           )  ) ) ;
+
+        u1=u1.toFixed(4);
+        u2=u2.toFixed(4);
+        u3=u3.toFixed(4);
+        u4=u4.toFixed(4);
+        u5=u5.toFixed(4);
+        u6=u6.toFixed(4);
+
+        U=[[u1,u2,u3],[0,u4,u5],[0,0,u6]];
+
+        let temp="";
+        l.innerHTML="";
+        for(let i=0;i<3;++i)
+        {
+            temp+="<tr>";
+            for(let j=0;j<3;++j)
+               {
+                 temp+="<td>"+L[i][j]+"</td>";
+               } 
+            temp+="</td>";
+         
+        }
+        l.innerHTML+=temp;
+
+        temp="";
+        u.innerHTML="";
+        for(let i=0;i<3;++i)
+        {
+            temp+="<tr>";
+            for(let j=0;j<3;++j)
+               {
+                 temp+="<td>"+U[i][j]+"</td>";
+               } 
+            temp+="</td>";
+         
+        }
+        u.innerHTML+=temp;
+        
+    }
+</script>
+</html>
