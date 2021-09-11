@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+
+    <title>Inverse of Matrix</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+           
+            /* display: flex;
+            flex-flow: row wrap;
+            justify-content: center; */
+            margin-top: 1rem;
+            
+        }
+        input{
+           width:60px;
+        }
+        table{
+            border-collapse: collapse;
+        }
+        tr,td{
+            border: 1px solid black;
+        }
+        .outputTable{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        .outputTable>tr,td{
+            padding: 10px;
+        }
+        #result{
+            display: none;
+            
+            margin:10%;
+            margin-top: 40px;
+            padding-bottom: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Inverse of Matrix</h1>
+        <br>
+        Fill the matrix
+        <table>
+            <tr>
+                <td><input type="number"></td> <td><input type="number"></td> <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td> <td><input type="number"></td> <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td> <td><input type="number"></td> <td><input type="number"></td>
+            </tr>
+        </table>
+
+        <br>
+       <br>
+       
+        <button onclick="compute()">calculate</button>
+        
+            <div id="result">
+               
+                Inverted Matrix
+                <table id="inverted" class="outputTable"></table>
+                <br>
+                <span id="determinant"></span>
+            </div>
+
+    
+        
+       
+    </center>
+</body>
+<script>
+    let mat=[];
+    let res=[];
+    
+    function compute(){
+
+        // alert('compute');
+        mat=[];
+        res=[];
+    
+        document.getElementById('result').style.display="block";
+
+        let values=document.getElementsByTagName('input');
+        
+        for(let i=0;i<9;++i){
+            mat.push( parseFloat(values[i].value) );
+        }
+
+
+        let det=mat[0]*(mat[4]*mat[8]-mat[7]*mat[5])- mat[1]*(mat[3]*mat[8]-mat[6]*mat[5]) + mat[2]*(mat[3]*mat[7]-mat[6]*mat[4]);
+        
+        if(det == 0)
+        {
+            alert("Inverse not exists because determinant is zero!!");
+            return;
+        }
+        
+        let r1=[],r2=[],r3=[];
+
+        r1.push(  ((mat[4]*mat[8]-mat[7]*mat[5] )/det).toFixed(4) );
+        r1.push( ((mat[7]*mat[2]-mat[1]*mat[8] )/det).toFixed(4));
+        r1.push( ((mat[1]*mat[5]-mat[2]*mat[4] )/det).toFixed(4));
+
+        r2.push( (( mat[5]*mat[6]-mat[3]*mat[8])/det).toFixed(4)  );
+        r2.push( ((mat[0]*mat[8]-mat[6]*mat[2] )/det).toFixed(4));
+        r2.push( ((mat[2]*mat[3]-mat[0]*mat[5] )/det).toFixed(4));
+
+        r3.push( (( mat[3]*mat[7]-mat[6]*mat[4])/det).toFixed(4)  );
+        r3.push( ((mat[1]*mat[6]-mat[0]*mat[7] )/det).toFixed(4));
+        r3.push( ((mat[0]*mat[4]-mat[1]*mat[3] )/det).toFixed(4));
+        
+
+        res.push(r1);
+        res.push(r2);
+        res.push(r3);
+
+        document.getElementById('determinant').textContent="Determinant = "+det;
+
+        let temp="";
+        let inverted=document.getElementById('inverted');
+        inverted.innerHTML="";
+        for(let i=0;i<3;++i)
+        {
+            temp+="<tr>";
+            for(let j=0;j<3;++j)
+               {
+                 temp+="<td>"+res[i][j]+"</td>";
+               } 
+            temp+="</td>";
+         
+        }
+        inverted.innerHTML+=temp;
+    }
+</script>
+
+</html>
