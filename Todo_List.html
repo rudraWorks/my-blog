@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap" rel="stylesheet">
+
+
+    <title>TODO LIST</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+
+    <!--    <script type="text/javascript" src="file:///android_asset/jquery.js"></script>-->
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            background-color: lightgoldenrodyellow;
+            user-select: none;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        .dynamicP,.dynamicDeletedP{
+            background-color: yellow;
+            padding: 5px;
+            font-size: 15px;
+            border: 1px solid black;
+            margin: 5px;
+            width: 300px;
+            cursor: pointer;
+            font-weight: 800;
+        }
+        .dynamicP:hover{
+            background-color: yellowgreen;
+        }
+        .dynamicDeletedP{
+            background-color: rgb(10, 209, 133);
+            color: black;
+        }
+        .dynamicDeletedP:hover{
+            background-color: rgb(238, 165, 177);
+
+        }
+        #items{
+            border: 2px solid black;
+            width: 350px;
+            height: 350px;
+            overflow: scroll;
+            overflow-x: hidden;
+            background-color: rgb(210, 238, 238);
+        }
+        #note{
+            height: 30px;
+            width: 320px;
+            /* font-size: 10px; */
+            text-align: center;
+
+        }
+        #addbtn{
+            height: 30px;
+        }
+        #completedbtn{
+            padding: 5px;
+            font-weight: 500;
+            width: 350px;
+        }
+        #completed_tasks{
+            width: 350px;
+            border: 2px solid black;
+            background-color: rgb(32, 8, 99);
+            display: none;
+        }
+
+
+        #items::-webkit-scrollbar-track
+        {
+            border: 1px solid black;
+            background-color: #F5F5F5;
+        }
+
+        #items::-webkit-scrollbar
+        {
+            width: 10px;
+            background-color: #F5F5F5;
+        }
+
+        #items::-webkit-scrollbar-thumb
+        {
+            background-color: #000000;
+        }
+
+
+    </style>
+</head>
+<body>
+<br>
+<center>
+    <h1>TODO LIST</h1>
+    <div>By Rudra Pratap Singh</div>
+    <br>
+    <input id="note"><button id="addbtn">Add</button>
+    <br><br>
+    <button id="completedbtn">Completed Tasks</button>
+    <br>
+    <div id="completed_tasks">
+    </div>
+    <br><br>
+    <div id="items">
+        <h2>Pending Tasks</h2>
+        <br>
+    </div>
+</center>
+
+</body>
+<script>
+    let isFirstOpen=localStorage.getItem('isFirstOpen');
+    // alert(isFirstOpen);
+   // localStorage.clear();
+
+    let completed_list=[];
+    let Pending_list=[];
+
+    if(isFirstOpen==null)
+    {
+        alert("Welcome to TODO LIST!");
+        localStorage.setItem('isFirstOpen',false);
+        localStorage.setItem('completed','');
+        localStorage.setItem('pending','');
+    }
+    else{
+
+        let items=document.getElementById('items');
+        let load_pending=[];
+        if( (localStorage.getItem('pending'))!="" )
+        {
+            load_pending=JSON.parse(localStorage.getItem('pending'));
+        }
+
+        if(load_pending.length==0)
+        items.innerHTML+="<span>No Pending Task</span>";
+        // alert(load_pending.length);
+        for(let i=0;i<load_pending.length;++i)
+        {
+            let p=document.createElement('p');
+            p.setAttribute('class','dynamicP');
+            let content=document.createTextNode(load_pending[i]);
+            p.appendChild(content);
+
+            document.getElementsByTagName('body')[0].appendChild(p);
+            items.appendChild(p);
+        }
+
+        let completed_tasks=document.getElementById('completed_tasks');
+        let load_completed=[];
+        if(localStorage.getItem('completed')!="")
+        {
+             load_completed=JSON.parse(localStorage.getItem('completed'));
+        }
+
+        // alert(load_pending.length);
+        for(let i=0;i<load_completed.length;++i)
+        {
+            let p=document.createElement('p');
+            p.setAttribute('class','dynamicDeletedP');
+            let content=document.createTextNode(load_completed[i]);
+            p.appendChild(content);
+
+            document.getElementsByTagName('body')[0].appendChild(p);
+            completed_tasks.appendChild(p);
+        }
+
+        localStorage.setItem('completed',JSON.stringify(load_completed));
+
+
+    }
+
+  
+
+    $(document).ready(function(){
+        $('#addbtn').click(function(){
+
+            $('span').remove();
+
+            let p=document.createElement('p');
+            p.setAttribute('class','dynamicP');
+            let content=document.createTextNode($('#note').val());
+            if($('#note').val().trim()=="")
+            alert('Input can not be empty!');
+            else{
+
+                p.appendChild(content);
+                document.getElementsByTagName('body')[0].appendChild(p);
+                $('#items').append(p);
+                document.getElementById('note').value="";
+            }
+
+            let current_pending=document.getElementsByClassName('dynamicP');
+            // alert(current_pending.length);
+            Pending_list=[];
+            for(let i=0;i<current_pending.length;++i)
+            {
+                Pending_list.push(current_pending[i].textContent);
+            }
+
+            localStorage.setItem('pending',JSON.stringify(Pending_list));
+
+        });
+
+        $('.dynamicP').click(function(){
+            $(this).css('background','blue');
+        });
+
+        $(document).on('click', '.dynamicP', function(){
+            $(this).css({'background':'blue','border-radius':'1000px','color':'white'});
+            // $(this).css({ WebkitTransform: 'rotate(' + 180 + 'deg)'}).hide(1000);
+
+
+
+            let p=document.createElement('p');
+            p.setAttribute('class','dynamicDeletedP');
+            let content=document.createTextNode(this.textContent);
+
+            p.appendChild(content);
+            document.getElementsByTagName('body')[0].appendChild(p);
+            $('#completed_tasks').append(p);
+
+
+
+            let last=document.getElementsByClassName('dynamicP');
+
+            $(this).hide(1000,function(){
+                $(this).remove();
+                if(last.length==0){
+                    let span=document.createElement('span');
+                    span.textContent="No Pending Task";
+                    $('#items').append(span);
+
+                }
+                    let current_pending=document.getElementsByClassName('dynamicP');
+                    // alert(current_pending.length);
+                    Pending_list=[];
+                    for(let i=0;i<current_pending.length;++i)
+                    {
+                        Pending_list.push(current_pending[i].textContent);
+                    }
+
+                    localStorage.setItem('pending',JSON.stringify(Pending_list));
+            });
+
+            let current_completed=document.getElementsByClassName('dynamicDeletedP');
+                    // alert(current_pending.length);
+                    completed_list=[];
+                    for(let i=0;i<current_completed.length;++i)
+                    {
+                        completed_list.push(current_completed[i].textContent);
+                    }
+
+                    localStorage.setItem('completed',JSON.stringify(completed_list));
+
+
+        });
+
+        $(document).on('click', '.dynamicDeletedP', function(){
+            $(this).css({'background':'orange','border-radius':'1000px','color':'white'});
+            // $(this).css({ WebkitTransform: 'rotate(' + 180 + 'deg)'}).hide(1000);
+
+            $(this).hide(1000,function(){
+                $(this).remove();
+                let current_completed=document.getElementsByClassName('dynamicDeletedP');
+                    // alert(current_completed.length);
+                    completed_list=[];
+                    for(let i=0;i<current_completed.length;++i)
+                    {
+                        completed_list.push(current_completed[i].textContent);
+                    }
+
+                    localStorage.setItem('completed',JSON.stringify(completed_list));
+            });
+        });
+
+        // $('.dynamicP').on('click', '.dynamicP', function() {
+        //     $(this).css('background','blue');
+        // });
+
+        $('#completedbtn').click(function(){
+           $('#completed_tasks').slideToggle();
+
+
+        });
+    });
+
+    // localStorage.setItem('kk','val');
+
+
+</script>
+
+</html>
