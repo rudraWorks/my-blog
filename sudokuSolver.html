@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+    <title>Sudoku Solver</title>
+    <style>
+        input{
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            text-align: center;
+            font-weight: bolder;
+        }
+        td{
+            border-collapse: collapse;
+        }
+        table{
+            border-spacing: 0ch;
+            border-collapse: collapse;
+       
+        }
+    </style>
+</head>
+<body>
+
+    <center>
+        <h1><i>Sudoku Solver</i></h1>
+        <br>
+        <table>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+            </tr>
+
+
+        </table>
+        <br>
+        <button onclick="solveSudoku()">solve</button>
+        <button onclick="clearBoard()">clear board</button>
+        <br><br><br><i>rudra</i>
+    </center>
+</body>
+<script>
+    let table=document.getElementsByTagName('table')[0];
+    let tr=document.getElementsByTagName('tr');
+    
+    let isDone=false;
+    let mat=[];
+    function clearBoard()
+    {
+        mat=[];
+        isDone=false;
+        for(var i=0;i<tr.length;++i)
+        {
+            let td=tr[i].children;
+            for(var j=0;j<td.length;++j)
+            {
+                let input=td[j].children[0];
+                input.value='';
+                input.style.background="transparent";
+            }
+        }
+    }
+    clearBoard();
+
+    function isValidCell(mat,i,j,p)
+    {
+        for(let k=0;k<9;++k)
+        if(mat[i][k]==p)
+        return 0;
+        for(let k=0;k<9;++k)
+        if(mat[k][j]==p)
+        return 0;
+
+        let si=parseInt(i/3)*3,sj=parseInt(j/3)*3;
+        for(let i=0;i<3;++i)
+        for(let j=0;j<3;++j)
+        if(mat[i+si][j+sj]==p)
+        return 0;
+        return 1;
+    }
+
+   
+    function isValidSudoku(mat)
+    {
+        for(let i=0;i<9;++i)
+        {
+            for(let j=0;j<9;++j)
+            {
+            
+                
+                if(mat[i][j]<0 || (mat[i][j]>9 && mat[i][j]!=10) )
+                {
+                   
+                    return 0; 
+                }
+
+
+               
+                if(mat[i][j]==0)
+                continue;
+
+                let t=mat[i][j];
+
+                mat[i][j]=10;
+               
+                if(!isValidCell(mat,i,j,t))
+                return 0;
+                
+                mat[i][j]=t;
+            }
+           
+            
+        }
+        return 1;
+    }
+    
+    function isValid(mat,i,j,p)
+    {
+        for(let k=0;k<9;++k)
+        if(mat[i][k]==p)
+        return 0;
+        for(let k=0;k<9;++k)
+        if(mat[k][j]==p)
+        return 0;
+        
+        let si=parseInt(i/3)*3;
+        let sj=parseInt(j/3)*3;
+        for(let i=0;i<3;++i)
+        {
+            for(let j=0;j<3;++j)
+            {
+                if(mat[si+i][sj+j]==p) 
+                 return 0;
+            } 
+        } 
+      
+        return 1;
+    }
+
+    function solve(mat,i,j)
+    {
+        let ni,nj;
+        if(i==9)
+        {
+            isDone=1;
+            for(var i=0;i<tr.length;++i)
+            {
+                let td=tr[i].children;
+                for(var j=0;j<td.length;++j)
+                {
+                    let input=td[j].children[0];
+                    input.value=mat[i][j];
+                }
+            }
+
+            return;
+        }
+
+        if(j==8)
+        {
+            ni=i+1;
+            nj=0;
+        }
+        else 
+        {
+            ni=i;
+            nj=j+1;
+        }
+        if(mat[i][j]!=0)
+        solve(mat,ni,nj);
+        else 
+        {
+            for(let p=1;p<=9;++p)
+            {
+                if(parseInt(isValid(mat,i,j,p))==1)
+                {
+                    mat[i][j]=p;
+                    solve(mat,ni,nj);
+                    if(isDone)
+                    return;
+                    mat[i][j]=0;
+                }
+            }
+        }
+    }
+
+    function solveSudoku()
+    {
+        mat=[];
+        for(var i=0;i<tr.length;++i)
+        {
+            let td=tr[i].children;
+            let row=[];
+            for(var j=0;j<td.length;++j)
+            {
+                // console.log(i+" "+j);
+                
+                let input=td[j].children[0];
+                if(isNaN(parseInt(input.value))==true)
+                row.push(parseInt(0));
+                else 
+                {
+                    row.push(parseInt(input.value));
+                    input.style.background="yellow";
+                }
+
+                 
+            }
+            mat.push(row);
+        }
+      
+        if(!isValidSudoku(mat))
+        return alert("Invalid Sudoku!!!");
+        solve(mat,0,0);
+    }
+    
+</script>
+</html>
