@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFS shortest Path</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+       
+        td{
+            border:1px solid black;
+            padding: 4px;
+        }
+        table{
+            border: 1px solid black;
+            border-collapse: collapse;
+            table-layout: fixed;
+            /* border-spacing: 3px; */
+        }
+        #start:hover{
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body  ondragstart="return false;" ondrop="return false;" >
+    <center>
+        <h1>Approximating Shortest Path Using DFS Algorithm</h1>
+        <br>
+      
+        Draw <input id="drawCheckBox" type="checkbox">
+        <br><i>source</i><span id="src"></span> , <i>destination</i><span id="dst"></span>
+        
+        <br><br>
+        <button onclick="drawBoard()">clear</button>
+        <button onclick="setup()">Find Path</button>
+        <br><br>
+        <table>
+        
+        </table>
+        <br><i>rudra pratap singh</i>
+    </center>
+</body>
+<script>
+  
+    const table=document.getElementsByTagName('table')[0];
+    const drawCheckBox=document.getElementById('drawCheckBox');
+    const large=100000000;
+    var row=50;
+    let tr,td;
+
+    let grid=[];//[[1,1,1],[1,1,1],[1,1,1]];
+    let dp=[];
+    let isVisited=[];
+    let vis=[];
+    let coordinates=[];
+    
+
+    let isFound;
+
+    let isMouseDown=false,isMouseUp=false;
+
+    let body=document.getElementsByTagName('body')[0];
+    let src=document.getElementById('src');
+    let dst=document.getElementById('dst');
+    let isSrcSelected=false,isDstSelected=false;
+    let si,sj,ei,ej;
+
+    body.addEventListener('mousedown',()=>{
+        isMouseUp=false;
+        isMouseDown=true;
+    });
+
+    body.addEventListener('mouseup',()=>{
+        isMouseDown=false;
+        isMouseUp=true;
+    });
+
+    body.addEventListener('drag',()=>{
+        isMouseDown=false;
+        isMouseUp=true;
+    });
+
+    function draw()
+    {
+        // console.log(this.getBoundingClientRect())
+        let x=table.children[0].children[0].getBoundingClientRect().x;
+        let y=table.children[0].children[0].getBoundingClientRect().y;
+
+        let i=(this.getBoundingClientRect().x-x)/9;
+        let j=(this.getBoundingClientRect().y-y)/9;
+        // console.log(i+" "+j)
+        if(!isSrcSelected)
+        src.textContent=" ("+i+","+j+") ";
+        else if(!isDstSelected)  dst.textContent=" ("+i+","+j+") ";
+        if(drawCheckBox.checked && isMouseDown && !isMouseUp)
+        this.style.background="blue";
+
+       
+    }
+
+    function srcDstSelection()
+    {
+        let x=table.children[0].children[0].getBoundingClientRect().x;
+        let y=table.children[0].children[0].getBoundingClientRect().y;
+
+        let i=(this.getBoundingClientRect().x-x)/9;
+        let j=(this.getBoundingClientRect().y-y)/9;
+
+        if(!isSrcSelected)
+        {
+            si=j;
+            sj=i;
+            src.textContent=" ("+i+","+j+") ";
+            isSrcSelected=true;
+            table.children[j].children[i].style.background="green";
+            
+        }
+        else if(!isDstSelected)
+        {
+            ei=j;
+            ej=i;
+            isDstSelected=true;
+            dst.textContent=" ("+i+","+j+") ";
+            table.children[j].children[i].style.background="black";
+        }
+    }  
+  function drawBoard()
+    {
+        isDstSelected=false;
+        isSrcSelected=false;
+        table.innerHTML="";
+        src.innerHTML="";
+        dst.innerHTML="";
+
+        for(let i=0;i<row;++i)
+        {   
+            let tr=document.createElement('tr');
+            table.appendChild(tr);
+        }
+
+    
+        for(let i=0;i<row;++i)
+        {   
+            
+            for(let j=0;j<row;++j)
+            {
+                td=document.createElement('td');
+                td.addEventListener('mouseenter',draw);
+                td.addEventListener('click',srcDstSelection);
+                table.children[i].appendChild(td);
+            
+            }
+        
+        }
+        // document.body.appendChild(table);
+
+    }
+    drawBoard();
+
+   
+   
+
+    function setup()
+    {
+        if(!isSrcSelected || !isDstSelected)
+        return alert('select source and destination coordinates!')
+        grid=[];
+
+        for(let i=0;i<row;++i)
+        {   
+            let temp=[];
+            
+            for(let j=0;j<row;++j)
+            {
+                if(  getComputedStyle(table.children[i].children[j]).background.substr(10,3)=='255' )
+                temp.push(1);
+                else 
+                {   
+                    table.children[i].children[j].style.background="white";
+                    temp.push(0);
+
+                }
+                
+            
+            }
+            grid.push(temp);
+        
+        }
+
+        
+       
+
+        // vector<pair<int,int>>cordinates;
+        // findPath(grid,path,cordinates,0,0,4,5);
+        coordinates=[];
+        let nr=grid.length,nc=grid[0].length;
+        // findPath(grid,coordinates,0,0,grid.length-1,grid[0].length-1);
+
+        // let ei=nr-30,ej=nc-5;
+        // let si=nr-1,sj=0;
+        // // let ei=0,ej=nc-1;
+        findPath(grid,coordinates,si,sj,ei,ej);
+
+        table.children[si].children[sj].style.background="green";
+       
+
+        // document.getElementById('tooltipDiv').appendChild(table.children[si].children[sj]);
+        // table.children[si].children[sj].innerHTML="  <div class='tooltip'> S<span class='tooltiptext'>Tooltip text</span></div>";
+        table.children[si].children[sj].setAttribute('id','start');
+       
+        if(coordinates.length==0)
+        return alert("No path found!");
+        for(let i=0;i<coordinates[0].length;++i)
+       {
+        //    console.log(coordinates[0][i][0]+" "+coordinates[0][i][1]);
+           table.children[coordinates[0][i][0]].children[coordinates[0][i][1]].style.background="red";
+       } 
+       table.children[ei].children[ej].style.background="black";
+
+    }
+    // setup();
+
+    function isValid(gridd,isVisited,i,j,row,col)
+    {
+        if(i<0 || j<0 || i>=row || j>=col || isVisited[i][j]==1 || gridd[i][j]==1)
+            return 0;
+            return 1;
+    }
+
+    function dfs(gridd,isVisited,tempArr,coordinates,i,j,m,n,row,col,isFound)
+    {
+        // let tempV=JSON.parse(JSON.stringify(tempArr));
+        let tempV=tempArr.slice();
+      
+        if(!isValid(gridd,isVisited,i,j,row,col))
+        return;
+        
+        // coordinates.push(tempV);
+        isVisited[i][j]=1;
+        if(i==m && j==n)
+        {
+            isFound.found=true;
+            // console.log(tempV);
+            // coordinates=tempV;
+            coordinates.push(tempV);
+            return;
+        }
+
+       
+       
+        if(i>m && j==n)
+        {
+      
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+
+            
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+        
+
+
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+
+
+         
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+
+        
+           
+            
+        }    
+        
+        else if(i<m && j==n)
+        {
+    
+             
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+
+           
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+          
+
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+        
+       
+            
+        }    
+
+
+        else if(i==m && j>n)
+        {
+      
+            
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+
+            
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+
+
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+
+        
+
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+
+            
+        }    
+
+        else if(i==m && j<n)
+        {
+
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+
+
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+           
+
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+                
+           
+
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+         
+
+            
+        }    
+     
+
+        ////
+        
+     
+        else if(i>m && j>n)
+        {
+      
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+        
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+           
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+        
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+
+           
+
+            
+        }    
+        
+        else if(i>m && j<n)
+        {
+    
+
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+        
+            
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+
+           
+        
+            
+        }    
+
+
+        else if(i<m && j>n)
+        {
+      
+
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+        
+        
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+
+
+            
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+
+            
+        }    
+
+        else if(i<m && j<n)
+        {
+      
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+                
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+
+            if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+            
+        }    
+
+        else
+        {
+      
+             if(isFound.found) //left
+            return;
+            let l=tempV.slice();
+            l.push([i,j-1]);
+            dfs(gridd,isVisited,l,coordinates,i,j-1,m,n,row,col,isFound);
+        
+            if(isFound.found)  //up
+            return;
+            let u=tempV.slice();
+            u.push([i-1,j]);
+            dfs(gridd,isVisited,u,coordinates,i-1,j,m,n,row,col,isFound);
+
+            if(isFound.found) //right
+            return;
+            let r=tempV.slice();
+            r.push([i,j+1]);
+            dfs(gridd,isVisited,r,coordinates,i,j+1,m,n,row,col,isFound);
+
+        
+            if(isFound.found) //down
+            return;
+            let d=tempV.slice();
+            d.push([i+1,j]);
+            dfs(gridd,isVisited,d,coordinates,i+1,j,m,n,row,col,isFound);
+            
+        }    
+      
+
+ 
+
+        return;
+
+        if(isFound.found)  //up-left diagonal
+        return;
+        let ul=tempV.slice();
+        ul.push([i-1,j-1]);
+        dfs(gridd,isVisited,ul,coordinates,i-1,j-1,m,n,row,col,isFound);
+
+        if(isFound.found) //down-left diagonal
+        return;
+        let dl=tempV.slice();
+        dl.push([i+1,j-1]);
+        dfs(gridd,isVisited,dl,coordinates,i+1,j-1,m,n,row,col,isFound);
+
+        if(isFound.found) //up-right diagonal
+        return;
+        let ur=tempV.slice();
+        ur.push([i-1,j+1]);
+        dfs(gridd,isVisited,ur,coordinates,i-1,j+1,m,n,row,col,isFound);
+ 
+        if(isFound.found) //down-right diagonal
+        return;
+        let dr=tempV.slice();
+        dr.push([i+1,j+1]);
+        dfs(gridd,isVisited,dr,coordinates,i+1,j+1,m,n,row,col,isFound);
+
+    }
+   
+    function findPath(gridd,coordinates,i,j,m,n)
+    {
+    //     int row=grid.size(),col=grid[0].size();
+    // vector<vector<int>>isVisited(row,vector<int>(col,0));
+    // int isFound=0;
+    // dfs(grid,isVisited,"",path,{},{},coordinates,i,j,m,n,row,col,isFound);
+        let row=gridd.length,col=grid[0].length;
+        isVisited=[];
+       
+        for(let i=0;i<row+1;++i)
+        {   let temp=[];
+            for(let j=0;j<col+1;++j)
+            {  
+                temp.push(0);
+            }
+            isVisited.push(temp);
+           
+        }
+
+        isFound={found:false};
+        let tempArr=[];
+        dfs(gridd,isVisited,tempArr,coordinates,i,j,m,n,row,col,isFound);
+
+    }
+</script>
+</html>
