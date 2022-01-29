@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+
+    <title>Minimum Spanning Tree</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        canvas{
+            border: 1px solid black;
+           
+        }
+        body{
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Kruskals's Algorithm for Minimum/Maximum Spanning Tree</h1>
+        <br>
+        <canvas></canvas>
+        <canvas></canvas>
+        <br>
+        <button onclick="draw()">Draw Complete Tree</button> <button onclick="erase()">Clear</button> <button  id="toggleMSTbtn" onclick="switchToMST()">MST</button>
+        <br><i>rudra pratap singh</i>
+    </center>
+</body>
+<script>
+    let can=document.getElementsByTagName("canvas")[0];
+    let ctx=can.getContext('2d');
+
+    let can2=document.getElementsByTagName("canvas")[1];
+    let ctx2=can2.getContext('2d');
+
+    can.width=600;
+    can.height=500;
+    ctx.fillStyle="white";
+    ctx.fillRect(0,0,can.width,can.height);
+
+    can2.width=600;
+    can2.height=500;
+    ctx2.fillStyle="white";
+    ctx2.fillRect(0,0,can.width,can.height);
+
+
+    // can.addEventListener('click',()=>{
+
+    // });
+    let coordinates=[];
+    let rad=8;
+
+    let parent=[];
+    let rank=[];
+    let numberOfNodes;
+
+
+    let n=[];
+    let mstEdges=[];
+    let mxstEdges=[];
+    let toggleMST=false;
+
+    function erase()
+    {
+        
+        ctx.clearRect(0,0,can.width,can.height);
+        coordinates=[];
+        n=[];
+        parent=[];
+        rank=[];
+        mstEdges=[];
+        mxstEdges=[];
+        ctx2.clearRect(0,0,can2.width,can2.height);
+    }
+    document.addEventListener('click',(event)=>{
+        let cx=can.getBoundingClientRect().x;
+        let cy=can.getBoundingClientRect().y;
+        
+
+        let a=event.x-cx;
+        let b=event.y-cy;
+       
+
+        if(!(event.x>cx && event.x<cx+can.getBoundingClientRect().width  && event.y>cy && event.y<cy+can.getBoundingClientRect().height))
+        return;
+
+        
+        coordinates.push([a,b]);
+        ctx.beginPath();
+        ctx.fillStyle="red";
+        ctx.arc(a,b,rad,0,2*Math.PI);
+        ctx.fill();
+        ctx.stroke();
+
+      
+       
+    });
+
+    function draw()
+    {
+
+        n=[];
+        parent=[];
+        rank=[];
+        mstEdges=[];
+        mxstEdges=[];
+        ctx.clearRect(0,0,can.width,can.height);
+        ctx2.clearRect(0,0,can.width,can.height);
+
+        let totalEdges=0;
+
+        for(let i=0;i<coordinates.length;++i)
+        {
+           
+            ctx.beginPath();
+            ctx.lineWidth=1;
+            ctx.fillStyle="green";
+            ctx.arc(coordinates[i][0],coordinates[i][1],rad,0,2*Math.PI);
+            ctx.stroke();
+            ctx.fill();
+            
+            ctx.strokeText(i,coordinates[i][0]+10,coordinates[i][1]+10);
+            // ctx.strokeText(coordinates[i][0]+" , "+coordinates[i][1],coordinates[i][0]-10,coordinates[i][1]-10);
+            ++totalEdges;
+
+
+            for(let j=i+1;j<coordinates.length;++j)
+            {
+            
+                ctx.beginPath();
+                ctx.lineWidth=.421;
+
+                let p=coordinates[i][0],q=coordinates[i][1];
+                let x=coordinates[j][0],y=coordinates[j][1];
+
+                ctx.moveTo(p,q);
+                ctx.lineTo(x,y);
+                ctx.stroke();
+
+                let temp=[i,j,p,q,x,y,Math.sqrt((p-x)*(p-x) + (q-y)*(q-y)),-Math.sqrt((p-x)*(p-x) + (q-y)*(q-y))];
+                n.push(temp);
+            }
+        }
+        
+       
+        
+        ctx.beginPath();
+        ctx.lineWidth=1;
+        
+        numberOfNodes=totalEdges+10;
+        ctx.strokeText("Total Vertices: "+totalEdges,10,20);
+        totalEdges=totalEdges*0.5*(totalEdges-1);
+        ctx.strokeText("Total Edges: "+totalEdges,10,40);
+        
+       
+        
+        
+        for(let i=0;i<numberOfNodes;++i)
+        {
+            parent.push(5);
+            rank.push(5);
+        }
+
+        for(let i=0;i<numberOfNodes;++i)
+        {
+            parent[i]=i;
+            rank[i]=0;
+        }
+
+        let tempn=n.slice();
+        tempn.sort(function(x,y){return x[7]-y[7]});
+        n.sort(function(x,y){return x[6]-y[6]});
+        // console.log(n);
+    
+        for(let i=0;i<n.length;++i)
+        {
+
+            if(!hasSameParent(n[i][0],n[i][1]))
+            {
+                Union(n[i][0],n[i][1]);
+                mstEdges.push(n[i]);
+            }
+           
+
+        }
+        for(let i=0;i<numberOfNodes;++i)
+        {
+            parent.push(5);
+            rank.push(5);
+        }
+
+        for(let i=0;i<numberOfNodes;++i)
+        {
+            parent[i]=i;
+            rank[i]=0;
+        }
+
+        for(let i=0;i<tempn.length;++i)
+        {
+
+            if(!hasSameParent(tempn[i][0],tempn[i][1]))
+            {
+                Union(tempn[i][0],tempn[i][1]);
+                mxstEdges.push(tempn[i]);
+            }
+           
+
+        }
+
+        // console.log(mstEdges);
+        document.getElementById('toggleMSTbtn').textContent="MXST";
+        toggleMST=false;
+        drawMST();
+
+        
+    }
+
+    function switchToMST()
+    {
+        if(toggleMST)
+        {
+            drawMST();
+            toggleMST=false;
+            document.getElementById('toggleMSTbtn').textContent="MXST";
+        }
+        else 
+        {
+            drawMxST();
+            toggleMST=true;
+            document.getElementById('toggleMSTbtn').textContent="MST";
+        }
+    }
+
+    function drawMST()
+    {
+        
+        ctx2.clearRect(0,0,can2.width,can2.height);
+        ctx2.strokeText("MINUMUM SPANNING TREE",can2.width/2,20);
+        let cost=0;
+        for(let i=0;i<mstEdges.length;++i)
+        {
+
+            cost+=mstEdges[i][6];
+
+            ctx2.beginPath();
+            ctx2.lineWidth=1;
+            ctx2.fillStyle="blue";
+        
+
+            ctx2.arc(mstEdges[i][2],mstEdges[i][3],rad,0,2*Math.PI);
+            ctx2.stroke();
+            ctx2.fill();
+
+            ctx2.beginPath();
+            ctx2.arc(mstEdges[i][4],mstEdges[i][5],rad,0,2*Math.PI);
+            ctx2.stroke();
+            ctx2.fill();
+
+            ctx2.beginPath();
+            ctx2.moveTo(mstEdges[i][2],mstEdges[i][3]);
+            ctx2.lineTo(mstEdges[i][4],mstEdges[i][5]);
+            ctx2.stroke();
+            
+        }
+        ctx2.strokeText("COST = "+cost.toFixed(4),20,20);
+    }
+
+
+    function drawMxST()
+    {
+        ctx2.clearRect(0,0,can2.width,can2.height);
+        ctx2.strokeText("MAXIMUM SPANNING TREE",can2.width/2,20);
+        let cost=0;
+        for(let i=0;i<mxstEdges.length;++i)
+        {
+
+            cost+=(-1*mxstEdges[i][7]);
+
+            ctx2.beginPath();
+            ctx2.lineWidth=1;
+            ctx2.fillStyle="blue";
+        
+
+            ctx2.arc(mxstEdges[i][2],mxstEdges[i][3],rad,0,2*Math.PI);
+            ctx2.stroke();
+            ctx2.fill();
+
+            ctx2.beginPath();
+            ctx2.arc(mxstEdges[i][4],mxstEdges[i][5],rad,0,2*Math.PI);
+            ctx2.stroke();
+            ctx2.fill();
+
+            ctx2.beginPath();
+            ctx2.moveTo(mxstEdges[i][2],mxstEdges[i][3]);
+            ctx2.lineTo(mxstEdges[i][4],mxstEdges[i][5]);
+            ctx2.stroke();
+            
+        }
+        ctx2.strokeText("COST = "+cost.toFixed(4),20,20);
+    }
+
+     
+   
+
+    function findParent(x)
+    {
+        if(x==parent[x])
+        return x;
+        return parent[x]=findParent(parent[x]);
+    }
+
+    function Union(x,y)
+    {
+        let x_rep=findParent(x,parent);
+        let y_rep=findParent(y,parent);
+
+        if(x_rep==y_rep)
+        return 0;
+
+        if(rank[x_rep]<rank[y_rep])
+        parent[x_rep]=y_rep;
+
+        else if(rank[y_rep]<rank[x_rep])
+        parent[y_rep]=x_rep;
+
+        else  
+        {
+            parent[x_rep]=y_rep;
+            rank[y_rep]++;
+        }
+        return 1;
+    }
+
+    function hasSameParent(x,y)
+    {
+        return findParent(x,parent)==findParent(y,parent);
+    }
+</script>
+</html>
