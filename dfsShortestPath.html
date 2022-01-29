@@ -95,6 +95,8 @@
 
         let i=(this.getBoundingClientRect().x-x)/9;
         let j=(this.getBoundingClientRect().y-y)/9;
+        i=Math.round(i);
+        j=Math.round(j);
         // console.log(i+" "+j)
         if(!isSrcSelected)
         src.textContent=" ("+i+","+j+") ";
@@ -112,6 +114,9 @@
 
         let i=(this.getBoundingClientRect().x-x)/9;
         let j=(this.getBoundingClientRect().y-y)/9;
+        
+        i=Math.round(i);
+        j=Math.round(j);
 
         if(!isSrcSelected)
         {
