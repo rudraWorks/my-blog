@@ -424,7 +424,11 @@
                  table.children[i].children[j].style.background="white";
             }
         }
+
+        table.children[source[0]].children[source[1]].style.background="green";
+        table.children[destination[0]].children[destination[1]].style.background="black";        
         let cords=findMinPath(shortestTable,f);
+
         
         if(cords.length==0)
         return alert("no route found!");
@@ -445,8 +449,7 @@
         {
             table.children[coordinates[i][0]].children[coordinates[i][1]].style.background="red";
         }
-        table.children[source[0]].children[source[1]].style.background="green";
-        table.children[destination[0]].children[destination[1]].style.background="black";        
+       
 
     }
     function findMinPath(shortestTable,u)
