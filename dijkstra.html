@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijkstra</title>
+    <style>
+        *{
+            margin: 0;
+            box-sizing: border-box;
+            padding: 0;
+            user-select: none;
+        }
+        table{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        td{
+            border: 1px solid black;
+            padding: 4px;
+        }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <center>
+        <h1>Dijkstra Algorithm</h1>
+        <span id="points"></span>
+        <br>
+
+        <table></table>
+        <br>
+        <button onclick="draw()">Find Path</button> <button onclick="erase()">Clear</button>
+        <br>
+        <i>rudra pratap singh</i>
+    </center>
+</body>
+<script>
+    let table=document.getElementsByTagName('table')[0];
+
+    let row=55;
+    let isPressed=false;
+
+    let isSrcSelected=false;
+    let isDestSelected=false;
+    let src,dst;
+
+    let large=1000;
+    window.addEventListener('mousedown',(e)=>{
+        isPressed=true;
+    })
+    window.addEventListener('mouseup',(e)=>{
+        isPressed=false;
+    })
+
+    let grid=[];
+    let adjList=[];
+    
+    class Index 
+    {
+        constructor(ind,i,j,isBlocked)
+        {
+            this.ind=ind;
+            this.i=i;
+            this.j=j;
+            this.isBlocked=isBlocked;
+        }
+    }
+    function erase()
+    {
+        isDestSelected=false;
+        isSrcSelected=false;
+        adjList=[];
+        for(let i=0;i<row;++i)
+        {
+            for(let j=0;j<row;++j)
+            {
+              
+                 table.children[i].children[j].style.background="white";
+            }
+        }
+    }
+    function draw()
+    {
+        grid=[];
+        let source=src,destination=dst;
+        if(!isSrcSelected || !isDestSelected)
+        return alert("select source and destination coordinates");
+
+        for(let i=0;i<row;++i)
+        {   
+            let temp=[];
+            
+            for(let j=0;j<row;++j)
+            {
+                
+                isBlocked=0;
+                if(  getComputedStyle(table.children[i].children[j]).background.substr(10,3)=='255' )
+                isBlocked=1;
+                let t=new Index(i*row+j,i,j,isBlocked);
+                temp.push(t);
+            
+            }
+            grid.push(temp);
+        
+        }
+    
+        let k=0;
+        adjList=[];
+        for(let i=1;i<row-1;++i)
+        {
+            for(let j=1;j<row-1;++j)
+            {
+                let temp=[];
+                temp.push([grid[i][j].ind]);
+                let t=[];
+                let up,down,right,left;
+                
+                up=grid[i-1][j];
+                down=grid[i+1][j];
+                left=grid[i][j-1];
+                right=grid[i][j+1];
+                if(grid[i][j].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    continue;
+                }
+                t.push(up.ind);
+                t.push(left.ind);
+                t.push(right.ind);
+                t.push(down.ind);
+                temp.push(t);
+                adjList.push(temp);
+            }
+        }
+        
+        // first col
+        for(let i=1;i<row-1;++i)
+        {
+            let temp=[];
+            temp.push([grid[i][0].ind]);
+            let t=[];
+                let up,down,right;
+                
+                up=grid[i-1][0];
+                down=grid[i+1][0];
+                right=grid[i][1];
+
+                if(grid[i][0].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    continue;
+                }
+                t.push(up.ind);
+                t.push(right.ind);
+                t.push(down.ind);
+                temp.push(t);
+                adjList.push(temp);
+            
+        }
+
+        // last col
+        for(let i=1;i<row-1;++i)
+        {
+            let temp=[];
+                temp.push([grid[i][row-1].ind]);
+                let t=[];
+                let up,down,left;
+                
+                up=grid[i-1][row-1];
+                down=grid[i+1][row-1];
+                left=grid[i][row-1-1];
+                if(grid[i][row-1].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    continue;
+                }
+                t.push(up.ind);
+                t.push(left.ind);
+                t.push(down.ind);
+                temp.push(t);
+                adjList.push(temp);
+        }
+
+        // first row 
+        for(let j=1;j<row-1;++j)
+        {
+            let temp=[];
+                temp.push([grid[0][j].ind]);
+                let t=[];
+                let down,right,left;
+                
+               
+                down=grid[0+1][j];
+                left=grid[0][j-1];
+                right=grid[0][j+1];
+                if(grid[0][j].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    continue;
+                }
+              
+                t.push(left.ind);
+                t.push(right.ind);
+                t.push(down.ind);
+                temp.push(t);
+                adjList.push(temp);
+        }
+
+        // last row
+        for(let j=1;j<row-1;++j)
+        {
+                let temp=[];
+                temp.push([grid[row-1][j].ind]);
+                let t=[];
+                let up,right,left;
+                
+                up=grid[row-1-1][j];
+                left=grid[row-1][j-1];
+                right=grid[row-1][j+1];
+                if(grid[row-1][j].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    continue;
+                }
+                t.push(up.ind);
+                t.push(left.ind);
+                t.push(right.ind);
+               
+                temp.push(t);
+                adjList.push(temp);
+        }
+
+
+            // top left corner
+                let temp=[];
+                temp.push([grid[0][0].ind]);
+                let t=[];
+                let right;
+                let down;
+               
+                right=grid[0][1];
+                down=grid[1][0];
+                if(grid[0][0].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    
+                }
+                else 
+                {
+                   
+                    t.push(right.ind);
+                    t.push(down.ind);
+                    temp.push(t);
+                    adjList.push(temp);
+                }
+
+            // top right corner
+                temp=[];
+                temp.push([grid[0][row-1].ind]);
+                 t=[];
+
+                left=grid[0][row-2];
+                down=grid[1][row-1];
+                if(grid[0][row-1].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    
+                }
+                else 
+                {
+                    
+                    t.push(left.ind);
+                    t.push(down.ind);
+                
+                    temp.push(t);
+                    adjList.push(temp);
+                }
+
+                // bottom left corner
+                temp=[];
+                temp.push([grid[row-1][0].ind]);
+                 t=[];
+
+                right=grid[row-1][1];
+                up=grid[row-2][0];
+                if(grid[row-1][0].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    
+                }
+                else 
+                {
+                    
+                    t.push(up.ind);
+                    t.push(right.ind);
+                
+                    temp.push(t);
+                    adjList.push(temp);
+                }
+                
+                 // bottom right corner
+                 temp=[];
+                temp.push([grid[row-1][row-1].ind]);
+                 t=[];
+
+                left=grid[row-1][row-2];
+                up=grid[row-2][row-1];
+                if(grid[row-1][row-1].isBlocked)
+                {
+                    temp.push(t);
+                    adjList.push(temp);
+                    
+                }
+                else 
+                {
+                    
+                    t.push(up.ind);
+                    t.push(left.ind);
+                
+                    temp.push(t);
+                    adjList.push(temp);
+                }
+                
+
+        adjList.sort(function(x,y){return x[0]-y[0]});
+        let s=source[0]*row+source[1];
+        let f=destination[0]*row+destination[1];
+        let totalNodes=row*row;
+        // alert(f+" "+destination[0]+" "+destination[1]);
+        if(destination[0]>source[0] || (destination[0]==source[0] && destination[1]<source[1]))
+        f=f-s;
+        else if(destination[0]<source[0] || (destination[0]==source[0] && destination[1]>source[1]))
+        f=totalNodes-1-f;
+        // alert(f+" "+destination[0]+" "+destination[1]);
+        for(let i=0;i<adjList.length;++i)
+        {
+            if(adjList[i][0]<s)
+            adjList[i][0]=totalNodes-adjList[i][0]-1;
+            else 
+            adjList[i][0]=adjList[i][0]-s;
+
+            for(let j=0;j<adjList[i][1].length;++j)
+            {
+                if(adjList[i][1][j]<s)
+                adjList[i][1][j]=totalNodes-1-adjList[i][1][j];
+                else 
+                adjList[i][1][j]=adjList[i][1][j]-s;
+            }
+        }
+        for(let i=0;i<grid.length;++i)
+        {
+            for(let j=0;j<grid.length;++j)
+            {
+               if(grid[i][j].ind<s)
+               grid[i][j].ind=totalNodes-1-grid[i][j].ind;
+               else 
+               grid[i][j].ind=grid[i][j].ind-s;
+            }
+        }
+     
+        adjList.sort(function(x,y){return x[0]-y[0]});
+        
+        let shortestTable=[];
+        for(let i=0;i<totalNodes;++i)
+        {
+            let t=[];
+            for(let j=0;j<totalNodes;++j)
+            t.push(large);
+            shortestTable.push(t);
+        }
+        
+        shortestTable[0][0]=0;
+
+        let isVisited=[];
+        for(let i=0;i<totalNodes;++i)
+        isVisited.push(0);
+        for(let i=0;i<totalNodes-1;++i)
+        {
+            let minInd,minVal=large+2;
+            for(let j=0;j<totalNodes;++j)
+            {
+                if(shortestTable[i][j]<minVal)
+                {
+                    minVal=shortestTable[i][j];
+                    minInd=j;
+                }
+            }
+            isVisited[minInd]=1;
+            for(let k=0;k<totalNodes;++k)
+            {
+                if(isVisited[k])
+                shortestTable[i+1][k]=large;
+                else
+                shortestTable[i+1][k]=shortestTable[i][k];
+            }
+
+            for(let p=0;p<adjList[minInd][1].length;++p)
+            {
+                if(isVisited[adjList[minInd][1][p]])
+                continue;
+                let cost=minVal+1;
+                if(shortestTable[i][adjList[minInd][1][p]]>cost)
+                shortestTable[i+1][adjList[minInd][1][p]]=cost;
+            }
+
+        }
+
+     
+        for(let i=0;i<grid.length;++i)
+        {
+            for(let j=0;j<grid.length;++j)
+            {
+                if(  getComputedStyle(table.children[i].children[j]).background.substr(10,3)!='255' )
+                 table.children[i].children[j].style.background="white";
+            }
+        }
+        let cords=findMinPath(shortestTable,f);
+        
+        if(cords.length==0)
+        return alert("no route found!");
+        
+        let coordinates=[];
+        for(let i=0;i<grid.length;++i)
+        {
+            for(let j=0;j<grid.length;++j)
+            {
+                for(let k=0;k<cords.length;++k)
+                if(grid[i][j].ind==cords[k])
+                coordinates.push([grid[i][j].i,grid[i][j].j]);
+            }
+        }
+        
+     
+        for(let i=0;i<coordinates.length;++i)
+        {
+            table.children[coordinates[i][0]].children[coordinates[i][1]].style.background="red";
+        }
+        table.children[source[0]].children[source[1]].style.background="green";
+        table.children[destination[0]].children[destination[1]].style.background="black";        
+
+    }
+    function findMinPath(shortestTable,u)
+    {
+        let  isFound=0,shortestDist=large,shortestDistInd;
+        let nodes=shortestTable.length;
+        for(let i=0;i<nodes;++i)
+        {
+            if(shortestTable[i][u]!=large)
+            isFound=1;
+
+            if(shortestTable[i][u]<=shortestDist)
+            {
+                shortestDist=shortestTable[i][u];
+                shortestDistInd=i;
+            }
+        }
+       
+        let ans=[];
+        if(!isFound)
+        return ans;
+        ans.push(u);
+        let p=shortestDist;
+        let k=shortestDistInd;
+        while(k!=0)
+        {
+            if(shortestTable[k-1][u]==p)
+            {
+                --k;
+                continue;
+            }
+            let minInd,minVal=large;
+            for(let j=0;j<nodes;++j)
+            {
+                if(shortestTable[k-1][j]<minVal)
+                {
+                    minVal=shortestTable[k-1][j];
+                    minInd=j;
+                }
+            }
+            ans.push(minInd);
+            p=minVal;
+            u=minInd;
+            --k;
+        }
+        return ans;
+    }
+
+    function points()
+    {
+        
+        let x=table.children[0].children[0].getBoundingClientRect().x;
+        let y=table.children[0].children[0].getBoundingClientRect().y;
+
+        let i=(this.getBoundingClientRect().x-x)/parseInt(getComputedStyle(table.children[0].children[0]).width);
+        let j=(this.getBoundingClientRect().y-y)/parseInt(getComputedStyle(table.children[0].children[0]).width);
+    
+        i=Math.round(i);
+        j=Math.round(j);
+        if(isPressed)
+        table.children[j].children[i].style.background="blue";
+        document.getElementById('points').textContent="( "+j+" , "+i+")";
+    }
+    function setSrcDest()
+    {
+        if(!isSrcSelected)
+        {
+            isSrcSelected=true;
+            let x=table.children[0].children[0].getBoundingClientRect().x;
+            let y=table.children[0].children[0].getBoundingClientRect().y;
+
+            let i=(this.getBoundingClientRect().x-x)/parseInt(getComputedStyle(table.children[0].children[0]).width);
+            let j=(this.getBoundingClientRect().y-y)/parseInt(getComputedStyle(table.children[0].children[0]).width);
+           
+            i=Math.round(i);
+            j=Math.round(j);
+            src=[j,i];
+            table.children[j].children[i].style.background="green";
+        }
+        else if(!isDestSelected)
+        {
+            isDestSelected=true;
+            let x=table.children[0].children[0].getBoundingClientRect().x;
+            let y=table.children[0].children[0].getBoundingClientRect().y;
+
+            let i=(this.getBoundingClientRect().x-x)/parseInt(getComputedStyle(table.children[0].children[0]).width);
+            let j=(this.getBoundingClientRect().y-y)/parseInt(getComputedStyle(table.children[0].children[0]).width);
+     
+            i=Math.round(i);
+            j=Math.round(j);
+            dst=[j,i];
+            table.children[j].children[i].style.background="black";
+        }
+        
+    }
+ 
+    for(let i=0;i<row;++i)
+    {
+        let tr=document.createElement('tr');
+        for(let j=0;j<row;++j)
+        {
+            let td=document.createElement('td');
+            td.addEventListener('mousemove',points);
+            td.addEventListener('click',setSrcDest)
+            // td.textContent=i;
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+</script>
+</html>
