@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+    <title>Genetic Algorithm</title>
+    <style>
+          *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            height: 100vh;
+
+        }
+        .container{
+            display: grid;
+            height: 100%;
+            background-color: pink;
+            grid-template-columns:1.5fr 2fr;
+        }
+        @media only screen and (max-width:898px) {
+            .container{
+            display: grid;
+            height: 100%;
+            background-color: pink;
+            grid-template-columns: repeat(1,1fr);
+            grid-template-rows:1fr 3fr;
+            }
+        }
+        .container>div{
+            background-color: rgb(178, 196, 187);
+        }
+        .container>div:nth-child(odd){
+            background-color: rgb(149, 204, 161);
+        }
+        #dataTable{
+            border: 1px solid black;
+            overflow: scroll;
+             height: 500px; 
+            width: 400px; 
+            text-align: left;
+            padding-left: 30px;   
+        }
+
+        #dataTable::-webkit-scrollbar {
+        display: none;
+        }
+
+        #dataTable {
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
+        background-color: rgb(223, 204, 198);
+        }
+        #currentGen{
+            padding: 20px;
+            border: 1px solid black;
+            text-align: left;
+           
+        }
+        .dashboard{
+            padding-top: 20px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            border-right: 1px solid black;
+        }
+        .table{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+        }
+        canvas{
+            background-color: rgb(255, 255, 255);
+            border: 1px dashed black;
+            /* width: 600px; */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="dashboard">
+            <div>
+                <h1>Genetic Algorithm Visualization</h1>
+                <br>
+                <i>Enter any string </i> <input id="string" value="hello from earth"><br><br>
+                <button onclick="find()">Start Process</button>  <button onclick="killProcess()">Kill Process</button><br><br>
+                <div id="currentGen"></div><br>
+                <i>Average Fitness (y) vs Total Generations (x)</i><br>
+                <canvas></canvas><br><br>
+                <i>Genetics</i><br>
+                <i>Mutation Rate </i> <input type="range" id="mutationRateSlider" value=6 max=26  step="2"> <span id="showMutation"> 6%</span><br>
+                <i>Population Size </i> <input type="range" id="populationSizeSlider" value=800 max=2000 min=50  step=2> <span id="showPopulation"> 100</span><br>
+                <i>Elitism Rate </i> <input type="range" id="elitismSlider" value=10 max=100 min=0  step=2> <span id="showElitism"> 10</span>
+                <br><br>
+            </div>
+        </div>
+        
+        <div>
+           <center> <br> <i style="text-align: center;">Fittest chromosomes of all generations</i><br><br>  </center> 
+            <div class="table">
+                <div id="dataTable"></div>
+            </div>
+        </div>
+        
+    </div>
+    <center>
+        
+        <br><br>
+       
+    </center>
+</body>
+<script>
+    let target=document.getElementById('string');
+    let dataTable=document.getElementById('dataTable');
+    let currentGenDiv=document.getElementById('currentGen');
+    let slider=document.getElementById("mutationRateSlider");
+    let populationSlider=document.getElementById("populationSizeSlider");
+    let eilitismSlider=document.getElementById("elitismSlider");
+
+
+    let can=document.getElementsByTagName('canvas')[0];
+    let ctx=can.getContext('2d');
+    can.width=500;
+    let w=can.width,h=can.height;
+
+    slider.addEventListener('input',()=>{
+        document.getElementById('showMutation').textContent=slider.value+"%";
+    })
+    populationSlider.addEventListener('input',()=>{
+        document.getElementById('showPopulation').textContent=populationSlider.value;
+    })
+
+    elitismSlider.addEventListener('input',()=>{
+        document.getElementById('showElitism').textContent=elitismSlider.value;
+    })
+
+    let POPULATION_SIZE=1000;
+    const GENES= "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!\+#%&/()=?@${[]}";
+    let MUTATION_RATE_CONST=4;
+    let MUTATION_RATE;
+    let found=false;
+    function killProcess()
+    {
+        found=true;
+    }
+    
+    let TARGET="how do they do it?";
+    function random_num(start,end)
+    {
+        let range=(end-start)+1;
+        let random_int=start+( Math.round(Math.random()*100000000) % range);
+        return random_int;
+    }
+    function mutated_genes()
+    {
+        let len=GENES.length;
+        let r=random_num(0,len-1);
+        return GENES[r];
+    }
+    function create_gnome()
+    {
+        let len=TARGET.length;
+        let gnome="";
+        for(let i=0;i<len;++i)
+        gnome+=mutated_genes();
+        return gnome;
+    }
+  
+    class Individual 
+    {
+        constructor(chromosome)
+        {
+            this.fitness=this.cal_fitness(chromosome);
+            this.chromosome=chromosome;
+        }
+        mate(par2)
+        {
+            
+            let chromosome=this.chromosome;
+            let child_chromosome="";
+            let len=chromosome.length;
+            
+            let ub=1.00-MUTATION_RATE;
+            let lb=ub/2;
+            for(let i=0;i<len;++i)
+            {
+                let p=random_num(0,100)/100.0;
+                if(p<lb)
+                child_chromosome+=chromosome[i];
+                else if(p<=ub)
+                child_chromosome+=par2.chromosome[i];
+                else child_chromosome+=mutated_genes();
+            }
+
+            let obj=new Individual(child_chromosome);
+            return obj;
+        }
+        cal_fitness(chromosome)
+        {
+            let len=TARGET.length;
+            let fitness=0;
+            for(let i=0;i<len;++i)
+            {
+                if(chromosome[i]==TARGET[i])
+                fitness++;
+            }
+            return fitness;
+        }
+    }
+    
+
+    function waitforme(ms)
+    {
+        return new Promise(resolve=>{
+            setTimeout(()=>{resolve('')},ms)
+        })
+    }
+    async function find()
+    {   
+        ctx.clearRect(0,0,w,h);
+        MUTATION_RATE_CONST=parseInt(slider.value);
+        MUTATION_RATE=MUTATION_RATE_CONST/100.0;
+
+        POPULATION_SIZE=parseInt(populationSlider.value);
+        TARGET=document.getElementById('string').value;
+        TARGET=TARGET.trim();
+
+        let ELITISM=parseInt(elitismSlider.value);
+        let genFitnessCords=[];
+
+        if(TARGET.length<=0)
+        return alert('invalid string');
+        dataTable.innerHTML="";
+        let generation=0;
+        let population=[];
+        
+
+        for(let i=0;i<POPULATION_SIZE;++i)
+        {
+            let gnome=create_gnome();
+            let person=new Individual(gnome);
+            population.push(person);
+        }
+        while(!found)
+        {
+            population.sort(function(x,y){return x.fitness-y.fitness});
+            population.reverse();
+
+            if(population[0].fitness>=TARGET.length)
+            {
+                found=true;
+                break;
+            }
+            let new_generation=[];
+            let s=( (ELITISM*POPULATION_SIZE)/100 );
+            s=Math.round(s);
+            for(let i=0;i<s;++i)
+            {
+                new_generation.push(population[i]);
+            }
+
+            s=( ((100-ELITISM)*POPULATION_SIZE)/100 );
+            s=Math.round(s);
+            for(let i=0;i<s;++i)
+            {
+                let len=population.length;
+                let r=random_num(0,POPULATION_SIZE/2);
+                let par1=population[r];
+                r=random_num(0,POPULATION_SIZE/2);
+                let par2=population[r];
+                let offspring=par1.mate(par2);
+                new_generation.push(offspring);
+            }
+
+            let generation_fitness=0;
+            for(let i=0;i<population.length;++i)
+            generation_fitness+=population[i].fitness;
+            generation_fitness=(generation_fitness)/(population.length);
+
+            population=new_generation;
+     
+           dataTable.innerHTML+=population[0].chromosome+"<br><hr><br>";
+           currentGenDiv.innerHTML="Generation: "+generation+"<br>Fittest Chromosome: "+population[0].chromosome+"<br>Fitness: "+population[0].fitness+"<br>Current gen avg fitness: "+generation_fitness+"<br>";
+
+           await waitforme(5);
+           dataTable.scrollTo(0,dataTable.scrollHeight);
+      
+            ++generation;
+            genFitnessCords.push(generation_fitness);
+            ctx.clearRect(0,0,w,h);
+            ctx.beginPath();
+            ctx.moveTo(0,(h-6.91*genFitnessCords[0]));
+        
+            for(let i=1;i<genFitnessCords.length;++i)
+            {
+                // ctx.arc(5*i,(h-1.61*genFitnessCords[i]),1,0,2*Math.PI);
+                ctx.lineTo(5*i,(h-6.91*genFitnessCords[i]));
+                ctx.stroke();
+                ctx.moveTo(5*i,(h-6.91*genFitnessCords[i]));
+            }
+        }
+        let generation_fitness=0;
+            for(let i=0;i<population.length;++i)
+            generation_fitness+=population[i].fitness;
+            generation_fitness=(generation_fitness)/(population.length);
+
+            currentGenDiv.innerHTML="Generation: "+generation+"<br>Fittest Chromosome: "+population[0].chromosome+"<br>Fitness: "+population[0].fitness+"<br>Current gen avg fitness: "+generation_fitness+"<br>";
+            dataTable.innerHTML+=population[0].chromosome+"<br>";
+            dataTable.scrollTo(0,dataTable.scrollHeight);
+           
+            // ctx.clearRect(0,0,w,h);
+            // ctx.beginPath();
+            // for(let i=0;i<genFitnessCords.length;++i)
+            // {
+            //     ctx.arc(5*i,(h-1.61*genFitnessCords[i]),1,0,2*Math.PI);
+            //     ctx.stroke();
+            // }
+            found=false;
+            // alert(genFitnessCords.length);
+    }
+</script>
+</html>
