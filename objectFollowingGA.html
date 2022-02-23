@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        canvas{
+            border: 1px solid black;
+            background-color: gainsboro;
+        }
+        .container{
+            display: flex;
+            justify-content: center;
+            
+        }
+    </style>
+</head>
+<body>
+    <center>
+            <h1>Object Following Using Genetic Algorithm</h1>
+            <br>
+            <i>by rudra</i>
+            <br><br>
+            <canvas></canvas>
+           
+           
+  
+           <br><button onclick="stopSimulation()" >Stop Simulation</button>
+    </center>
+</body>
+<script>
+    let can=document.getElementsByTagName('canvas')[0];
+    can.width=800;
+    can.height=400;
+    let h=can.height;
+    let w=can.width;
+    let ctx=can.getContext('2d');
+
+    function random_num(start,end)
+    {
+        let range=(end-start)+1;
+        let random_int=start+( Math.round(Math.random()*100000000) % range);
+        return random_int;
+    }
+
+    let radius=5;
+    let targetX=30,targetY=20;
+    let MUTATION_RATE=0.02;
+    let population=[];
+    let POPULATION_SIZE=1000;
+    let found=false;
+    let ELITISM=0;
+
+    function stopSimulation()
+    {
+        found=true;
+    }
+    
+    window.addEventListener('mousemove',(e)=>{
+        let c=can.getBoundingClientRect();
+        
+        targetX=e.x-c.x;
+        targetY=e.y-c.y;
+        
+    });
+
+    ctx.fillStyle="yellow";
+    ctx.arc(targetX,targetY,20,0,2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    class Individual 
+    {
+        constructor(a,b)
+        {
+            this.x=a;
+            this.y=b;
+            this.fitness=this.calc_fitness(this.x,this.y);
+        }
+
+        calc_fitness(a,b)
+        {
+            let dist=Math.sqrt(  (targetX-a)*(targetX-a)+(targetY-b)*(targetY-b) );
+            return 1/dist;
+        }
+        mate(par2)
+        {
+            
+            // let chromosome=this.chromosome;
+            let x=this.x;
+            let y=this.y;
+
+            // let child_chromosome="";
+            // let len=chromosome.length;
+            
+            let ub=1.00-MUTATION_RATE;
+            let lb=ub/2;
+
+            let new_x,new_y;
+            // for(let i=0;i<len;++i)
+            {
+                let p=random_num(0,100)/100.0;
+                if(p<lb)
+                { 
+                     new_x=random_num(par2.x-Math.random()*20,par2.x);
+                     new_y=random_num(par2.y-Math.random()*20,par2.y);
+                }
+                else if(p<=ub)
+                { 
+                    new_x=random_num(x-Math.random()*20,x);
+                     new_y=random_num(y-Math.random()*20,y);
+                }
+                else 
+                {
+                    new_x=random_num(x+Math.random()*20,w-radius);
+                    new_y=random_num(y+Math.random()*20,h-radius);
+                        // new_x=random_num(radius,w-radius);
+                        // new_y=random_num(radius,h-radius);
+                     
+                }
+            }
+
+            let obj=new Individual(new_x,new_y);
+            return obj;
+        }
+    }
+
+
+    
+    for(let i=0;i<POPULATION_SIZE;++i)
+    {
+        let x=random_num(radius,w-radius);
+        let y=random_num(radius,h-radius);
+        let obj=new Individual(x,y);
+        population.push(obj);
+    }
+
+    // population.sort(function(x,y){return y.fitness-x.fitness});
+    for(let i=0;i<POPULATION_SIZE;++i)
+    {
+            ctx.beginPath();
+            let obj=population[i];
+            ctx.fillStyle="red";
+            ctx.arc(obj.x,obj.y,radius,0,2*Math.PI);
+            ctx.fill();
+            ctx.stroke();
+    }
+    
+    
+
+    function waitforme(ms)
+    {
+        return new Promise(resolve=>{
+            setTimeout(()=>{resolve('')},ms)
+        })
+    }
+
+    let generation=0;
+    async function find()
+    {
+        while(!found)
+        {
+            ++generation;
+            // console.log(generation);
+            population.sort(function(x,y){return y.fitness-x.fitness});
+
+        //    if(population[0].fitness>=0.04)
+        //     {
+        //             found=true;
+        //         //    break;
+        //     }
+            
+            // if(generation>1000)
+            // found=true;
+        
+            let new_generation=[];
+                let s=( (ELITISM*POPULATION_SIZE)/100 );
+                s=Math.round(s);
+                for(let i=0;i<s;++i)
+                {
+                    new_generation.push(population[i]);
+                }
+
+                s=( ((100-ELITISM)*POPULATION_SIZE)/100 );
+                s=Math.round(s);
+                for(let i=0;i<s;++i)
+                {
+                    let len=population.length;
+                    let r=random_num(0,POPULATION_SIZE/4);
+                    let par1=population[r];
+                    r=random_num(0,POPULATION_SIZE/2);
+                    let par2=population[r];
+                    let offspring=par1.mate(par2);
+                    new_generation.push(offspring);
+                }
+
+                // let generation_fitness=0;
+                // for(let i=0;i<population.length;++i)
+                // generation_fitness+=population[i].fitness;
+                // generation_fitness=(generation_fitness)/(population.length);
+
+                population=new_generation;
+
+                await waitforme(10);
+                ctx.clearRect(0,0,w,h);
+                ctx.beginPath();
+                    ctx.fillStyle="yellow";
+                    ctx.arc(targetX,targetY,20,0,2*Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                ctx.beginPath();
+                for(let i=0;i<POPULATION_SIZE;++i)
+                  {
+                    ctx.beginPath();
+                    
+                    let obj=population[i];
+                    ctx.fillStyle="red";
+                    ctx.arc(obj.x,obj.y,radius,0,2*Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                  }
+                   
+        }
+    }
+    find();
+</script>
+</html>
