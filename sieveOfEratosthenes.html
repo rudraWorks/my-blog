@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sieve of Eratos</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+      
+        table{
+            border:1px solid black;
+            border-collapse: collapse;
+        }
+        tr,td{
+            border: 1px solid black;
+        }
+        td{
+            height: 10px;
+            width: 10px;
+            text-align: center;
+        }
+        #primeNumbers{
+            width: 900px;
+            background-color: antiquewhite;
+            border: 1px solid black;
+        }
+        #heading{
+            font-size: 30px;
+        }
+        #controls{
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <div id="heading">Sieve of Eratosthenes</div>
+       
+        <i>Algorithm to find prime numbers</i>
+        <br><b><i>by rudra pratap singh</i></b>
+        <br><br>
+        <table id="controls">
+            <tr><td> <i>simulation speed</i></td><td><input id="speed" type="range" min="0" max="100" value="10"><span id="speedCount"></span></td></tr>
+            <tr><td><i>rows</i></td><td><input id="rows" oninput="drawTable()" type="range" min="1" max="30" value="10"><span id="rowCount"></span></td></tr>
+            <tr><td><i>cols</i></td><td> <input id="cols"oninput="drawTable()" type="range" min="1" max="50" value="40"><span id="colCount"> </span></td></tr>
+        </table>
+       
+        <br>
+        
+        <button onclick="setup()" id="startButton">Start Simulation</button>
+        <br>
+        <br>
+        <div id="currNumber"></div>
+        <br>
+        <div id="primeNumbers"></div>
+        <br>
+        <table> </table>
+    </center>
+</body>
+<script>
+    let table=document.getElementsByTagName("table")[1];
+    let nrows=document.getElementById("rows");
+    let ncols=document.getElementById("cols");
+    let gridTable=[];
+    let primes=[];
+    let speed=document.getElementById("speed");
+    let startButton=document.getElementById("startButton");
+
+    let rows= parseInt(nrows.value);
+    let cols=parseInt(ncols.value);
+    function drawTable()
+    {  
+        table.innerHTML="";
+        gridTable=[];
+        primes=[];
+
+        rows= parseInt(nrows.value);
+        cols=parseInt(ncols.value);
+
+        document.getElementById("rowCount").textContent=rows;
+        document.getElementById("colCount").textContent=cols;
+   
+
+            for(let i=0;i<rows;++i)
+            {
+                let tr=document.createElement("tr");
+                for(let j=0;j<cols;++j)
+                {
+                    let td=document.createElement("td");
+
+                    td.textContent=i*cols+j;
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+            for(let i=0;i<rows;++i)
+            {
+                for(let j=0;j<cols;++j)
+                gridTable.push(1);
+            }
+    }
+    drawTable();
+   
+    function paintTheCell(index,color)
+    {
+
+        for(let i=0;i<rows;++i)
+            {
+                for(let j=0;j<cols;++j)
+                {
+                    let tempIndex=i*cols+j;
+               
+                    if(index==tempIndex)
+                    {
+                        table.children[i].children[j].style.background=color;
+                      
+                    }
+                  
+                }
+            }
+    }
+
+    function getRandomColor() 
+    {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    setup=async()=>
+    {
+        document.getElementById("primeNumbers").innerHTML="";
+        for(let i=0;i<rows;++i)
+        {
+            for(let j=0;j<cols;++j)
+            {
+                table.children[i].children[j].style.background="white";
+            }
+        }
+        startButton.disabled=true;
+        ncols.disabled=true;
+        nrows.disabled=true;
+
+        gridTable[0]=gridTable[1]=0;
+        paintTheCell(0,"red");
+        paintTheCell(1,"red");
+            for(let i=2;i<rows*cols;++i)
+            {
+            
+               
+                if(gridTable[i]==0)
+                continue;
+
+                document.getElementById("currNumber").innerHTML="Coloring all the multiples of <b>"+i+"</b>";
+                let color=getRandomColor();
+                
+                for(let j=i*i;j<rows*cols;j+=i)
+                {
+                    gridTable[j]=0;
+                    let spd=parseInt(speed.value);
+                    await new Promise (resolve=> setTimeout(resolve,100-spd));
+                    paintTheCell(j,color);
+                }
+            }
+
+            startButton.disabled=false;
+            ncols.disabled=false;
+            nrows.disabled=false;
+            for(let i=0;i<cols*rows;++i)
+            if(gridTable[i]==1)primes.push(i);
+            
+            document.getElementById("currNumber").innerHTML="All prime numbers are between 0 and "+rows*cols+" are ";
+            for(let i=0;i<primes.length;++i)
+            document.getElementById("primeNumbers").innerHTML+=primes[i]+", ";
+    }
+   
+</script>
+</html>
