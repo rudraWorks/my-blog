@@ -61,6 +61,7 @@
         <br>
         <table> </table>
     </center>
+    
 </body>
 <script>
     let table=document.getElementsByTagName("table")[1];
@@ -138,6 +139,7 @@
     setup=async()=>
     {
         document.getElementById("primeNumbers").innerHTML="";
+        document.getElementById("currNumber").innerHTML="";
         for(let i=0;i<rows;++i)
         {
             for(let j=0;j<cols;++j)
@@ -159,7 +161,7 @@
                 if(gridTable[i]==0)
                 continue;
 
-                document.getElementById("currNumber").innerHTML="Coloring all the multiples of <b>"+i+"</b>";
+                document.getElementById("currNumber").innerHTML+=i+" ";
                 let color=getRandomColor();
                 
                 for(let j=i*i;j<rows*cols;j+=i)
