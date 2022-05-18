@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+           height:  100vh;
+           user-select: none;
+        }
+        td{
+            /* border:1px solid black; */
+            padding: 4px;
+        }
+        table{
+            border: 1px solid black;
+            border-collapse: collapse;
+            /* border-spacing: 3px; */
+        }
+        button{
+            width: 100px;
+        }
+        .container{
+            display: grid;
+            height: 100%;
+            background-color: rgb(0, 0, 0);
+            grid-template-columns: repeat(12,1fr);
+            grid-template-rows: 1fr 2fr 2fr 2fr 2fr ;
+            grid-template-areas: "a a a a a a a a a a a a"
+                                 "c c c c c c c b b d d d"
+                                 "c c c c c c c b b d d d"
+                                 "c c c c c c c b b d d d"
+                                 "c c c c c c c b b d d d" ;
+            grid-gap: 1px;
+            justify-content: center;
+        }
+        .heading{
+            grid-area: a;
+            background-color: skyblue;
+            padding: 10px;
+               
+        }
+        .gridarea{
+            grid-area: c;
+            background-color: rgb(219, 219, 180);
+            display:flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .controls{
+            grid-area: d;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(52, 238, 92);
+        }
+        .buttons{
+            grid-area: b;
+            background-color: bisque;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            flex-direction: column;
+
+        }
+        @media only screen and (max-width:768px) {
+
+            .container{
+            grid-template-columns: repeat(12,1fr);
+            grid-template-rows: 3fr 150px 350px 50px 100px 100px;
+            grid-template-areas: "a a a a a a a a a a a a"
+                                 "c c c c c c c c c c c c"
+                                 "c c c c c c c c c c c c"
+                                 "b b b b b b b b b b b b"
+                                 "d d d d d d d d d d d d"
+                                 "d d d d d d d d d d d d" ;
+            }
+            .heading{
+                grid-area: a;
+            }
+            .gridarea{
+                grid-area: c;
+            }
+            .controls{
+                grid-area:d;
+                background-color: green;
+            }
+            .buttons{
+                grid-area:b ;   
+             
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+        }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;"> 
+    
+    <div class="container">
+        <div class="heading">
+            <h1 style="font-family: 'Courier New', Courier, monospace;">Flood Fill Algorithm Demonstration</h1>
+        </div>
+
+        <div class="gridarea">
+            <table id="grid"></table>
+        </div>
+ 
+        <div class="controls">
+        
+            <label for="speed">Speed</label>
+            <input name="speed" id="speed"  type="range">
+            <br>
+            <label for="showgrid">Show Grid</label>
+            <input id="showgrid" name="showgrid" type="checkbox">
+        </div>
+        <div class="buttons">
+            <button id="btn">find</button>
+            <br>
+            <button id="clear">clear</button>
+            <br>
+            
+         
+        </div>
+
+
+    </div>
+
+    
+   
+</body>
+<script>
+    let grid=document.getElementById('grid')
+    let n=50
+    let array=[]
+    
+    
+
+
+    let mousedown=false
+    let showgrid=true 
+
+    document.getElementById('showgrid').addEventListener('input',()=>{
+        let allCells=document.getElementsByTagName('td')
+        if(!document.getElementById('showgrid').checked)
+        {
+            for(let i=0;i<allCells.length;++i)
+            allCells[i].style.border="none";
+        }
+        else 
+        {
+            for(let i=0;i<allCells.length;++i)
+            allCells[i].style.border="1px solid black";
+        }
+    })
+    for(let i=0;i<n;++i)
+    {
+        let tr=document.createElement('tr')
+        grid.appendChild(tr)
+    }
+
+    document.addEventListener('mouseup',()=>{
+        mousedown=false
+    })
+    document.addEventListener('mousedown',()=>{
+        mousedown=true
+    })
+    for(let i=0;i<n;++i)
+    {
+        let r=[]
+        for(let j=0;j<n;++j)
+        {
+            let td=document.createElement('td')
+            td.style.background="white"
+            td.addEventListener('mouseenter',function(){
+
+                if(mousedown)
+                this.style.background="rgb(0,0,0)"
+            })
+            grid.children[i].appendChild(td)
+            r.push(0)
+        }
+        array.push(r)
+    
+    }
+
+
+    async function dfs(sx,sy,ex,ey,isVisited)
+    {   
+        let spd=document.getElementById('speed')
+        spd=parseInt(spd.value)
+        await new Promise (resolve=> setTimeout(resolve,101-spd));
+
+        
+        if(sx<0 || sy<0 || sx>=n || sy>=n || isVisited[sx][sy] || array[sx][sy])
+        return
+        grid.children[sx].children[sy].style.background="red"
+      
+        if(sx==ex && sy==ey)
+        {
+            return
+        }
+        console.log(sx+" "+sy)
+        isVisited[sx][sy]=1;
+        
+        dfs(sx,sy+1,ex,ey,isVisited);//right
+        dfs(sx-1,sy,ex,ey,isVisited);//up
+        dfs(sx+1,sy,ex,ey,isVisited);//down
+        dfs(sx,sy-1,ex,ey,isVisited);//left
+        
+    }
+
+    let btn=document.getElementById('btn')
+    btn.addEventListener('click',()=>{
+        let isVisited=[]
+        for(let i=0;i<n;++i)
+        {
+            let r=[]
+            for(let j=0;j<n;++j)
+            {
+                let cell=getComputedStyle(grid.children[i].children[j]).background
+                
+                if(getComputedStyle(grid.children[i].children[j]).background.substr(9,3)!='255')
+                array[i][j]=1
+                
+                
+                r.push(0)
+            }
+            isVisited.push(r)
+        }
+    
+        dfs(0,0,n-1,n-1,isVisited)
+       
+    })
+
+    document.getElementById("clear").addEventListener('click',()=>{
+        for(let i=0;i<n;++i)
+         {
+            for(let j=0;j<n;++j)
+                {
+                    array[i][j]=0
+                    grid.children[i].children[j].style.background="white";   
+                }  
+         }  
+    })
+</script>
+</html>
