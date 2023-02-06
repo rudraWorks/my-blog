@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Visualizers</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        background-color: darkcyan;
+        padding: 10px;
+    }
+    #container{
+
+        width: 90%;
+        background-color: lightgray;
+        /* border: 1px solid black; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        font-family: monospace;
+        padding: 20px;
+    }
+    #container>div{
+        width: 90%;
+    }
+    #cardContainer{
+        /* background-color: rgb(107, 105, 102); */
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        /* padding: 10px; */
+        width: 70%;
+        border-left: 30px solid rgb(9, 84, 145);
+    }
+    .card{
+        width: 200px;
+        height: 200px;
+        margin: 10px;
+        border-radius: 10px;
+        background: linear-gradient(145deg, #cacaca, #f0f0f0);
+        box-shadow:  16px 16px 38px #b3b3b3,
+                    -16px -16px 38px #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 15px;
+    }
+
+    .card:hover{
+        border-radius: 10px;
+        background: #e0e0e0;
+        box-shadow:  20px 20px 60px #bebebe,
+                    -20px -20px 60px #ffffff;
+    }
+    h1{
+        font-size: 60px;
+        color: orange;
+        -webkit-text-stroke: 1px black;
+    }
+    .card>span{
+        font-size: 25px;
+        color: navy;
+    }
+
+    @media (max-width:600px) {
+        .card{
+            width: 150px;
+            height: 150px;
+        }
+        h1{
+            font-size: 30px;
+        }
+        .card>span{
+            font-size: 20px;
+        }
+        #cardContainer{
+            border-left: none;
+        }
+    }
+
+
+
+</style>
+<body>
+    <center>
+        <div id="container">
+
+                <div>
+                    <h1> DSA Visualizers </h1><br>
+                    <hr>
+                </div>
+                <div id="cardContainer">
+                    <div class="card" onclick="window.open('https://rudraworks.github.io/my-blog/mst.html', '_blank')">
+                        <span>Kruskal's Algorithm</span> 
+                    </div>
+                    <div class="card"  onclick="window.open('https://rudraworks.github.io/my-blog/dijkstra.html', '_blank')">
+                        <span>Dijkstra's Algorithm</span> 
+                    </div>
+                    <div class="card"  onclick="window.open('https://rudraworks.github.io/my-blog/floodFillAlgorithm.html', '_blank')">
+                        <span>Flood Fill Algorithm</span> 
+
+                    </div>
+                    <div class="card"  onclick="window.open('https://rudraworks.github.io/my-blog/sieveOfEratosthenes.html', '_blank')">
+                        <span>Sieve of Eratosthenes</span> 
+
+                    </div>
+                    <div class="card"  onclick="window.open('https://rudraworks.github.io/my-blog/sudokuSolver.html', '_blank')">
+                         <span>Sudoku Solver (Backtracking)</span>
+                    </div>
+                    <div class="card"  onclick="window.open('https://rudraworks.github.io/my-blog/bubbleSort.html', '_blank')">
+                         <span>Bubble Sort</span>
+                    </div>
+                    <div class="card"  onclick="window.open('https://rudraworks.github.io/my-blog/insertionSort.html', '_blank')">
+                         <span>Insertion Sort</span>
+                    </div>
+                    <div class="card"  onclick="window.open('https://rudraworks.github.io/my-blog/selectionSort.html', '_blank')">
+                         <span>Selection Sort</span>
+                    </div>
+                </div>
+
+        </div>
+    </center>
+</body>
+</html>
